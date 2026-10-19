@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "data": "node scripts/database-transfer.js",
+    "data:dump": "node scripts/database-transfer.js --export",
+    "data:verify": "node scripts/database-transfer.js --verify",
     "seed:admin": "node scripts/seed-admin.js",
     "seed:coaches": "node scripts/seed-coaches.js",
     "seed:bikes": "node scripts/seed-bikes.js",
