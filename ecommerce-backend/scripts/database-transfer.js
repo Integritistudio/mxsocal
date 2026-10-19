@@ -146,7 +146,27 @@ async function importData() {
       }
     }
     if (backedUp) console.log(`Preserved ${backedUp} conflicting media files and installed snapshot versions.`);
-    await run("pg_restore", ["--no-owner", "--no-acl", "--no-password", "--exit-on-error", "--single-transaction", `--dbname=${process.env.DATABASE_NAME}`, archive]);
+    const version = Number((await client.query("SHOW server_version_num")).rows[0].server_version_num);
+    if (version < 170000) {
+      // Newer pg_restore emits this session setting even for otherwise compatible schemas.
+      // Keep all schema/data SQL intact, and let psql abort/roll back on any other incompatibility.
+      await binary("psql");
+      const temporary = await fs.mkdtemp(path.join(require("node:os").tmpdir(), "mxsocal-restore-"));
+      const sqlFile = path.join(temporary, "restore.sql");
+      try {
+        await run("pg_restore", ["--no-owner", "--no-acl", `--file=${sqlFile}`, archive]);
+        const sql = await fs.readFile(sqlFile, "utf8");
+        await fs.writeFile(sqlFile, sql.replace(/^SET transaction_timeout = 0;\r?\n/gm, ""), { mode: 0o600 });
+        await fs.chmod(sqlFile, 0o600);
+        console.log("Older PostgreSQL server detected; omitting unsupported transaction_timeout setting.");
+        await run("psql", ["--no-psqlrc", "--no-password", "--set=ON_ERROR_STOP=1", "--single-transaction", `--dbname=${process.env.DATABASE_NAME}`, `--file=${sqlFile}`]);
+      } finally {
+        await fs.unlink(sqlFile).catch(() => {});
+        await fs.rmdir(temporary).catch(() => {});
+      }
+    } else {
+      await run("pg_restore", ["--no-owner", "--no-acl", "--no-password", "--exit-on-error", "--single-transaction", `--dbname=${process.env.DATABASE_NAME}`, archive]);
+    }
     const actual = await counts(client);
     if (JSON.stringify(actual) !== JSON.stringify(manifest.tables)) throw new Error("Database restored, but row verification differs. Keep the app stopped and inspect the target database.");
     console.log(`Restore complete and verified: ${actual.length} tables, ${actual.reduce((sum, table) => sum + table.rows, 0)} rows. Uploaded media and frontend images restored.`);
