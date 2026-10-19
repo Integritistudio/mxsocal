@@ -125,17 +125,27 @@ async function importData() {
   try {
     const existing = await client.query("SELECT count(*) AS count FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname NOT LIKE 'pg_%' AND n.nspname <> 'information_schema' AND c.relkind IN ('r','v','m','S','f')");
     if (Number(existing.rows[0].count)) throw new Error("Target database is not empty. Existing data was preserved. Set .env to a NEW empty database; do not start the backend until restoration finishes.");
-    // Copy media without replacing different existing files. Fail before touching the database on a conflict.
+    // Preserve conflicting media before installing the verified snapshot versions.
+    const mediaBackup = path.join(root, ".seed-backups", `restore-${Date.now()}-${require("node:crypto").randomUUID()}`);
+    let backedUp = 0;
     for (const group of manifest.media) {
       const destination = group.name === "uploads" ? path.join(root, "uploads") : path.resolve(root, "../ecommerce-frontend/public/images");
       for (const entry of group.files) {
         const target = path.resolve(destination, entry.path);
         if (!inside(destination, target)) throw new Error("Invalid media destination.");
         const exists = await fs.stat(target).then(() => true).catch(() => false);
-        if (exists && await digest(target) !== entry.sha256) throw new Error(`Existing media differs: ${group.name}/${entry.path}. Move that file aside before retrying.`);
+        if (exists && await digest(target) !== entry.sha256) {
+          const backup = path.resolve(mediaBackup, group.name, entry.path);
+          if (!inside(mediaBackup, backup)) throw new Error("Invalid media backup destination.");
+          await fs.mkdir(path.dirname(backup), { recursive: true });
+          await fs.copyFile(target, backup, require("node:fs").constants.COPYFILE_EXCL);
+          if (backedUp++ === 0) console.log(`Existing media backups: ${mediaBackup}`);
+          await fs.copyFile(path.join(directory, group.name, entry.path), target);
+        }
         if (!exists) { await fs.mkdir(path.dirname(target), { recursive: true }); await fs.copyFile(path.join(directory, group.name, entry.path), target, require("node:fs").constants.COPYFILE_EXCL); }
       }
     }
+    if (backedUp) console.log(`Preserved ${backedUp} conflicting media files and installed snapshot versions.`);
     await run("pg_restore", ["--no-owner", "--no-acl", "--no-password", "--exit-on-error", "--single-transaction", `--dbname=${process.env.DATABASE_NAME}`, archive]);
     const actual = await counts(client);
     if (JSON.stringify(actual) !== JSON.stringify(manifest.tables)) throw new Error("Database restored, but row verification differs. Keep the app stopped and inspect the target database.");

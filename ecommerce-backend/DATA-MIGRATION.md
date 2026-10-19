@@ -23,7 +23,7 @@ cd ecommerce-backend
 npm run data
 ```
 
-The script creates the target database if it does not exist and the database user has permission. Otherwise, create an empty database first. It refuses to overwrite an existing database, validates all snapshot checksums, restores schema and data in one transaction, restores images without replacing different existing files, and compares every table's row count.
+The script creates the target database if it does not exist and the database user has permission. Otherwise, create an empty database first. It refuses to overwrite an existing database, validates all snapshot checksums, restores schema and data in one transaction, and compares every table's row count. Conflicting images are preserved under backend `.seed-backups/restore-<id>/` before the verified snapshot images are installed. The backup location is printed during restoration.
 
 For a checksum-only check (no database changes): `npm run data:verify`.
 
