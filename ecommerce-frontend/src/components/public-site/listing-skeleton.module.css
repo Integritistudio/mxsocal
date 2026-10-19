@@ -1,0 +1,26 @@
+.skeleton { border-color:#ffffff16; pointer-events:none }
+.block { position:relative; overflow:hidden; background:#242424; border-radius:6px }
+.block::after { content:""; position:absolute; inset:0; background:linear-gradient(100deg,transparent 15%,#ffffff09 45%,#ffffff0d 50%,transparent 85%); transform:translateX(-100%); animation:shimmer 1.8s ease-in-out infinite }
+.count { display:inline-block; width:190px; height:20px; vertical-align:middle }
+.info { padding-top:24px; min-width:0; width:100%; max-width:440px }
+.title { height:36px; width:75%; margin-bottom:20px }
+.group { display:grid; gap:8px; margin-bottom:16px }
+.label { width:90px; height:17px }
+.line { width:95%; height:18px }
+.short { width:72% }
+.level { width:80%; height:14px; margin-top:15px }
+.subtitle { width:90%; height:23px; margin:0 0 30px }
+.features { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; padding:20px 0; border-block:1px solid #ffffff12 }
+.features > div { display:flex; flex-direction:column; align-items:center; gap:12px }
+.icon { width:36px; height:36px; border-radius:50% }
+.featureLabel { width:85%; height:13px }
+.priceRow { display:flex; align-items:flex-end; justify-content:space-between; padding-top:25px }
+.priceRow > div { display:grid; gap:10px }
+.price { width:65px; height:26px }
+.priceRow .label { width:40px; height:14px }
+.detail { width:85px; height:15px }
+.button { position:absolute; right:60px; bottom:28px; width:155px; height:51px; border-radius:12px }
+@keyframes shimmer { to { transform:translateX(100%) } }
+@media(max-width:1050px) { .info { padding-top:10px } .title { height:30px } .button { right:28px } }
+@media(max-width:750px) { .info { padding:0; max-width:none } .title { height:32px } .button { position:static; width:155px; height:48px; margin-top:4px } }
+@media(prefers-reduced-motion:reduce) { .block::after { animation:none; display:none } }

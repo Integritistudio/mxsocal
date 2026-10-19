@@ -1,0 +1,93 @@
+const path = require("node:path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
+const assert = require("node:assert/strict");
+const crypto = require("node:crypto");
+const jwt = require("jsonwebtoken");
+const request = require("supertest");
+const express = require("express");
+const sharp = require("sharp");
+const sequelize = require("../config/database"); sequelize.options.logging = false;
+const User = require("../models/user.model");
+const Challenge = require("../models/email-challenge.model");
+const Review = require("../models/product-review.model");
+const Saved = require("../models/saved-product.model");
+const { Product } = require("../models/product.model");
+const mail = require("../lib/account-mail");
+const messages = []; mail.sendAccountMail = async message => { messages.push(message); };
+const { generateToken } = require("../helpers/jwt");
+const app = express(); app.set("trust proxy", true); app.use(express.json()); app.use(require("cookie-parser")());
+app.use("/auth", require("../routes/auth.route")); app.use("/products", require("../routes/product.route")); app.use("/user", require("../routes/user.route")); app.use("/coach", require("../routes/coach.route"));
+const emails = [`account-check-${crypto.randomUUID()}@example.com`, `invite-check-${crypto.randomUUID()}@example.com`];
+emails.push(`staff-check-${crypto.randomUUID()}@example.com`);
+let counter = 0;
+const call = (method, url, token) => { const r = request(app)[method](url).set("X-Forwarded-For", `198.51.100.${++counter}`); if (token) r.set("Authorization", `Bearer ${token}`); return r; };
+function cookie(response) { const match = response.headers["set-cookie"]?.find(c => c.startsWith("token=")); assert(match); return decodeURIComponent(match.split(";")[0].slice(6)); }
+(async () => {
+  const product = await Product.findOne({ where: { slug: "ktm-300-exc" } }); assert(product);
+  const admin = await User.findOne({ where: { role: "admin" } }); assert(admin);
+  const adminToken = generateToken(admin.id, "admin", admin.tokenVersion);
+  try {
+    for (const password of ["123456", "123456789012345678"]) {
+      const invalid = await call("post", "/auth/signup").send({ firstName: "Test", lastName: "Customer", email: emails[0], password }).expect(400);
+      assert.equal(invalid.body.message, "Password must be between 7 and 17 characters.");
+    }
+    const signup = await call("post", "/auth/signup").send({ firstName: "Test", lastName: "Customer", email: emails[0], password: "Initial-Pass-123!", role: "admin", permissions: ["product:update"] }).expect(202);
+    assert.equal(await User.count({ where: { email: emails[0] } }), 0, "No account should exist before verification.");
+    let code = messages.at(-1).text.match(/code is (\d{6})/)[1];
+    await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code: "bad" }).expect(400);
+    const wrongCode = code === "000000" ? "000001" : "000000";
+    for (let attempt = 0; attempt < 5; attempt++) await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code: wrongCode }).expect(400);
+    await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code }).expect(400);
+    await call("post", "/auth/resend-otp").send({ challengeId: signup.body.challengeId }).expect(429);
+    await sequelize.query('UPDATE "EmailChallenges" SET "updatedAt" = :past WHERE id = :id', { replacements: { past: new Date(Date.now() - 61000), id: signup.body.challengeId } });
+    await call("post", "/auth/resend-otp").send({ challengeId: signup.body.challengeId }).expect(200);
+    const previousCode = code; code = messages.at(-1).text.match(/code is (\d{6})/)[1];
+    if (previousCode !== code) await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code: previousCode }).expect(400);
+    const verified = await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code }).expect(201);
+    await call("post", "/auth/admin/login").send({ email: emails[0], password: "Initial-Pass-123!" }).expect(403);
+    await User.create({ name: "Temporary Staff", email: emails[2], password: "Temporary-Staff-Password-123!", role: "manager", permissions: ["dashboard:view"], emailVerifiedAt: new Date() });
+    await call("post", "/auth/login").send({ email: emails[2], password: "Temporary-Staff-Password-123!" }).expect(403);
+    const staffLogin = await call("post", "/auth/admin/login").send({ email: emails[2], password: "Temporary-Staff-Password-123!" }).expect(200);
+    assert.equal(staffLogin.body.user.role, "manager");
+    const token = cookie(verified); const claims = jwt.verify(token, process.env.JWT_SECRET); assert.equal(claims.exp - claims.iat, 5 * 86400); assert.equal(verified.body.user.role, "user"); assert.deepEqual(verified.body.user.permissions, []); assert(verified.headers["set-cookie"][0].includes("HttpOnly")); assert(verified.headers["set-cookie"][0].includes("Max-Age=432000"));
+    await call("post", "/auth/verify-email").send({ challengeId: signup.body.challengeId, code }).expect(400);
+    const spoofedRoleToken = generateToken(verified.body.user.id, "admin", 0);
+    await call("get", "/products/admin", spoofedRoleToken).expect(403);
+    for (const url of ["/products/admin", "/products/reviews/admin", "/auth/customers", "/user", "/coach"]) await call("get", url, token).expect(403);
+    await call("put", "/auth/me", token).send({ firstName: "Updated", lastName: "Customer", gender: "non-binary", address: "Test address", dateOfBirth: "1995-06-15", role: "admin", permissions: ["product:update"], password: "Malicious-Password-123!" }).expect(200);
+    const me = (await call("get", "/auth/me", token).expect(200)).body; assert.equal(me.role, "user"); assert.equal(me.firstName, "Updated"); assert.equal(me.gender, "non-binary"); assert(!Object.hasOwn(me, "password")); assert(!Object.hasOwn(me, "avatarData"));
+    await call("put", "/auth/me", token).send({ dateOfBirth: "2099-01-01" }).expect(400);
+    await call("put", `/auth/saved/${product.id}`, token).send({}).expect(200); assert((await call("get", "/auth/saved", token)).body.ids.includes(product.id));
+    const png = await sharp({ create: { width: 20, height: 20, channels: 3, background: "red" } }).png().toBuffer();
+    await call("post", "/auth/me/avatar", token).field("ratings", "{}").attach("images", png, { filename: "avatar.png", contentType: "image/png" }).expect(200);
+    await call("get", "/auth/me/avatar", token).expect(200).expect("Content-Type", /image\/png/);
+    const ratings = { performance: 5, handling: 5, comfort: 5, condition: 5, rental: 5, value: 5 };
+    await call("post", `/products/${product.id}/reviews`).send({ title: "Unauthorized review", comment: "Anonymous reviews must not be accepted.", ratings }).expect(401);
+    await call("post", `/products/${product.id}/reviews`, token).send({ authorName: "Forged author", email: "other@example.com", title: "Ownership check", comment: "Only my verified account owns this review.", ratings, status: "approved" }).expect(201);
+    const review = await Review.findOne({ where: { userId: me.id } }); assert.equal(review.status, "pending"); assert.equal(review.authorName, "Updated Customer");
+    const anonymous = (await call("get", `/products/${product.slug}/detail`)).body; assert(!anonymous.reviews.some(r => r.id === review.id)); assert.equal(anonymous.myReviews.length, 0);
+    const own = (await call("get", `/products/${product.slug}/detail`, token)).body; assert(own.myReviews.some(r => r.id === review.id));
+    await review.update({ status: "rejected" }); assert((await call("get", "/auth/my-reviews", token)).body.reviews.some(r => r.id === review.id && r.status === "rejected"));
+    await call("patch", `/user/${me.id}`, adminToken).send({ password: "Admin-Reset-Not-Allowed" }).expect(400);
+    await call("post", "/auth/customers", adminToken).send({ firstName: "Invited", lastName: "Customer", email: emails[1], password: "Admin-Password-Not-Allowed" }).expect(400);
+    await call("post", "/auth/customers", adminToken).send({ firstName: "Invited", lastName: "Customer", email: emails[1] }).expect(201);
+    const inviteToken = new URLSearchParams(new URL(messages.at(-1).text.match(/https?:\/\/[^\s]+/)[0]).hash.slice(1)).get("token");
+    await call("get", "/auth/me", inviteToken).expect(401);
+    const invited = await call("post", "/auth/reset-password").send({ token: inviteToken, password: "Chosen-Pass-123!" }).expect(200); assert.equal(invited.body.user.role, "user");
+    await call("post", "/auth/reset-password").send({ token: inviteToken, password: "Chosen-Pass-123!" }).expect(400);
+    // Issue a reset link without sending email to a real recipient; the sink above captures it.
+    process.env.MAIL_FROM ||= "test@example.com";
+    await call("post", "/auth/forgot-password").send({ email: emails[0] }).expect(200);
+    const resetToken = new URLSearchParams(new URL(messages.at(-1).text.match(/https?:\/\/[^\s]+/)[0]).hash.slice(1)).get("token");
+    await call("get", "/auth/me", resetToken).expect(401);
+    await call("post", "/auth/reset-password").send({ token: resetToken, password: "New-Pass-456!" }).expect(200);
+    await call("get", "/auth/me", token).expect(401);
+    await call("post", "/auth/reset-password").send({ token: resetToken, password: "New-Pass-456!" }).expect(400);
+    const signedIn = await call("post", "/auth/login").send({ email: emails[0], password: "New-Pass-456!" }).expect(200);
+    const newToken = cookie(signedIn); await call("post", "/auth/logout", newToken).send({}).expect(200); await call("get", "/auth/me", newToken).expect(401);
+    console.log("Passed: OTP signup and auto-login, replay prevention, five-day HttpOnly sessions, role escalation rejection, staff API isolation, profile and avatar updates, persistent saves, owned/private rejected reviews, customer-only password choice, one-use invitation/reset JWTs, reset/logout session revocation, and sign-in.");
+  } finally {
+    const users = await User.findAll({ where: { email: emails }, attributes: ["id"] });
+    await Review.destroy({ where: { userId: users.map(u => u.id) } }); await Saved.destroy({ where: { userId: users.map(u => u.id) } }); await Challenge.destroy({ where: { email: emails } }); await User.destroy({ where: { email: emails } });
+  }
+})().catch(error => { console.error(error.message); process.exitCode = 1; }).finally(() => sequelize.close());

@@ -1,0 +1,2 @@
+import s from "@/components/stories/stories.module.css";
+export default function Loading() { return <main className={`${s.main} ${s.skeleton}`} aria-label="Loading stories" role="status"><div className={s.skeletonTitle} /><div className={s.grid}>{Array.from({ length: 6 }, (_, index) => <div className={s.card} key={index} aria-hidden="true"><div className={s.cardImage} /><div className={s.cardBody}><span /><span /></div></div>)}</div></main>; }

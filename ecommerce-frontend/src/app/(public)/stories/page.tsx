@@ -1,0 +1,6 @@
+import type { Metadata } from "next";
+import StoriesView from "@/components/stories/StoriesView";
+import { getStories, siteUrl } from "@/lib/stories";
+type Props = { searchParams: Promise<{ q?: string; category?: string; page?: string }> };
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> { const params = await searchParams; return { title: "Stories & Riding Guides | MXSoCal", description: "Riding guides, bike care, gear advice, and stories from the MXSoCal community.", alternates: { canonical: `${siteUrl()}/stories` }, robots: params.q || params.category || params.page ? { index: false, follow: true } : { index: true, follow: true }, openGraph: { title: "Stories from the dirt | MXSoCal", description: "Riding guides, bike care, and stories from MXSoCal.", url: `${siteUrl()}/stories`, type: "website" } }; }
+export default async function Page({ searchParams }: Props) { const params = await searchParams; const q = typeof params.q === "string" ? params.q.slice(0, 100) : ""; const category = typeof params.category === "string" ? params.category.slice(0, 60) : ""; const page = typeof params.page === "string" && /^[1-9]\d{0,3}$/.test(params.page) ? Number(params.page) : 1; const data = await getStories({ q, category, page: String(page) }); return <StoriesView data={data} query={q} category={category} page={page} />; }

@@ -1,0 +1,15 @@
+const router = require('express').Router();
+const story = require('../controllers/story.controller');
+const auth = require('../middleware/auth.middleware');
+const { admin } = require('../middleware/account-access.middleware');
+router.post('/media', auth, admin, require('../middleware/review-upload.middleware').parseReview, require('../controllers/story-media.controller').upload);
+router.get('/media/:filename', require('../controllers/story-media.controller').image);
+router.get('/', story.list);
+router.get('/sitemap', story.sitemap);
+router.get('/admin', auth, admin, story.adminList);
+router.get('/admin/:id', auth, admin, story.adminDetail);
+router.post('/admin', auth, admin, story.create);
+router.patch('/admin/:id', auth, admin, story.update);
+router.delete('/admin/:id', auth, admin, story.remove);
+router.get('/:slug', story.detail);
+module.exports = router;

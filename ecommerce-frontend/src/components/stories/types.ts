@@ -1,0 +1,3 @@
+export type StoryNode = { type: string; text?: string; attrs?: { level?: number; start?: number; href?: string }; marks?: { type: string; attrs?: { href?: string } }[]; content?: StoryNode[] };
+export type Story = { id: string; title: string; slug: string; excerpt: string; category: string; author: string; coverImage: string; coverAlt: string; featured: boolean; publishedAt: string | null; updatedAt: string; readingMinutes?: number; seoTitle?: string; seoDescription?: string; status?: "draft" | "published"; content?: StoryNode };
+export type StoryListing = { stories: Story[]; featured: Story | null; total: number; page: number; hasMore: boolean; categories: string[] };

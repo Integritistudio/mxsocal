@@ -1,0 +1,13 @@
+const router = require("express").Router();
+const controller = require("../controllers/rental-checkout.controller");
+const auth = require("../middleware/auth.middleware");
+const { accountLimit } = require("../middleware/account-access.middleware");
+router.get("/catalog", controller.catalog);
+router.get("/mine", auth, controller.mine);
+router.get("/availability/:productId", controller.availability);
+router.post("/quote", auth, controller.quote);
+router.post("/checkout", auth, accountLimit, controller.checkout);
+router.get("/sessions/:sessionId", auth, controller.session);
+router.get("/sessions/:sessionId/embedded", auth, controller.embeddedSession);
+router.post("/sessions/:sessionId/release", auth, controller.release);
+module.exports = router;

@@ -1,0 +1,31 @@
+const express = require("express");
+const router = express.Router();
+const authController = require("../controllers/auth.controller");
+const auth = require("../middleware/auth.middleware");
+const customer = require("../controllers/customer-account.controller");
+const { admin, accountLimit } = require("../middleware/account-access.middleware");
+const { parseReview } = require("../middleware/review-upload.middleware");
+router.post("/signup", accountLimit, customer.signup);
+router.post("/verify-email", accountLimit, customer.verify);
+router.post("/resend-otp", accountLimit, customer.resend);
+router.post("/forgot-password", accountLimit, customer.forgot);
+router.post("/reset-password", accountLimit, customer.reset);
+router.get("/accounts", auth, admin, customer.listAccounts);
+router.get("/customers", auth, admin, customer.listCustomers);
+router.post("/customers", auth, admin, customer.invite);
+router.get("/customers/:id/avatar", auth, admin, customer.customerAvatar);
+router.get("/saved", auth, customer.savedList);
+router.put("/saved/:id", auth, customer.saveProduct);
+router.delete("/saved/:id", auth, customer.saveProduct);
+router.get("/my-reviews", auth, customer.myReviews);
+router.get("/me/avatar", auth, customer.avatar);
+router.post("/me/avatar", auth, accountLimit, parseReview, customer.avatar);
+
+router.post("/register", accountLimit, authController.register);
+router.post("/login", accountLimit, authController.login);
+router.post("/admin/login", accountLimit, (req, _res, next) => { req.staffLogin = true; next(); }, authController.login);
+router.post("/logout", auth, authController.logout);
+router.get("/me", auth, authController.me);
+router.put("/me", auth, authController.updateProfile);
+
+module.exports = router;

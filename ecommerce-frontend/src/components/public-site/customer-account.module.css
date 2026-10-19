@@ -1,0 +1,176 @@
+.authMain,.account { background:radial-gradient(ellipse at 0 0,#de232118,transparent 60%),#000; padding:70px 24px 100px; min-height:650px; color:#fff }
+.authCard { position:relative; z-index:1; width:100%; max-width:540px; margin:auto; border:1px solid #ffffff35; border-radius:20px; padding:40px 36px; background:#0d0d0de8; box-shadow:0 24px 80px #0007; backdrop-filter:blur(12px) }
+.authMain { position:relative; isolation:isolate; display:flex; align-items:center; justify-content:center; min-height:calc(100svh - 120px) }
+.authVideo { position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover; object-position:center; pointer-events:none }
+.authOverlay { position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,#0009,#000b 55%,#000e),linear-gradient(100deg,#0005,#0002); pointer-events:none }
+.authWithVideo { background:#080808 }
+.authCard > h1,.authCard > .intro { text-align:center }
+.authCard > .intro { max-width:410px; margin:0 auto 30px }
+.authForm.form label { gap:0; height:72px; border:1px solid #de2321; border-radius:12px; padding:7px 15px 10px; font-size:13px; font-weight:400; line-height:28px; color:#818181; background:transparent; transition:background-color .22s ease,box-shadow .22s ease,color .22s ease }
+.authForm.form label:focus-within { background:rgba(222,35,33,.07); box-shadow:0 0 0 3px rgba(222,35,33,.12),0 8px 24px rgba(222,35,33,.08); color:#f58c8b }
+.authForm.form input { display:block; border:0; border-radius:0; background:transparent; padding:0; color:#fff; outline:none; box-shadow:none; font:inherit; font-size:16px; font-weight:400; line-height:21px; width:100%; min-width:0 }
+.authForm.form input:focus,.authForm.form input:focus-visible { outline:none; box-shadow:none; border:0 }
+.authForm.form input::placeholder { color:#89858a; opacity:1; font-weight:400 }
+.authForm.form input { color-scheme:dark }
+.authForm.form input:is(:autofill,:-webkit-autofill) {
+  -webkit-text-fill-color:#fff;
+  caret-color:#fff;
+  color:#fff;
+  -webkit-box-shadow:0 0 0 1000px #101111 inset!important;
+  box-shadow:0 0 0 1000px #101111 inset!important;
+}
+.authForm .password input { padding-right:34px }
+.authForm .password button { right:-4px; top:-4px; bottom:auto; width:32px; height:32px; padding:0; line-height:0; border-radius:50%; transition:color .25s,background-color .25s }
+.authForm .password button:hover { color:#ff7773; background:#de232118 }
+.authForm .password button svg { width:18px; height:18px; display:block }
+.authForm .passwordHint { margin:-10px 0 0; color:#aaa; font-size:12px; line-height:20px }
+.authForm > .primary { justify-self:center; width:auto; min-width:150px; max-width:100%; min-height:46px; padding:11px 24px; border-radius:12px; line-height:22px; margin-top:4px }
+.authForm > .primary svg { width:18px; height:18px; flex-shrink:0; transition:transform .35s ease }
+.authForm > .primary:hover svg { transform:translate(2px,-2px) }
+.eyebrow { color:#de2321; font-size:12px; letter-spacing:1px; margin:0 0 18px }
+.authCard h1,.account h1 { font-size:34px; font-weight:700; line-height:1.25; margin:0 0 18px }
+.intro { color:#aaa; font-size:14px; line-height:25px; margin-bottom:30px }
+.form { display:grid; gap:20px }
+.form label { display:flex; flex-direction:column; gap:8px; font-size:14px; color:#eee }
+.form small { font-size:12px; color:#aaa }
+.form input,.form textarea,.form select { width:100%; min-width:0; background:#080808; color:white; border:1px solid #ffffff50; padding:13px 15px; border-radius:9px; font:inherit; outline:none; transition:border-color .25s,box-shadow .25s }
+.form input:focus,.form textarea:focus,.form select:focus { border-color:#de2321; box-shadow:0 0 0 3px #de232120 }
+.form input::placeholder { color:#777; font-weight:400 }
+.form textarea { min-height:100px; resize:vertical }
+.twoColumns { display:grid; grid-template-columns:1fr 1fr; gap:18px }
+.password { position:relative }
+.password input { padding-right:48px }
+.password button { position:absolute; right:5px; top:0; bottom:0; width:38px; display:grid; place-items:center; color:#aaa; background:none; border:0; cursor:pointer }
+.primary,.secondary { display:inline-flex; justify-content:center; align-items:center; gap:12px; padding:13px 22px; background:#de2321; color:#fff; border:1px solid #de2321; border-radius:30px; font:inherit; font-size:14px; cursor:pointer; transition:background .3s,color .3s }
+.primary:hover,.secondary:hover { background:#000; color:#ff7773 }
+.primary:disabled,.secondary:disabled { opacity:.5; cursor:wait }
+.secondary { background:transparent; color:#ff7773 }
+.authLinks { display:grid; gap:18px; margin-top:24px; text-align:center; font-size:14px; color:#aaa }
+.authLinks p { margin:0 }
+.authLinks a,.authLinks button { color:#ff7773 }
+.authLinks button { border:0; background:none; font:inherit; cursor:pointer }
+.error,.success { padding:12px 15px; border-radius:8px; font-size:13px; line-height:23px; margin:0 }
+.error { color:#ffaaa6; background:#de232118; border:1px solid #de232140 }
+.success { color:#b0e5b8; background:#17371d60; border:1px solid #b0e5b833 }
+.account > div { max-width:1100px; margin:auto }
+.accountHeader { display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:35px }
+.tabs { display:flex; gap:12px; flex-wrap:wrap; margin:25px 0 }
+.tabs button { border:1px solid #ffffff40; border-radius:25px; background:none; color:#ccc; padding:10px 22px; cursor:pointer }
+.tabs button[aria-pressed=true] { background:#de2321; border-color:#de2321; color:#fff }
+.panel { border:1px solid #ffffff30; border-radius:16px; padding:28px; margin-bottom:24px; background:#0c0c0c }
+.panel h2 { font-size:22px; margin:0 0 24px; font-weight:500 }
+.avatar { display:flex; align-items:center; flex-wrap:wrap; gap:20px; margin-bottom:28px }
+.avatar img,.avatar > span { width:90px; height:90px; border-radius:50%; object-fit:cover; background:#222; display:grid; place-items:center; font-size:28px }
+.avatar input { max-width:280px; font-size:13px }
+.avatar input::file-selector-button { color:#de2321; text-decoration:underline; cursor:pointer }
+.bookingsHeading { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:28px; flex-wrap:wrap }
+.bookingsHeading h2 { margin:0 }
+.bookingFilters { display:flex; gap:8px; padding:4px; border:1px solid #de232150; border-radius:30px }
+.bookingFilters button { background:none; color:#bbb; border:0; border-radius:25px; padding:9px 20px; font:inherit; font-size:14px; cursor:pointer }
+.bookingFilters button[aria-pressed=true] { background:#de2321; color:#fff }
+.bookingList { display:grid; gap:22px }
+.bookingCard { display:flex; align-items:flex-start; gap:24px; padding:24px; border:1px solid #ffffff24; border-radius:16px; background:#101010 }
+.bookingImage { width:170px; height:135px; object-fit:cover; border-radius:10px }
+.bookingDetails { flex:1; min-width:0 }
+.bookingTitle { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px }
+.bookingTitle h3 { font-size:20px; margin:0 }
+.bookingBadge { border:1px solid #de232150; border-radius:20px; padding:5px 12px; font-size:12px; color:#ffaaa6; background:#de232114 }
+.bookingBadge[data-status=confirmed] { color:#a4ddba; background:#28573830; border-color:#48965a55 }
+.bookingDetails p { font-size:14px; line-height:24px; margin:5px 0; color:#ccc }
+.bookingDetails .bookingDate { color:#fff; font-weight:500 }
+.bookingDetails small { color:#999; font-size:12px; margin-left:7px }
+.bookingDetails .bookingExtras { color:#999; font-size:13px }
+.bookingFooter { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; border-top:1px solid #ffffff18; padding-top:16px; margin-top:18px }
+.bookingFooter > span { font-size:12px; color:#888 }
+.bookingFooter strong { color:#ff7773; font-size:20px; text-align:right }
+.bookingFooter strong small { display:block; margin:4px 0 0; font-size:12px; font-weight:400 }
+.bookingSkeleton { display:grid; gap:20px }
+.bookingSkeleton > div { display:grid; gap:16px; border:1px solid #ffffff20; border-radius:16px; padding:24px }
+.bookingSkeleton span { height:20px; width:65%; border-radius:6px; background:#252525; animation:bookingPulse 1.5s ease-in-out infinite }
+.bookingSkeleton span:first-child { width:40%; height:28px }
+.bookingSkeleton span:last-child { width:85% }
+@keyframes bookingPulse { 50% { opacity:.4 } }
+@media(max-width:650px) { .bookingCard { flex-direction:column; padding:18px; gap:18px } .bookingImage { width:100%; height:170px } .bookingDetails { width:100% } .bookingTitle h3 { font-size:18px } .bookingFooter { gap:12px } .bookingFooter strong { font-size:18px } }
+@media(prefers-reduced-motion:reduce) { .bookingSkeleton span { animation:none } }
+.cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px }
+.card { border:1px solid #ffffff30; border-radius:12px; overflow:hidden }
+.card img { width:100%; height:180px; object-fit:cover }
+.card > div { padding:18px }
+.card h2 { font-size:18px; margin-bottom:15px }
+.card a { color:#ff7773 }
+.review { border-bottom:1px solid #ffffff30; padding:20px 0 }
+.review h3 { font-size:17px; margin:12px 0 }
+.review p { font-size:14px; line-height:25px; color:#bbb }
+.status { display:inline-block; padding:4px 12px; border-radius:20px; background:#352313; color:#e9bc7b; font-size:12px }
+.status[data-status=approved] { background:#17371d; color:#b0e5b8 }
+.status[data-status=rejected] { background:#3c1515; color:#ffaaa6 }
+.photos { display:flex; flex-wrap:wrap; gap:10px; margin-top:15px }
+.photos img { width:100px; height:85px; object-fit:cover; border-radius:8px }
+@media(max-width:650px) { .authMain,.account { padding:40px 18px 65px } .authCard { padding:26px 20px } .authCard h1,.account h1 { font-size:28px } .twoColumns { grid-template-columns:1fr } .panel { padding:20px } .cards { grid-template-columns:1fr } .accountHeader { align-items:start } }
+@media(prefers-reduced-motion:reduce) { .form input,.form textarea,.form select,.primary,.secondary { transition:none } }
+
+.authForm.form label:has(.fieldError) { margin-bottom:22px; position:relative }
+.authForm.form .fieldError { position:absolute; top:calc(100% + 5px); left:0; color:#ff9494; font-size:12px; line-height:1.3; font-weight:400 }
+.authForm.form input[aria-invalid="true"] { outline:none }
+
+.loadingSpinner { width:18px; height:18px; flex-shrink:0; border:2px solid currentColor; border-right-color:transparent; border-radius:50%; animation:authSpin .8s linear infinite }
+.codeField { display:grid; gap:12px; color:#aaa; font-size:13px }
+.codeDigits { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px }
+.authForm.form .codeDigits input { height:58px; border:1px solid #de232180; border-radius:10px; background:#101111; text-align:center; font-size:24px; font-weight:500; caret-color:#de2321 }
+.authForm.form .codeDigits input:focus { border:1px solid #de2321; box-shadow:0 0 0 3px #de232120 }
+.profileForm.form label { gap:0; min-height:72px; border:1px solid #de2321; border-radius:12px; padding:7px 15px 10px; font-size:13px; font-weight:400; line-height:28px; color:#818181; transition:background .22s,box-shadow .22s }
+.profileForm.form label:focus-within { background:#de232112; box-shadow:0 0 0 3px #de23211f; color:#f58c8b }
+.profileForm.form input,.profileForm.form select,.profileForm.form textarea { border:0; border-radius:0; background:transparent; padding:0; font-size:16px; font-weight:400; line-height:24px; box-shadow:none; color-scheme:dark }
+.profileForm.form input:focus,.profileForm.form select:focus,.profileForm.form textarea:focus { border:0; box-shadow:none; outline:none }
+.profileForm.form select option { background:#101111; color:#fff }
+.profileForm.form select:disabled { opacity:.5 }
+.profileForm.form input:is(:autofill,:-webkit-autofill) { -webkit-text-fill-color:#fff; caret-color:#fff; box-shadow:0 0 0 1000px #101111 inset!important }
+.profileForm > .primary { justify-self:start; min-width:150px; border-radius:12px }
+@media(max-width:400px) { .codeDigits { gap:6px } .authForm.form .codeDigits input { height:48px; font-size:20px } }
+@keyframes authSpin { to { transform:rotate(360deg) } }
+.authForm > .primary:disabled { opacity:.85 }
+.authForm > .primary:disabled:hover { background:#de2321; color:#fff }
+@media(prefers-reduced-motion:reduce) { .loadingSpinner { animation:none } }
+
+.form input[type="hidden"] { display:none }
+
+.profileForm.form .verifiedEmail,.profileForm.form .verifiedEmail input { cursor:not-allowed }
+.verifiedEmail > span { display:flex; align-items:center; gap:8px }
+.verifiedEmail svg { width:16px; height:16px; color:#48c979 }
+.countryField { position:relative; min-width:0; border:1px solid #de2321; border-radius:12px; padding:7px 15px 10px; min-height:72px; color:#818181; font-size:13px; line-height:28px }
+.countryField:focus-within { box-shadow:0 0 0 3px #de23211f }
+.countryTrigger { display:flex; align-items:center; justify-content:space-between; gap:12px; width:100%; background:none; color:white; border:0; padding:0; text-align:left; font-size:16px; cursor:pointer; line-height:24px }
+.countryTrigger span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.countryTrigger svg { flex-shrink:0; color:#aaa }
+.countryMenu { position:absolute; top:calc(100% + 8px); left:0; right:0; z-index:20; border:1px solid #ffffff30; border-radius:12px; background:#141414; box-shadow:0 12px 30px #0009; padding:8px; color:#fff }
+.countrySearch { display:flex; gap:8px; align-items:center; padding:8px; border-bottom:1px solid #ffffff25 }
+.profileForm.form .countrySearch input { font-size:14px; padding:0; min-height:30px }
+.countryOptions { max-height:250px; overflow-y:auto; overscroll-behavior:contain }
+.countryOptions button { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; text-align:left; background:none; color:#ddd; border:0; border-radius:6px; padding:9px 10px; font-size:14px; line-height:22px; cursor:pointer }
+.countryOptions button:hover,.countryOptions button:focus-visible,.countryOptions button[aria-pressed=true] { background:#de232120; color:#ff9393; outline:none }
+.countryOptions p { padding:12px; font-size:14px; color:#aaa }
+
+.resetConfirmation { text-align:center; padding:24px 20px; border:1px solid #de232140; border-radius:12px; background:linear-gradient(145deg,#de232112,#111); }
+.resetConfirmation h2 { margin:0 0 10px; color:#fff; font-size:19px; font-weight:600 }
+.resetConfirmation p { margin:0 auto; max-width:350px; color:#ccc; font-size:14px; line-height:23px }
+.resetConfirmation small { display:block; margin:14px auto 0; max-width:320px; color:#999; font-size:12px; line-height:20px }
+
+.savedActions { display:flex; align-items:center; flex-wrap:wrap; gap:16px 24px; margin-top:16px }
+.savedPhoto { display:block; position:relative; overflow:hidden }
+.savedPhoto img { display:block; transition:transform .4s ease }
+.savedOverlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:#5559; opacity:0; transition:opacity .3s ease }
+.savedOverlay > span { display:inline-flex; align-items:center; justify-content:center; gap:12px; padding:12px 22px; border-radius:30px; background:white; color:#111; font-size:14px; font-weight:500; transform:translateY(8px); transition:transform .3s ease,color .3s ease }
+.savedPhoto:hover .savedOverlay,.savedPhoto:focus-visible .savedOverlay { opacity:1 }
+.savedPhoto:hover .savedOverlay > span,.savedPhoto:focus-visible .savedOverlay > span { transform:translateY(0) }
+.savedPhoto:hover img { transform:scale(1.03) }
+.savedPhoto:hover .savedOverlay > span { color:#de2321 }
+@media(hover:none) { .savedOverlay { opacity:1; background:linear-gradient(transparent,#0005); align-items:flex-end; padding:14px } .savedOverlay > span { transform:none } }
+@media(prefers-reduced-motion:reduce) { .savedPhoto img,.savedOverlay,.savedOverlay > span { transition:none; transform:none } }
+
+.sessionLoading { min-height:330px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; color:#aaa; font-size:14px }
+.sessionLoading > .loadingSpinner { color:#de2321; width:26px; height:26px }
+.sessionSkeleton { width:100%; display:grid; gap:18px; margin-top:12px }
+.sessionSkeleton span { display:block; height:64px; border:1px solid #ffffff12; border-radius:12px; background:#ffffff08; animation:sessionPulse 1.4s ease-in-out infinite alternate }
+.sessionSkeleton span:last-child { width:150px; height:44px; justify-self:center }
+@keyframes sessionPulse { to { opacity:.4 } }
+@media(prefers-reduced-motion:reduce) { .sessionSkeleton span { animation:none } }

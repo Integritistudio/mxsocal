@@ -1,0 +1,112 @@
+.page { position:relative; isolation:isolate }
+.main { position:relative; isolation:isolate; padding:76px 0 65px; min-height:2614px }
+.srOnly { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0 }
+.filters { position:relative; z-index:5; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) 204px; align-items:center; max-width:924px; width:calc(100% - 48px); min-height:76px; padding:10px; margin:0 auto 73px; border-radius:50px; background:#fff; color:#050b20 }
+.filterField { min-width:0; position:relative; padding-inline:10px; border-right:1px solid #e1e1e1 }
+.filterField:nth-child(3) { border-right:0 }
+.filterTrigger { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; min-height:44px; padding:10px 12px; border:0; border-radius:24px; background:transparent; color:#050b20; font:inherit; font-size:15px; font-weight:400; text-align:left; cursor:pointer; transition:background-color .3s ease,color .3s ease }
+.filterTrigger > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.filterTrigger > svg { flex-shrink:0; transition:transform .3s cubic-bezier(.22,1,.36,1) }
+.filterTrigger:hover,.filterTrigger[aria-expanded="true"] { background:#de23210d }
+.filterTrigger[data-selected="true"] { color:#050b20; font-weight:700 }
+.filterTrigger .chevronOpen { transform:rotate(180deg) }
+.filterMenu { position:absolute; top:calc(100% + 20px); left:0; z-index:10; min-width:100%; width:max-content; max-width:min(320px,calc(100vw - 64px)); max-height:300px; overflow-y:auto; overscroll-behavior:contain; margin:0; padding:8px; list-style:none; border:1px solid #e8e8e8; border-radius:18px; background:#fff; box-shadow:0 12px 35px #0002; color:#050b20; scrollbar-width:thin; scrollbar-color:#c7c7c7 #fff }
+.filterField:nth-child(2) .filterMenu,.filterField:nth-child(3) .filterMenu { left:auto; right:0 }
+.filterMenu li { display:flex; align-items:center; justify-content:space-between; gap:18px; min-height:44px; padding:12px 14px; border-radius:11px; font-size:14px; line-height:21px; cursor:pointer; transition:background-color .2s ease,color .2s ease }
+.filterMenu li svg { flex-shrink:0; color:#de2321 }
+.filterMenu .activeOption { background:#fff1f0; color:#050b20 }
+.filterMenu li[aria-selected="true"] { background:#ffebe9; color:#050b20; font-weight:500 }
+.page .portraitOverlay { position:absolute; inset:0; display:grid; place-items:center; background:rgba(95,95,95,.62); opacity:0; color:#fff; transition:opacity .4s cubic-bezier(.22,1,.36,1) }
+.portraitOverlay > span { display:inline-flex; align-items:center; justify-content:center; gap:15px; padding:14px 24px; border:1px solid #fff; border-radius:12px; background:#fff; color:#171717; font-size:15px; font-weight:500; transform:translateY(8px); transition:transform .4s cubic-bezier(.22,1,.36,1),color .3s ease,border-color .3s ease }
+.portrait:hover .portraitOverlay,.portrait:focus-within .portraitOverlay { opacity:1 }
+.portrait:hover .portraitOverlay > span,.portrait:focus-within .portraitOverlay > span { transform:translateY(0) }
+.portraitOverlay:hover > span { background:#fff; color:#de2321; border-color:#de2321 }
+@media(hover:none) { .page .portraitOverlay { opacity:1; background:linear-gradient(transparent 60%,#0008); align-items:end; padding-bottom:18px } .portraitOverlay > span { transform:none; padding:10px 18px; font-size:14px } }
+.filters > button > img { transform:scaleY(-1) }
+.resultCount { position:relative; z-index:1; width:calc(100% - 120px); max-width:1337px; margin:-35px auto 24px; color:#b0b0b0; font-size:15px; line-height:24px }
+.resultCount strong { color:#fff; font-weight:500 }
+.filters > button { flex-shrink:0; display:flex; align-items:center; justify-content:center; gap:15px; width:204px; height:56px; border:1px solid #de2321; border-radius:30px; background:#de2321; color:#fff; font:500 15px/1.5 inherit; font-family:inherit; font-size:15px; font-weight:500; cursor:pointer; transition:background-color .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease }
+.filters > button { position:relative; overflow:hidden; isolation:isolate; transition:background-color .35s ease,color .35s ease,border-color .35s ease,box-shadow .35s ease,transform .35s cubic-bezier(.22,1,.36,1) }
+.filters > button::after { content:""; position:absolute; z-index:-1; inset:0; background:linear-gradient(110deg,transparent 25%,#ffffff26 50%,transparent 75%); transform:translateX(-130%); transition:transform .65s cubic-bezier(.22,1,.36,1); pointer-events:none }
+.filters > button:not(:disabled):is(:hover,:focus-visible) { background:#c61d1b; color:#fff; border-color:#c61d1b; box-shadow:0 6px 18px #de232138; transform:translateY(-2px) }
+.filters > button:not(:disabled):is(:hover,:focus-visible)::after { transform:translateX(130%) }
+.filters > button:not(:disabled):active { transform:translateY(0); box-shadow:0 2px 8px #de232126 }
+.filters > button:disabled { opacity:.65; cursor:wait }
+.results { position:relative; z-index:1; display:grid; gap:71px; width:calc(100% - 120px); max-width:1337px; margin:auto }
+.card { position:relative; display:grid; grid-template-columns:545px minmax(0,1fr); gap:75px; min-height:498px; padding:54px 60px 78px 49px; border:1px solid #de2321; border-radius:26px }
+.portrait { position:relative; height:364px; border-radius:26px; overflow:hidden; background:#161616; display:grid; place-items:center; color:#747474 }
+.portrait > img { position:absolute; left:0; top:0; width:100%; height:100%; max-width:none; object-fit:cover }
+.coachInfo { padding-top:24px; min-width:0 }
+.coachInfo h2 { font-size:34px; font-weight:700; line-height:1.2; margin:0 0 9px }
+.coachInfo dl { margin:0 0 15px; font-size:24px; line-height:35px }
+.coachInfo dt { font-weight:700 }
+.coachInfo dd { margin:0; font-size:22px; font-weight:400 }
+.skills li { font-size:22px; font-weight:400 }
+.skills { font-size:24px; line-height:28px }
+.skills h3 { font-size:24px; font-weight:700; margin:0 }
+.skills ul { margin:0; padding-left:36px; list-style:disc }
+.level { color:#de2321; font-size:16px; line-height:28px; font-weight:300; margin:6px 0 0 39px }
+.page .book { position:absolute; right:60px; bottom:28px; display:inline-flex; align-items:center; justify-content:center; gap:17px; height:51px; min-width:155px; padding:12px 25px; background:#de2321; color:#fff; border:1px solid #de2321; border-radius:12px; font-size:15px; font-weight:500 }
+.page .book:hover { background:#000; color:#de2321; box-shadow:0 6px 22px #de23212e }
+.book img { transition:transform .4s cubic-bezier(.22,1,.36,1) }
+.book:hover img { transform:translate(3px,-3px) }
+.more { position:relative; z-index:1; display:grid; place-items:center; width:54px; height:54px; padding:0; margin:65px auto 0; background:transparent; border:0; border-radius:50%; cursor:pointer; transition:transform .35s ease,box-shadow .35s ease }
+.more > img:first-child { display:block }
+.more .moreArrow { position:absolute; transform:rotate(-90deg); pointer-events:none }
+.more:hover { transform:translateY(4px); box-shadow:0 0 20px #de232140 }
+.more:disabled { cursor:wait; opacity:.6 }
+.loading,.message { padding:65px 24px; text-align:center; border:1px solid #de2321; border-radius:26px; font-size:18px; line-height:1.7 }
+.message h2 { font-size:26px; font-weight:500; margin-bottom:12px }
+.message button { margin-top:20px; padding:12px 24px; background:#de2321; color:#fff; border:1px solid #de2321; border-radius:30px; cursor:pointer }
+.light { position:absolute; z-index:0; pointer-events:none; left:calc(50% - 1732px); top:-653px; width:3777.47px; height:3141.16px; display:flex; align-items:center; justify-content:center }
+.light > div { position:relative; width:1701.772px; height:3377.042px; transform:rotate(119.42deg) scaleY(-1); flex-shrink:0 }
+.light > div > div { position:absolute; inset:-8.88% -17.63% }
+.light img { display:block; max-width:none }
+@media(max-width:1500px) {
+  .card { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:50px; padding:45px 45px 78px }
+  .coachInfo h2 { font-size:30px }
+  .coachInfo dl { font-size:21px; line-height:31px }
+  .skills,.skills h3 { font-size:21px }
+  .coachInfo dd,.skills li { font-size:19px }
+  .level { margin-left:0 }
+  .main { min-height:0 }
+}
+@media(max-width:1050px) {
+  .main { padding-top:50px }
+  .filters { margin-bottom:45px; grid-template-columns:repeat(3,minmax(0,1fr)) 185px }
+  .filters > button { width:185px; gap:10px }
+  .results { width:calc(100% - 64px); gap:40px }
+  .resultCount { width:calc(100% - 64px); margin-top:-15px }
+  .card { gap:32px; padding:32px 28px 80px }
+  .portrait { height:330px }
+  .coachInfo { padding-top:10px }
+  .coachInfo h2 { font-size:27px }
+  .coachInfo dl { font-size:18px; line-height:28px }
+  .skills,.skills h3 { font-size:18px; line-height:27px }
+  .coachInfo dd,.skills li { font-size:16px }
+  .level { font-size:14px; line-height:24px }
+  .page .book { right:28px }
+}
+@media(max-width:750px) {
+  .filterField { border-right:0; padding-inline:0 }
+  .filterField:nth-child(3) { grid-column:1/-1; justify-self:center; width:calc((100% - 12px)/2) }
+  .filterTrigger { padding-inline:8px; font-size:14px }
+  .filterMenu { top:calc(100% + 8px) }
+  .filters { display:grid; grid-template-columns:1fr 1fr; gap:12px; border-radius:24px; padding:16px; width:calc(100% - 40px) }
+  .filters > button { grid-column:1/-1; justify-self:center; width:204px; max-width:100%; height:46px; font-size:14px; gap:8px }
+  .results { width:calc(100% - 40px); gap:30px }
+  .resultCount { width:calc(100% - 40px); font-size:14px }
+  .card { display:flex; flex-direction:column; padding:22px; gap:24px }
+  .portrait { width:100%; height:auto; aspect-ratio:545/364; border-radius:18px }
+  .coachInfo { padding:0 }
+  .coachInfo h2 { font-size:28px; margin-bottom:16px }
+  .coachInfo dl { margin-bottom:18px; font-size:18px; line-height:29px }
+  .skills,.skills h3 { font-size:18px; line-height:28px }
+  .level { margin:14px 0 0; font-size:14px; font-weight:400 }
+  .page .book { position:static; align-self:flex-start; height:48px; margin-top:4px }
+  .more { margin-top:40px }
+  .light { left:calc(50% - 1888px) }
+  .light > div { transform:rotate(119.42deg) scaleY(-1) scale(.5) }
+}
+@media(max-width:380px) { .card { padding:18px } .filterTrigger { gap:6px; padding-inline:4px; font-size:13px } }
+@media(prefers-reduced-motion:reduce) { .page *,.page *::after { transition:none!important; animation:none!important } .more:hover,.book:hover img,.filters > button:not(:disabled):is(:hover,:focus-visible) { transform:none } .filters > button::after { display:none } }

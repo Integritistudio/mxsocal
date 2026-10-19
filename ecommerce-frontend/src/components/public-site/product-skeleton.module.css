@@ -1,0 +1,29 @@
+.skeleton { width:100%; padding-block:0 40px }
+.block { position:relative; overflow:hidden; background:#202020; border-radius:8px }
+.block:after { content:""; position:absolute; inset:0; background:linear-gradient(100deg,transparent 20%,#ffffff0c 50%,transparent 80%); transform:translateX(-100%); animation:shimmer 1.8s ease-in-out infinite }
+.breadcrumb { height:18px; width:220px; margin-bottom:35px }
+.heading { display:flex; justify-content:space-between; gap:25px; align-items:center }
+.heading > div:first-child { width:65% }
+.title { height:48px; width:70%; max-width:420px; margin-bottom:16px }
+.subtitle { width:220px; max-width:100%; height:22px }
+.price { width:150px; height:40px }
+.badges { display:flex; flex-wrap:wrap; gap:10px; margin:30px 0 }
+.badges > div { height:40px; width:120px; border-radius:24px }
+.gallery { display:grid; grid-template-columns:2.83fr 1fr 1fr; grid-template-rows:1fr 1fr; height:551px; gap:12px; border-radius:16px; overflow:hidden }
+.gallery > div:first-child { grid-row:span 2 }
+.body { display:grid; grid-template-columns:minmax(0,925px) minmax(220px,1fr); gap:50px; margin-top:74px }
+.sectionTitle { height:30px; width:190px; margin-bottom:40px }
+.overview { display:grid; grid-template-columns:1fr 1fr; gap:24px 35px }
+.line { height:20px; margin-bottom:16px; width:100% }
+.overview .line { margin:0 }
+.section { border-top:1px solid #fff3; margin-top:45px; padding-top:40px }
+.section .line:last-child { width:70% }
+.accordion { height:60px; margin-bottom:14px }
+.booking { padding-top:40px }
+.button { height:54px; border-radius:30px; margin-bottom:22px }
+.srOnly { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap }
+@keyframes shimmer { to { transform:translateX(100%) } }
+@media(max-width:1600px) { .gallery { height:450px } .body { grid-template-columns:minmax(0,2.2fr) minmax(210px,1fr); gap:40px } .overview { grid-template-columns:1fr } }
+@media(max-width:1050px) { .gallery { height:350px; grid-template-columns:2fr 1fr 1fr } .body { grid-template-columns:1fr; gap:35px; margin-top:45px } .booking { grid-row:1; display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 } .button { margin:0 } .overview { grid-template-columns:1fr 1fr } }
+@media(max-width:650px) { .breadcrumb { width:180px; height:15px; margin-bottom:25px } .heading { flex-wrap:wrap } .heading > div:first-child { width:100% } .title { height:34px; width:75% } .subtitle { height:18px } .price { height:28px; width:120px } .badges { margin:22px 0; gap:8px } .badges > div { height:34px; width:85px } .gallery { grid-template-columns:1fr 1fr; grid-template-rows:240px 110px 110px; height:auto; gap:8px } .gallery > div:first-child { grid-column:1/-1; grid-row:1 } .body { margin-top:28px } .sectionTitle { height:26px; margin-bottom:25px } .overview { gap:20px } .line { height:17px } .button { height:46px } }
+@media(prefers-reduced-motion:reduce) { .block:after { animation:none; display:none } }

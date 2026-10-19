@@ -1,0 +1,5 @@
+import api, { apiInstance } from "@/config/api";
+export async function operations<T = unknown>(path: string, method = "GET", data?: unknown): Promise<T> {
+  return apiInstance(`${api.BASE_URL}/operations/${path}`, { method, ...(data !== undefined ? { data } : {}) });
+}
+export type AdminBooking = { id: string; user: { id: string; name: string; email: string; phone?: string; address?: string; city?: string; state?: string; country?: string; zipCode?: string; profileImage?: string }; product: { id: string; name: string; images: string[] }; date: string; slots: { start: string; end: string }[]; quantity: number; accessories: { id: string; quantity: number; size?: string; price: string; product?: { name: string; images: string[] } }[]; coach?: { name: string; image?: string; specialty?: string }; items: { name: string; quantity: number; size?: string; unitAmount: number }[]; notes?: string; status: string; paymentStatus: string; totalPrice: string; currency: string; holdUntil?: string; createdAt: string };

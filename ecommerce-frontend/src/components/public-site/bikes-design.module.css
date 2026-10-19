@@ -1,0 +1,54 @@
+.info { padding-top:24px; min-width:0; max-width:390px }
+.info h2 { font-size:34px; font-weight:700; line-height:1.2; margin:0 0 24px }
+.tagline { font-size:24px; line-height:28px; margin:0; padding-bottom:31px; border-bottom:1px solid #fff }
+.features { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; border-bottom:1px solid #fff; padding:20px 0 18px }
+.features > div { display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; font-size:14px; line-height:24px }
+.features img { width:35.721px; height:35.721px; object-fit:contain }
+.priceRow { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; padding-top:25px }
+.price { margin:0; display:flex; flex-direction:column; gap:0 }
+.price strong { font-size:24px; font-weight:400; line-height:36px }
+.price > span { font-size:16px; line-height:33px }
+.detailsLink { border:0; background:transparent; padding:8px 0; color:#de2321; font:inherit; font-size:15px; cursor:pointer; text-decoration:underline; text-decoration-color:transparent; text-underline-offset:5px; transition:color .3s ease,text-decoration-color .3s ease }
+.detailsLink:hover { color:#ff817e; text-decoration-color:currentColor }
+.summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px }
+.searchChip { display:inline-flex; gap:10px; align-items:center; padding:4px 12px; border:1px solid #de2321; border-radius:30px; color:#fff }
+.clear { display:inline-block; background:#de2321; color:#fff; border-radius:30px; padding:12px 24px; margin-top:20px }
+.dialog { position:fixed; inset:0; margin:auto; width:min(1050px,calc(100% - 40px)); max-height:90dvh; padding:55px 35px 35px; border:1px solid #de2321; border-radius:24px; background:#171717; color:#fff; overflow:auto }
+.dialog::backdrop { background:#000b; backdrop-filter:blur(4px) }
+.close { position:absolute; top:14px; right:14px; width:36px; height:36px; padding:0; display:grid; place-items:center; border:1px solid #ffffff40; border-radius:50%; background:transparent; color:#fff; cursor:pointer }
+.close:hover { background:#de2321; border-color:#de2321 }
+.detailGrid { display:grid; grid-template-columns:1fr 1fr; gap:35px; align-items:start }
+.detailPhoto { width:100%; aspect-ratio:545/364; object-fit:cover; border-radius:16px }
+.detailGrid h2 { font-size:28px; line-height:1.3; font-weight:700; margin:0 0 20px }
+.detailGrid p { font-size:15px; line-height:26px; margin:0 0 20px }
+.detailGrid dl { display:grid; gap:10px; margin:20px 0 }
+.detailGrid dl > div { display:flex; gap:20px; justify-content:space-between; border-bottom:1px solid #ffffff20; padding-bottom:8px; font-size:14px }
+.detailGrid dt { color:#aaa }
+.detailGrid dd { margin:0; text-align:right }
+.detailGrid .detailPrice { font-size:24px; margin-block:25px }
+.detailBook { display:inline-flex; align-items:center; justify-content:center; gap:15px; padding:13px 22px; background:#de2321; color:#fff; border:1px solid #de2321; border-radius:12px; font-size:15px }
+.detailBook:hover { background:#000; color:#de2321 }
+@media(max-width:1500px) {
+  .info h2 { font-size:30px }
+  .tagline { font-size:21px }
+}
+@media(max-width:1050px) {
+  .info { padding-top:10px }
+  .info h2 { font-size:27px; margin-bottom:20px }
+  .tagline { font-size:18px; padding-bottom:22px }
+  .features { gap:12px; padding-block:18px }
+  .features > div { font-size:12px; line-height:20px }
+  .priceRow { padding-top:18px }
+}
+@media(max-width:750px) {
+  .info { padding:0; width:100%; max-width:none }
+  .info h2 { font-size:28px; margin-bottom:14px }
+  .tagline { font-size:18px; line-height:28px; border-color:#ffffff60 }
+  .features { border-color:#ffffff60 }
+  .features > div { font-size:13px }
+  .price strong { font-size:23px }
+  .detailGrid { grid-template-columns:1fr; gap:25px }
+  .dialog { padding:60px 24px 28px }
+  .detailGrid h2 { font-size:25px }
+}
+@media(prefers-reduced-motion:reduce) { .detailsLink { transition:none } }

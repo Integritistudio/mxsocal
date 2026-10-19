@@ -1,0 +1,63 @@
+const path = require("node:path");
+require("dotenv").config({ path: path.resolve(__dirname, "../.env"), quiet: true });
+const assert = require("node:assert/strict");
+const express = require("express");
+const request = require("supertest");
+const sequelize = require("../config/database");
+sequelize.options.logging = false;
+const { Product } = require("../models/product.model");
+const User = require("../models/user.model");
+const Review = require("../models/product-review.model");
+const { generateToken } = require("../helpers/jwt");
+const app = express(); app.use(express.json()); app.use("/products", require("../routes/product.route"));
+(async () => {
+  const admin = await User.findOne({ where: { role: "admin" } });
+  assert(admin, "An admin account is needed for integration checks.");
+  const token = generateToken(admin.id, "admin", admin.tokenVersion);
+  const sample = await Product.findOne({ where: { slug: "ktm-300-exc" } });
+  assert(sample);
+  const response = await request(app).get(`/products/${sample.slug}/detail`).expect(200);
+  assert.equal(response.body.product.id, sample.id);
+  assert.equal(response.body.product.slug, "ktm-300-exc");
+  const approved = await Review.findAll({ where: { productId: sample.id, status: "approved" } });
+  assert.equal(response.body.reviewCount, approved.length);
+  assert.equal(response.body.rating, Number((approved.reduce((sum, r) => sum + r.rating, 0) / approved.length).toFixed(1)));
+  assert(response.body.reviews.every(r => !Object.hasOwn(r, "email") && !Object.hasOwn(r, "status")));
+  assert.equal(response.body.product.details.gallery.length, sample.attributes.details.gallery.length);
+  await request(app).get(`/products/${sample.id}/detail`).expect(200);
+  await request(app).get("/products/nonexistent-product/detail").expect(404);
+  await request(app).get("/products/admin").expect(401);
+  await request(app).get("/products/reviews/admin").expect(401);
+  const missingUserToken = generateToken(require("node:crypto").randomUUID(), "admin");
+  await request(app).get("/products/reviews/admin").set("Authorization", `Bearer ${missingUserToken}`).expect(401);
+  await request(app).post(`/products/${sample.id}/reviews`).send({}).expect(401);
+  const created = [];
+  const customer = await User.create({ name: "Review Test", email: `review-test-${Date.now()}@example.com`, role: "user", password: "Review-Test-Password-123!", emailVerifiedAt: new Date() });
+  const customerToken = generateToken(customer.id, "user", customer.tokenVersion);
+  try {
+    for (const category of ["bike", "helmet", "gloves", "suit", "accessory"]) {
+      const payload = { name: `Integration ${category}`, slug: `integration-${category}-${Date.now()}`, category, description: "Integration check product.", images: [], status: "available", available: true, currency: "USD", pricePerDay: "20", attributes: { details: { overview: [{ label: "Size", value: "Medium" }], specifications: [{ title: "Details", rows: [{ label: "Material", value: "Demo" }] }] } } };
+      const saved = await request(app).post("/products/admin").set("Authorization", `Bearer ${token}`).send(payload).expect(201);
+      created.push(saved.body.id);
+      const productId = saved.body.id;
+      assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`).expect(200)).body.product.category, category);
+      const review = { authorName: "Integration Reviewer", email: "check@example.com", title: "Moderation check", comment: "This is a temporary integration test review.", ratings: Object.fromEntries(["performance", "handling", "comfort", "condition", "rental", "value"].map(k => [k, 5])), status: "approved", images: [] };
+      await request(app).post(`/products/${productId}/reviews`).set("Authorization", `Bearer ${customerToken}`).send(review).expect(201);
+      assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`)).body.reviewCount, 0, "Public submissions must remain pending even when status is supplied.");
+      const row = await Review.findOne({ where: { productId } });
+      assert.equal(row.status, "pending");
+      await request(app).put(`/products/reviews/admin/${row.id}`).send({ ...review, productId }).expect(401);
+      await request(app).put(`/products/reviews/admin/${row.id}`).set("Authorization", `Bearer ${token}`).send({ ...review, productId }).expect(200);
+      const visible = (await request(app).get(`/products/${saved.body.slug}/detail`)).body;
+      assert.equal(visible.reviewCount, 1); assert.equal(visible.rating, 5);
+      await request(app).put(`/products/reviews/admin/${row.id}`).set("Authorization", `Bearer ${token}`).send({ ...review, productId, status: "rejected" }).expect(200);
+      assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`)).body.reviewCount, 0);
+      await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, description: "Updated through admin.", attributes: { details: { mapEmbedUrl: "https://evil.example/maps" } } }).expect(400);
+      await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, description: "Updated through admin." }).expect(200);
+      assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`)).body.product.description, "Updated through admin.");
+      await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, available: false }).expect(200);
+      await request(app).get(`/products/${saved.body.slug}/detail`).expect(404);
+    }
+    console.log("Passed: named URLs and ID lookup; all five product categories; admin editing; approved-only reviews and averages; private emails; public submission moderation; auth; map validation; unavailable product exclusion.");
+  } finally { await Review.destroy({ where: { productId: created } }); await Product.destroy({ where: { id: created } }); await customer.destroy(); }
+})().catch(error => { console.error(error.message); process.exitCode = 1; }).finally(() => sequelize.close());
