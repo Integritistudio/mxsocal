@@ -76,7 +76,22 @@ async function exportData() {
   finally { await client.end(); }
 }
 async function loadSnapshot() {
-  const latest = JSON.parse(await fs.readFile(path.join(dataRoot, "latest.json"), "utf8"));
+  let latest;
+  try { latest = JSON.parse(await fs.readFile(path.join(dataRoot, "latest.json"), "utf8")); }
+  catch (error) {
+    if (error.code !== "ENOENT") throw error;
+    const snapshots = path.join(dataRoot, "snapshots");
+    const entries = await fs.readdir(snapshots, { withFileTypes: true }).catch(() => []);
+    for (const entry of entries.filter(entry => entry.isDirectory() && !entry.isSymbolicLink()).sort((a, b) => b.name.localeCompare(a.name))) {
+      const candidate = path.join(snapshots, entry.name);
+      if (await fs.stat(path.join(candidate, "manifest.json")).then(stat => stat.isFile()).catch(() => false) && await fs.stat(path.join(candidate, "database.dump")).then(stat => stat.isFile()).catch(() => false)) {
+        latest = { snapshot: `snapshots/${entry.name}` };
+        console.log(`latest.json is missing; using snapshot ${entry.name}.`);
+        break;
+      }
+    }
+    if (!latest) throw new Error("No complete snapshot found. Copy data/snapshots/<snapshot-folder>/ including manifest.json, database.dump and its media folders from the source machine.");
+  }
   const directory = path.resolve(dataRoot, latest.snapshot);
   if (!inside(dataRoot, directory)) throw new Error("Invalid snapshot directory.");
   const manifest = JSON.parse(await fs.readFile(path.join(directory, "manifest.json"), "utf8"));
