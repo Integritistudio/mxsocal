@@ -1,0 +1,2 @@
+# Preserve snapshot bytes so manifest checksums survive Git checkout.
+* -text

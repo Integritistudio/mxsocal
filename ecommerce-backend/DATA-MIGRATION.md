@@ -13,7 +13,7 @@ npm run data:verify
 
 ## Restore on a new machine
 
-1. Copy both app directories **and the backend `data/` folder**. This folder is gitignored and will not transfer with git push/pull. Keep it private: it contains customer data and password hashes.
+1. Push and pull the repository, including the tracked backend `data/` folder. It contains the database snapshot and media needed for restoration. Keep repository access private: the snapshot contains customer data and password hashes.
 2. Install backend dependencies with `npm install`, plus PostgreSQL client tools matching the source major version (18 for this snapshot) or newer. The target PostgreSQL server should also be version 18 or newer. Set `PG_BIN` if tools are not on PATH.
 3. Configure `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, and `DATABASE_NAME` in the backend `.env` for the **new** database. Keep both apps and database workers stopped during restoration.
 4. Run:

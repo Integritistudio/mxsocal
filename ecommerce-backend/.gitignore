@@ -41,4 +41,4 @@ next-env.d.ts
 /uploads/coach-photos/
 
 /uploads/story-images/
-/data/
+# Database migration snapshots are intentionally tracked for VM deployment.
