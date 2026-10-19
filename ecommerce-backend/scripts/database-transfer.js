@@ -119,12 +119,13 @@ async function importData() {
     if (error.code !== "3D000") throw error;
     const admin = new Client(config(process.env.DB_ADMIN_DATABASE || "postgres"));
     await admin.connect();
-    try { await admin.query(`CREATE DATABASE ${quote(process.env.DATABASE_NAME)}`); } finally { await admin.end(); }
+    try { await admin.query(`CREATE DATABASE ${quote(process.env.DATABASE_NAME)} TEMPLATE template0`); } finally { await admin.end(); }
     client = new Client(config()); await client.connect();
   }
   try {
     const existing = await client.query("SELECT count(*) AS count FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname NOT LIKE 'pg_%' AND n.nspname <> 'information_schema' AND c.relkind IN ('r','v','m','S','f')");
-    if (Number(existing.rows[0].count)) throw new Error("Target database is not empty. Existing data was preserved. Set .env to a NEW empty database; do not start the backend until restoration finishes.");
+    const types = await client.query("SELECT count(*) AS count FROM pg_type t JOIN pg_namespace n ON n.oid=t.typnamespace WHERE n.nspname NOT LIKE 'pg_%' AND n.nspname <> 'information_schema' AND t.typtype IN ('e','d','c','r','m')");
+    if (Number(existing.rows[0].count) || Number(types.rows[0].count)) throw new Error("Target database is not empty (tables or custom types exist). Existing data was preserved. Stop the backend and its workers, then set DATABASE_NAME in .env to a NEW unused database name. The restore will create it from template0; keep the backend stopped until restoration finishes.");
     // Preserve conflicting media before installing the verified snapshot versions.
     const mediaBackup = path.join(root, ".seed-backups", `restore-${Date.now()}-${require("node:crypto").randomUUID()}`);
     let backedUp = 0;
