@@ -1,0 +1,126 @@
+.page { background:#080808; color:#fff; min-height:100vh }
+.main { width:calc(100% - 96px); max-width:1400px; margin:auto; padding:65px 0 100px }
+.intro > span,.summary > span { color:#ed7773; letter-spacing:2px; font-size:11px; font-weight:600 }
+.intro h1 { font-size:36px; line-height:1.25; font-weight:600; margin:0 0 12px }
+.intro p,.muted { color:#a8a8a8; line-height:1.7; font-size:14px }
+.steps { display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin:35px 0 }
+.steps button { display:flex; align-items:center; gap:12px; text-align:left; border:0; border-bottom:1px solid #ffffff30; padding:0 0 18px; background:transparent; color:#c4c4c4; font:inherit; font-size:13px; cursor:pointer }
+.steps button span { display:grid; place-items:center; border:1px solid #ffffff35; background:#202020; width:35px; height:35px; border-radius:50%; flex-shrink:0 }
+.steps button[data-complete="true"] { border-color:#4cba8050 }
+.steps button[data-complete="true"] span { color:#65d79b; background:#183025; border-color:#4cba8060 }
+.steps button[data-complete="true"] svg { stroke-width:2.5 }
+.steps button[aria-current="step"] { color:#fff; border-color:#de2321 }
+.steps button[aria-current="step"] span { background:#de2321; border-color:#de2321 }
+.main .steps button:disabled { cursor:default; opacity:1 }
+.flowLayout { display:block; max-width:1050px; margin-inline:auto }
+.selectedRental { display:flex; align-items:center; gap:16px; padding:18px 0; margin-top:24px; border-block:1px solid #ffffff25 }
+.selectedRental > img { width:80px; height:65px; object-fit:contain; border-radius:8px; background:#111 }
+.selectedRental > div { display:grid; gap:7px; flex:1; min-width:0 }
+.selectedRental strong { font-size:16px; font-weight:500 }
+.selectedRental span { color:#aaa; font-size:13px; line-height:1.7 }
+.primaryBike { display:flex; align-items:center; gap:30px; padding:24px 0; border-bottom:1px solid #ffffff25; margin-bottom:25px }
+.primaryBike > img { width:240px; height:175px; object-fit:contain; border-radius:14px; background:#111 }
+.primaryBike h3 { font-size:24px; margin:0 0 12px }
+.primaryBike p { color:#ccc; font-size:16px }
+.changeBikeField { max-width:550px; padding:20px; margin:20px 0; border:1px solid #ffffff25; border-radius:12px }
+.changeBikeField label { display:grid; gap:12px; font-size:14px }
+@media(max-width:600px) { .primaryBike { gap:18px } .primaryBike > img { width:145px; height:125px } .primaryBike h3 { font-size:19px } }
+.content { min-width:0 }
+.content > h2 { font-size:30px; font-weight:600; margin:0 0 20px; outline:none }
+.content h3 { font-size:18px; font-weight:500 }
+.main button,.main input,.main select,.main textarea { font:inherit }
+.main button { cursor:pointer }
+.main button:disabled { opacity:.4; cursor:not-allowed }
+.main button:focus-visible,.main a:focus-visible,.main input:focus-visible,.main select:focus-visible,.main textarea:focus-visible { outline:2px solid #fff; outline-offset:4px }
+.panel { background:#ffffff03; border:1px solid #ffffff25; border-radius:20px; padding:24px; margin:24px 0 }
+.panel p { line-height:1.7 }
+.trackGrid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px }
+.trackCard { position:relative; display:flex; align-items:center; gap:14px; border:1px solid #ffffff25; border-radius:16px; padding:12px; background:#111; color:#fff; text-align:left; min-width:0 }
+.trackCard > img { width:95px; height:90px; border-radius:10px; object-fit:cover; flex-shrink:0 }
+.trackCard > span { display:grid; gap:5px }
+.trackCard strong { font-size:15px; line-height:1.4; font-weight:500 }
+.trackCard small { color:#aaa; font-size:11px }
+.trackCard > svg { position:absolute; top:8px; right:8px; background:#de2321; border-radius:50%; padding:3px; width:22px; height:22px }
+.trackCard[aria-pressed="true"],.productCard[aria-pressed="true"],.gearCard[data-selected="true"] { border-color:#de2321; background:#de232109; box-shadow:0 0 0 1px #de2321 }
+.dateFields,.contactFields { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px }
+.contactFields { grid-template-columns:repeat(3,1fr) }
+.dateFields label,.contactFields label,.sizeField,.notes { display:flex; flex-direction:column; gap:10px; font-size:13px; color:#ccc }
+.main input:not([type="checkbox"]),.main select,.notes textarea { width:100%; min-width:0; border:1px solid #ffffff35; background:#151515; color:#fff; border-radius:10px; padding:12px; color-scheme:dark }
+.panel > div + div { margin-top:20px }
+.riderTabs { display:flex; flex-wrap:wrap; gap:10px; margin:22px 0 }
+.riderTabs button { border:1px solid #ffffff30; border-radius:30px; padding:10px 18px; display:flex; align-items:center; gap:10px; background:#111; color:#ccc; font-size:13px }
+.riderTabs button[aria-pressed="true"] { background:#de2321; border-color:#de2321; color:#fff }
+.productGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:24px 0 }
+.productCard,.gearCard { min-width:0; border:1px solid #ffffff25; border-radius:18px; background:#111; color:#fff; overflow:hidden }
+.productCard,.gearChoice { display:flex; flex-direction:column; align-items:center; gap:10px; padding:20px 14px; text-align:center }
+.productCard img,.gearChoice img { width:100%; height:160px; object-fit:contain; margin-bottom:8px }
+.productCard strong,.gearChoice strong { font-weight:500; font-size:14px; line-height:1.5 }
+.productCard > span,.gearChoice > span { color:#ed7773; font-size:13px }
+.productCard small { color:#ccc; font-size:11px; display:flex; align-items:center; gap:5px }
+.gearChoice { border:0; width:100%; background:transparent; color:inherit }
+.gearChoice small { color:#aaa; font-size:11px }
+.sizeField { padding:0 14px 16px }
+.gearGroup { border-bottom:1px solid #ffffff20; margin-top:35px }
+.gearPreferences { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:18px; margin:24px 0 35px }
+.gearPreference { display:flex; flex-wrap:wrap; align-items:center; gap:15px 22px; min-width:0; border:1px solid #ffffff30; border-radius:14px; padding:20px }
+.gearPreference[data-active="true"] { border-color:#de2321 }
+.gearPreference legend { padding-inline:6px; font-size:16px; font-weight:500 }
+.gearPreference label { display:inline-flex; align-items:center; gap:9px; font-size:13px; color:#ddd; cursor:pointer }
+.main .gearPreference input { width:17px; height:17px; padding:0; accent-color:#de2321; flex-shrink:0 }
+.gearPreference .textButton { flex-basis:100%; padding-bottom:0 }
+.coachCard img { object-fit:cover; border-radius:12px }
+.buddyInvite { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:24px 0; border-block:1px solid #ffffff25; margin:30px 0 15px }
+.buddyInvite p { font-size:13px; color:#aaa; line-height:1.7; max-width:420px; margin-top:8px }
+.primary,.secondary { display:inline-flex; align-items:center; justify-content:center; gap:12px; border:1px solid #de2321; border-radius:30px; padding:13px 24px; color:#fff; font-size:14px; text-decoration:none }
+.primary { background:#de2321 }
+.primary:hover { background:#ba1b19 }
+.secondary { background:transparent; white-space:nowrap }
+.secondary:hover { background:#de232120 }
+.textButton { display:inline-flex; align-items:center; gap:9px; padding:8px 0; border:0; background:none; color:#ef8c88; font-size:12px }
+.panelHeading { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:20px }
+.actions { display:flex; justify-content:flex-end; gap:16px; margin-top:40px }
+.summary { position:sticky; top:30px; border:1px solid #de232170; border-radius:22px; padding:25px; background:linear-gradient(155deg,#291211,#111 70%) }
+.summary h3 { font-size:22px; line-height:1.5; font-weight:500; margin:14px 0 }
+.summary p { font-size:13px; line-height:1.7; margin:12px 0 }
+.summaryRiders { border-block:1px solid #ffffff20; padding:10px 0; margin:20px 0 }
+.summaryRiders > div { display:flex; flex-direction:column; gap:5px; padding:10px 0; font-size:12px }
+.summaryRiders strong { font-weight:500; color:#fff }
+.summaryRiders span,.summaryRiders small { color:#aaa }
+.reviewRider { padding:22px 0; border-bottom:1px solid #ffffff20 }
+.reviewRider p { font-size:12px; color:#aaa; overflow-wrap:anywhere }
+.buddyLabel { color:#aaa; font-size:13px; font-weight:400 }
+.gearBundle { border:1px solid #ffffff25; border-radius:14px; padding:0 16px; margin-top:15px; background:#ffffff02 }
+.bundleContents { padding:0 0 8px 24px; margin-left:36px; border-left:1px solid #ffffff25 }
+.bundleContents .reviewPhoto { width:56px; height:56px }
+.bundleContents .lineItem { font-size:13px; padding-block:10px }
+.bundleContents .lineItem strong { color:#aaa; font-size:12px }
+@media(max-width:600px) { .gearBundle { padding-inline:12px } .bundleContents { margin-left:14px; padding-left:12px } .bundleContents .reviewPhoto { width:44px; height:44px } }
+.lineItem { display:flex; justify-content:space-between; gap:20px; font-size:14px; padding:13px 0; line-height:1.6 }
+.lineItem span small { display:block; font-size:11px; color:#aaa }
+.lineItem strong { white-space:nowrap; font-weight:500 }
+.reviewPhoto { width:76px; height:76px; flex-shrink:0; object-fit:contain; background:#181818; border:1px solid #ffffff15; border-radius:10px }
+.reviewPhoto[data-coach="true"] { object-fit:cover }
+.reviewPlaceholder { display:grid; place-items:center; color:#888; font-size:25px }
+.reviewText { flex:1; min-width:0 }
+.lineItem:has(.reviewPhoto) { align-items:center }
+@media(max-width:600px) { .reviewPhoto { width:56px; height:56px } .lineItem { gap:12px; font-size:12px } }
+.total { display:flex; justify-content:space-between; gap:20px; padding:22px 0; margin-top:20px; border-top:1px solid #fff6; font-size:21px }
+.notes textarea { min-height:110px; resize:vertical }
+.consent { display:flex; align-items:flex-start; gap:12px; font-size:13px; line-height:1.7; margin:24px 0; color:#ccc }
+.consent input { width:18px; height:18px; flex-shrink:0; accent-color:#de2321; margin-top:3px }
+.consent a { color:#fff; text-decoration:underline; text-underline-offset:3px }
+.error { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:15px; border:1px solid #de2321; background:#de232115; border-radius:12px; padding:18px; margin:20px 0; font-size:14px; line-height:1.7 }
+.error button { border:0; background:transparent; color:#fff; text-decoration:underline }
+.empty { padding:25px; border:1px dashed #ffffff40; border-radius:14px; color:#aaa; line-height:1.8; font-size:14px }
+.success { max-width:750px; margin:50px auto; padding:45px; border:1px solid #de2321; border-radius:24px; display:flex; flex-direction:column; align-items:start; gap:20px; line-height:1.8 }
+.success > svg { color:#75c9a1 }
+.success h2 { font-size:32px; font-weight:600 }
+.customerRequests.customerRequests { background:#111; color:#fff; border-color:#ffffff30; margin-bottom:30px }
+.customerRequests h2 { font-size:25px; font-weight:600; margin-bottom:10px }
+.customerRequests p { line-height:1.8; font-size:14px }
+.customerRequests article { background:#ffffff03; border-color:#ffffff30; color:#fff; padding:22px }
+.customerRequests details { margin-top:18px }
+.customerRequests summary { color:#f0807b; cursor:pointer; padding:10px 0 }
+.customerRequests h3 { font-weight:500; font-size:18px }
+@media(max-width:1100px) { .main { width:calc(100% - 48px) } .flowLayout { grid-template-columns:minmax(0,1fr) 240px; gap:24px } .trackGrid { grid-template-columns:1fr } .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)) } .steps button { flex-direction:column; align-items:start; gap:9px; font-size:11px } .contactFields { grid-template-columns:1fr } }
+@media(max-width:750px) { .main { width:calc(100% - 32px); padding-top:35px } .flowLayout { display:flex; flex-direction:column } .content { width:100% } .summary { position:static; width:100% } .steps { gap:8px; margin-block:30px } .steps button { font-size:10px; line-height:1.5 } .steps button span { width:30px; height:30px } .panel { padding:18px 12px } .buddyInvite { flex-direction:column; align-items:start } .productCard img,.gearChoice img { height:125px } .productCard,.gearChoice { padding:16px 10px } .productGrid { gap:12px } .dateFields { gap:10px } .dateFields input { padding:10px 6px!important; font-size:12px!important } .content > h2 { font-size:26px } .total { font-size:18px } .success { padding:25px } }

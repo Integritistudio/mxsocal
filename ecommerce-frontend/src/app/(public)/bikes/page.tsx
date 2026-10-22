@@ -3,8 +3,8 @@ import { DM_Sans } from "next/font/google";
 import BikesDesign from "@/components/public-site/BikesDesign";
 const font = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "700"] });
 export const metadata: Metadata = {
-  title: "Dirt Bike Rentals | MXSoCal",
-  description: "Find your next ride. Explore MXSoCal dirt bikes and filter by brand, engine size, and daily rental budget.",
+  title: "Choose Your Bike | MXSoCal",
+  description: "Choose a bike for your next motocross ride. Explore MXSoCal bikes by brand, engine size, and daily budget.",
   alternates: { canonical: "/bikes" },
 };
 export default async function BikesPage({ searchParams }: { searchParams: Promise<{ search?: string | string[] }> }) {

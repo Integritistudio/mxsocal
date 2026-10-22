@@ -6,7 +6,7 @@ router.get("/catalog", controller.catalog);
 router.get("/mine", auth, controller.mine);
 router.get("/availability/:productId", controller.availability);
 router.post("/quote", auth, controller.quote);
-router.post("/checkout", auth, accountLimit, controller.checkout);
+router.post("/checkout", auth, accountLimit, (_req, res) => res.status(410).json({ message: "Please use the new ride request flow. Bookings are approved by our team before payment." }));
 router.get("/sessions/:sessionId", auth, controller.session);
 router.get("/sessions/:sessionId/embedded", auth, controller.embeddedSession);
 router.post("/sessions/:sessionId/release", auth, controller.release);

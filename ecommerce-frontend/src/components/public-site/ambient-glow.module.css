@@ -1,0 +1,20 @@
+.surface { position:relative; isolation:isolate }
+.surface::before,.surface::after {
+  content:"";
+  position:absolute;
+  left:50%;
+  width:2600px;
+  height:2200px;
+  z-index:-1;
+  pointer-events:none;
+  background:url("/images/about/7e47f.svg") center / contain no-repeat;
+}
+.surface::before { top:var(--glow-top,-650px); transform:translateX(-50%) rotate(111.17deg) scaleY(-1) }
+.surface::after { bottom:-650px; background-image:url("/images/about/dc992.svg"); transform:translateX(-60%) rotate(-68.83deg) scaleY(-1) }
+.home { --glow-top:400px }
+@media(max-width:650px) {
+  .surface::before,.surface::after { width:1600px; height:1600px }
+  .surface::before { top:var(--glow-top,-500px) }
+  .surface::after { bottom:-450px }
+  .home { --glow-top:300px }
+}

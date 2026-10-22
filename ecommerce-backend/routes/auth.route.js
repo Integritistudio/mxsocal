@@ -13,6 +13,7 @@ router.post("/reset-password", accountLimit, customer.reset);
 router.get("/accounts", auth, admin, customer.listAccounts);
 router.get("/customers", auth, admin, customer.listCustomers);
 router.post("/customers", auth, admin, customer.invite);
+router.put("/customers/:id/coaching", auth, admin, customer.updateCoaching);
 router.get("/customers/:id/avatar", auth, admin, customer.customerAvatar);
 router.get("/saved", auth, customer.savedList);
 router.put("/saved/:id", auth, customer.saveProduct);

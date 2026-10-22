@@ -61,7 +61,7 @@ export default function CoachInfoCard({ coach }: { coach: AddCoachProps | null }
                         </div>
                     </div>
                     <h4 className="mt-8 mb-4 text-lg font-semibold dark:text-white">Public coach card</h4>
-                    <dl className="grid grid-cols-1 gap-4 lg:grid-cols-2 dark:text-white/90">{[["Specialty", details.specialty], ["Experience text", details.experienceLabel], ["Hourly rate", details.hourlyRate], ["Display order", details.displayOrder], ["Coaching levels", levels.join(" ? ")]].map(([label, value]) => <div key={String(label)}><dt className="mb-2 text-xs text-gray-500">{String(label)}</dt><dd className="text-sm">{value == null || value === "" ? "Not provided" : String(value)}</dd></div>)}<div><dt className="mb-2 text-xs text-gray-500">Skills</dt><dd><ul className="list-disc pl-5 text-sm">{skills.map((skill, index) => <li key={index}>{skill}</li>)}</ul>{!skills.length && "Not provided"}</dd></div></dl>
+                    <dl className="grid grid-cols-1 gap-4 lg:grid-cols-2 dark:text-white/90">{[["Specialty", details.specialty], ["Experience text", details.experienceLabel], ["Hourly rate", details.hourlyRate], ["Daily rate", details.dailyRate], ["Display order", details.displayOrder], ["Coaching levels", levels.join(" ? ")]].map(([label, value]) => <div key={String(label)}><dt className="mb-2 text-xs text-gray-500">{String(label)}</dt><dd className="text-sm">{value == null || value === "" ? "Not provided" : String(value)}</dd></div>)}<div><dt className="mb-2 text-xs text-gray-500">Skills</dt><dd><ul className="list-disc pl-5 text-sm">{skills.map((skill, index) => <li key={index}>{skill}</li>)}</ul>{!skills.length && "Not provided"}</dd></div></dl>
                 </div>
 
             </div>

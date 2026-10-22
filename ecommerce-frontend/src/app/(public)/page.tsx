@@ -6,8 +6,8 @@ import { getStories } from "@/lib/stories";
 const font = DM_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "MXSoCal | Rentals and Experience",
-  description: "Your paddock pass to pro-level motocross. Elite dirt bike rentals, coaching, and trackside support in Southern California.",
+  title: "MXSoCal | Motocross Riding Experiences",
+  description: "Plan your motocross ride in Southern California. Choose your bike, bring your buddies, and add a track, gear, and coaching.",
   alternates: { canonical: "/" },
 };
 

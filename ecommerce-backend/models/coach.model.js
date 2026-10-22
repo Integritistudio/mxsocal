@@ -75,6 +75,7 @@ const Coach = sequelize.define(
     skills: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
     coachingLevels: { type: DataTypes.JSONB, allowNull: false, defaultValue: [] },
     hourlyRate: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
+    dailyRate: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
     displayOrder: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
     imagePresentation: { type: DataTypes.JSONB, allowNull: true },
     documents: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },

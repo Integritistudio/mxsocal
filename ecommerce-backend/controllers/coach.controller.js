@@ -2,7 +2,7 @@ const Coach = require("../models/coach.model");
 const { Op } = require("sequelize");
 
 // Deliberately exclude email, phone, address, and uploaded documents.
-const publicAttributes = ["id", "firstName", "lastName", "bio", "profileImage", "experience", "specialty", "experienceLabel", "skills", "coachingLevels", "hourlyRate", "imagePresentation"];
+const publicAttributes = ["id", "firstName", "lastName", "bio", "profileImage", "experience", "specialty", "experienceLabel", "skills", "coachingLevels", "dailyRate", "imagePresentation"];
 exports.getPublicCoaches = async (req, res) => {
   const { level = "", specialty = "", budget = "", page = "1" } = req.query;
   if (Object.keys(req.query).some(key => !["level", "specialty", "budget", "page"].includes(key)) || [level, specialty, budget, page].some(value => typeof value !== "string") || !/^[1-9]\d{0,3}$/.test(page) || specialty.length > 100 || (level && !["Beginner", "Intermediate", "Advanced"].includes(level)) || (budget && (!/^\d{1,5}$/.test(budget) || Number(budget) <= 0))) {
@@ -12,7 +12,7 @@ exports.getPublicCoaches = async (req, res) => {
     const where = {};
     if (level) where.coachingLevels = { [Op.contains]: [level] };
     if (specialty) where.specialty = specialty;
-    if (budget) where.hourlyRate = { [Op.lte]: Number(budget) };
+    if (budget) where.dailyRate = { [Op.lte]: Number(budget) };
     const limit = 4;
     const offset = (Number(page) - 1) * limit;
     const [{ rows, count }, options, totalCoaches] = await Promise.all([
@@ -36,9 +36,9 @@ function coachFields(body) {
   }
   if (data.email) { data.email = data.email.toLowerCase(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) throw new Error("Enter a valid email address."); }
   for (const key of ["profileImage", "linkedin", "facebook", "instagram", "xcom"]) if (data[key] && !/^https?:\/\//i.test(data[key]) && !(key === "profileImage" && /^\/(?!\/)[^\\]+$/.test(data[key]))) throw new Error(`Enter a valid URL for ${key}.`);
-  for (const [key, max] of Object.entries({ experience: 100, hourlyRate: 99999999, displayOrder: 100000 })) if (body[key] !== undefined) {
+  for (const [key, max] of Object.entries({ experience: 100, hourlyRate: 99999999, dailyRate: 99999999, displayOrder: 100000 })) if (body[key] !== undefined) {
     const value = body[key] === "" || body[key] === null ? null : Number(body[key]);
-    if (value !== null && (!Number.isFinite(value) || value < 0 || value > max || (key !== "hourlyRate" && !Number.isInteger(value)))) throw new Error(`Enter a valid ${key}.`);
+    if (value !== null && (!Number.isFinite(value) || value < 0 || value > max || (!["hourlyRate", "dailyRate"].includes(key) && !Number.isInteger(value)))) throw new Error(`Enter a valid ${key}.`);
     data[key] = value ?? (key === "displayOrder" ? 0 : null);
   }
   for (const key of ["skills", "coachingLevels"]) if (body[key] !== undefined) {

@@ -1,5 +1,4 @@
 .page { --red:#de2321 }
-.page::selection,.page *::selection { background:#de2321; color:#000 }
 .main { position:relative; isolation:isolate; max-width:1400px; margin:0 auto; padding:50px 0 150px; font-size:15px; line-height:28px }
 .main h1,.main h2,.main h3,.main p { margin:0 }
 .main h2 { font-size:26px; line-height:35px; font-weight:500; letter-spacing:.15px }
@@ -166,7 +165,9 @@
 .relatedPrice { display:flex; justify-content:space-between; align-items:end; gap:10px; margin-top:15px }
 .relatedPrice > span { font-size:18px }
 .relatedPrice small { display:block; font-size:12px; line-height:18px }
-.relatedPrice a { font-size:12px; color:var(--red) }
+.relatedPrice a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border:1px solid var(--red); border-radius:6px; background:var(--red); font-size:12px; font-weight:500; color:#fff; text-decoration:none; white-space:nowrap }
+.relatedPrice a:hover { background:#bc1d1b; border-color:#bc1d1b; color:#fff }
+.relatedPrice a:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .relatedControls { display:flex; justify-content:space-between; margin-top:24px; align-items:center; font-size:14px }
 .relatedControls > div { display:flex; gap:12px }
 .relatedControls button { width:54px; height:36px; border:1px solid #fff7; border-radius:24px; display:grid; place-items:center; background:transparent; color:#fff; transition:background .3s,border-color .3s }

@@ -5,7 +5,7 @@ const routes: Record<string, { target: string; methods: string[] }> = {
 };
 async function handle(request: Request, { params }: { params: Promise<{ path: string[] }> }) {
   const path = (await params).path.join("/");
-  const route = routes[path] || (/^customers\/[\da-f-]{36}\/avatar$/i.test(path) ? { target: path, methods: ["GET"] } : null) || (/^saved\/[\da-f-]{36}$/i.test(path) ? { target: path, methods: ["PUT", "DELETE"] } : null);
+  const route = routes[path] || (/^customers\/[\da-f-]{36}\/coaching$/i.test(path) ? { target: path, methods: ["PUT"] } : null) || (/^customers\/[\da-f-]{36}\/avatar$/i.test(path) ? { target: path, methods: ["GET"] } : null) || (/^saved\/[\da-f-]{36}$/i.test(path) ? { target: path, methods: ["PUT", "DELETE"] } : null);
   if (!route || !route.methods.includes(request.method)) return NextResponse.json({ message: "Not found." }, { status: 404 });
   if (request.method !== "GET") { const origin = request.headers.get("origin"); if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ message: "Please use the form on this website." }, { status: 403 }); }
   try {

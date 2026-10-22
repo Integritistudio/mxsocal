@@ -12,6 +12,7 @@ import type { Story } from "@/components/stories/types";
 import shared from "./contact-design.module.css";
 import storiesStyles from "@/components/stories/stories.module.css";
 import s from "./home-design.module.css";
+import glow from "./ambient-glow.module.css";
 
 type Bike = {
   id: string; slug: string; name: string; images: string[];
@@ -19,7 +20,7 @@ type Bike = {
 };
 type Coach = {
   id: string; firstName: string; lastName: string; profileImage: string | null;
-  specialty: string | null; skills: string[]; hourlyRate: string | null;
+  specialty: string | null; skills: string[]; dailyRate: string | null;
   experienceLabel: string | null; experience: number | null;
 };
 
@@ -139,8 +140,8 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
   return <div className={`${shared.page} ${s.page}`}>
     <a className={shared.skip} href="#main-content">Skip to content</a>
     <PublicSiteHeader activePath="/" compact />
-    <main id="main-content" className={s.main}>
-      <h1 className={s.srOnly}>MXSoCal — Dirt bike rentals and experiences in Southern California</h1>
+    <main id="main-content" className={`${s.main} ${glow.surface} ${glow.home}`}>
+      <h1 className={s.srOnly}>MXSoCal — Motocross riding experiences in Southern California</h1>
 
       <section className={s.videoHero} aria-label="MXSoCal riding experience">
         <img className={`${s.videoPoster}${videoReady ? ` ${s.videoPosterHidden}` : ""}`} src="/images/contact/b541a.png" alt="" aria-hidden="true" />
@@ -169,7 +170,7 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
 
       <section className={s.section} aria-labelledby="home-bikes-heading">
         <div className={s.sectionHead}>
-          <h2 id="home-bikes-heading">Bike Rentals</h2>
+          <h2 id="home-bikes-heading">Choose Your Bike</h2>
           <Link href="/bikes">Explore all bikes<FiArrowUpRight /></Link>
         </div>
         {bikeError ? <div className={s.empty} role="status">{bikeError}</div> : bikesLoading ? <TrackSkeleton label="Loading bikes" /> : !bikes.length ? <div className={s.empty} role="status">No bikes available right now.</div> : <>
@@ -191,50 +192,6 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
             </article>)}
           </div>
           <ListingControls track={bikeTrack} href="/bikes" label="bikes" />
-        </>}
-      </section>
-
-      <section className={s.about} aria-labelledby="home-about-heading">
-        <div>
-          <h2 id="home-about-heading">About Us</h2>
-          <h3>Where Off-Road Passion, Quality Craftsmanship and Rider Trust Come Together</h3>
-        </div>
-        <div className={s.aboutCopy}>
-          <p>At MXSoCal, we’re more than a dirt bike store, we’re a community built by riders, for riders. What started as a simple love for off-road freedom has grown into a dedicated hub for high-performance bikes, premium gear and an unmatched riding experience. Every product we offer is carefully selected to ensure riders get the perfect balance of power, durability and safety, no matter where the trail leads.</p>
-          <p>Whether you&apos;re just starting out or pushing limits on the track, we’re here to support your journey. From reliable bikes to top-tier gear. We deliver products and service that help riders get more out of every adventure.</p>
-        </div>
-      </section>
-
-      <section className={s.section} aria-labelledby="home-coaches-heading">
-        <div className={s.sectionHead}>
-          <h2 id="home-coaches-heading">Our Coaches</h2>
-          <Link href="/coaches">Meet the team<FiArrowUpRight /></Link>
-        </div>
-        {coachError ? <div className={s.empty} role="status">{coachError}</div> : coachesLoading ? <TrackSkeleton label="Loading coaches" withButton /> : !coaches.length ? <div className={s.empty} role="status">No coaches available right now.</div> : <>
-          <div className={s.track} ref={coachTrack}>
-            {coaches.map(coach => {
-              const name = `${coach.firstName} ${coach.lastName}`.trim();
-              const book = `/contact-us?coach=${encodeURIComponent(coach.id)}&name=${encodeURIComponent(name)}`;
-              return <article className={s.card} key={coach.id}>
-                <Link className={`${s.cardPhoto} ${s.coachPhoto}`} href={book} aria-label={`Book a session with ${name}`}>
-                  {coach.profileImage ? <img className={s.coachPortrait} src={coach.profileImage} alt={name} loading="lazy" /> : null}
-                  <span><span>Book Now<FiArrowUpRight /></span></span>
-                </Link>
-                <div className={s.cardBody}>
-                  <h3><Link href="/coaches">{name}</Link></h3>
-                  <p>{coach.specialty || coach.experienceLabel || (coach.experience != null ? `${coach.experience} years coaching` : "Motocross coaching")}</p>
-                  <div className={s.cardPrice}>
-                    <span>{money(coach.hourlyRate, "USD")}{coach.hourlyRate != null && <small>/ hour</small>}</span>
-                    <Link className={s.coachBtn} href={book} aria-label={`Book a session with ${name}`}>
-                      <span className={s.coachBtnIdle}>Book Session</span>
-                      <span className={s.coachBtnHover}>View Details</span>
-                    </Link>
-                  </div>
-                </div>
-              </article>;
-            })}
-          </div>
-          <ListingControls track={coachTrack} href="/coaches" label="coaches" />
         </>}
       </section>
 
@@ -287,6 +244,50 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className={s.about} aria-labelledby="home-about-heading">
+        <div>
+          <h2 id="home-about-heading">About Us</h2>
+          <h3>Where Off-Road Passion, Quality Craftsmanship and Rider Trust Come Together</h3>
+        </div>
+        <div className={s.aboutCopy}>
+          <p>At MXSoCal, we’re more than a dirt bike store, we’re a community built by riders, for riders. What started as a simple love for off-road freedom has grown into a dedicated hub for high-performance bikes, premium gear and an unmatched riding experience. Every product we offer is carefully selected to ensure riders get the perfect balance of power, durability and safety, no matter where the trail leads.</p>
+          <p>Whether you&apos;re just starting out or pushing limits on the track, we’re here to support your journey. From reliable bikes to top-tier gear. We deliver products and service that help riders get more out of every adventure.</p>
+        </div>
+      </section>
+
+      <section className={s.section} aria-labelledby="home-coaches-heading">
+        <div className={s.sectionHead}>
+          <h2 id="home-coaches-heading">Our Coaches</h2>
+          <Link href="/coaches">Meet the team<FiArrowUpRight /></Link>
+        </div>
+        {coachError ? <div className={s.empty} role="status">{coachError}</div> : coachesLoading ? <TrackSkeleton label="Loading coaches" withButton /> : !coaches.length ? <div className={s.empty} role="status">No coaches available right now.</div> : <>
+          <div className={s.track} ref={coachTrack}>
+            {coaches.map(coach => {
+              const name = `${coach.firstName} ${coach.lastName}`.trim();
+              const book = `/contact-us?coach=${encodeURIComponent(coach.id)}&name=${encodeURIComponent(name)}`;
+              return <article className={s.card} key={coach.id}>
+                <Link className={`${s.cardPhoto} ${s.coachPhoto}`} href={book} aria-label={`Book a session with ${name}`}>
+                  {coach.profileImage ? <img className={s.coachPortrait} src={coach.profileImage} alt={name} loading="lazy" /> : null}
+                  <span><span>Book Now<FiArrowUpRight /></span></span>
+                </Link>
+                <div className={s.cardBody}>
+                  <h3><Link href="/coaches">{name}</Link></h3>
+                  <p>{coach.specialty || coach.experienceLabel || (coach.experience != null ? `${coach.experience} years coaching` : "Motocross coaching")}</p>
+                  <div className={s.cardPrice}>
+                    <span>{money(coach.dailyRate, "USD")}{coach.dailyRate != null && <small>/ day</small>}</span>
+                    <Link className={s.coachBtn} href={book} aria-label={`Book a session with ${name}`}>
+                      <span className={s.coachBtnIdle}>Book Session</span>
+                      <span className={s.coachBtnHover}>View Details</span>
+                    </Link>
+                  </div>
+                </div>
+              </article>;
+            })}
+          </div>
+          <ListingControls track={coachTrack} href="/coaches" label="coaches" />
+        </>}
       </section>
 
       <section className={s.founder} aria-labelledby="home-founder-heading">

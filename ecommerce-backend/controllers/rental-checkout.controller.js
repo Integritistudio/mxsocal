@@ -105,6 +105,7 @@ exports.mine = async (req, res) => {
     rows = await Promise.all(rows.map(row => row.reload()));
     const now = new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date());
     const bookings = rows.filter(row => {
+      if (row.meta?.source === "ride-request") return false;
       const end = (row.slots || []).map(slot => slot.end).sort().pop() || "23:59";
       const past = ["cancelled", "completed"].includes(row.status) || `${row.bookingDate} ${end}` <= now;
       return period === "past" ? past : !past;

@@ -25,7 +25,7 @@ const include = [{ model: User, attributes: ["id", "name", "firstName", "lastNam
 const present = row => ({ id: row.id, user: row.User, product: row.Product, date: row.bookingDate, slots: row.slots, quantity: row.meta?.quantity || 1, accessories: row.accessoryItems, coach: row.meta?.coach, items: row.meta?.items || [], notes: row.notes, status: row.status, paymentStatus: row.paymentStatus, totalPrice: row.totalPrice, currency: row.meta?.currency || "USD", holdUntil: row.meta?.holdUntil, createdAt: row.createdAt });
 router.get("/bookings", permit("booking:view"), async (req, res) => {
   try {
-    const where = {};
+    const where = { [Op.and]: [sequelize.literal(`COALESCE("Booking"."meta"->>'source', '') <> 'ride-request'`)] };
     if (req.query.search) {
       if (typeof req.query.search !== "string" || req.query.search.length > 100) return res.status(400).json({ message: "Use a shorter search." });
       const pattern = `%${req.query.search.replace(/[\\%_]/g, "\\$&")}%`;

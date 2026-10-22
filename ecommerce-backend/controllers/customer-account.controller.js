@@ -119,6 +119,7 @@ exports.reset = async (req, res) => {
 };
 const genders = ["", "woman", "man", "non-binary", "transgender", "genderfluid", "agender", "self-describe", "prefer-not-to-say"];
 exports.updateProfile = async (req, res) => {
+  if (Object.hasOwn(req.body || {}, "needsCoach")) return res.status(403).json({ message: "Only an admin can change your coaching requirement." });
   const body = req.body || {}; const data = {};
   for (const key of ["firstName", "lastName"]) if (body[key] !== undefined) { if (!nameValid(body[key])) return res.status(400).json({ message: "Enter your first and last names." }); data[key] = body[key].trim(); }
   for (const [key, max] of Object.entries({ phone: 25, country: 100, state: 100, city: 100, zipCode: 20, bio: 2000, address: 1000 })) if (body[key] !== undefined) { if (typeof body[key] !== "string" || body[key].length > max) return res.status(400).json({ message: `Check your ${key}.` }); data[key] = body[key].trim() || null; }
@@ -131,6 +132,11 @@ exports.updateProfile = async (req, res) => {
   catch { res.status(503).json({ message: "Unable to save your profile." }); }
 };
 exports.listCustomers = async (_req, res) => { try { res.json((await User.findAll({ where: { role: "user" }, attributes: { exclude: ["password", "avatarData", "avatarContentType", "tokenVersion"] }, order: [["createdAt", "DESC"]] })).map(u => u.toJSON())); } catch { res.status(503).json({ message: "Unable to load customers." }); } };
+exports.updateCoaching = async (req, res) => {
+  if (!uuid(req.params.id) || typeof req.body?.needsCoach !== "boolean") return res.status(400).json({ message: "Choose whether this customer needs a coach." });
+  try { const user = await User.findOne({ where: { id: req.params.id, role: "user" } }); if (!user) return res.status(404).json({ message: "Customer not found." }); await user.update({ needsCoach: req.body.needsCoach }); res.json({ user: user.toJSON() }); }
+  catch { res.status(503).json({ message: "Unable to update coaching requirement." }); }
+};
 exports.invite = async (req, res) => {
   if (Object.hasOwn(req.body || {}, "password")) return res.status(400).json({ message: "Customers must choose their own passwords through their invitation." });
   const { data, error } = signupFields(req.body || {});

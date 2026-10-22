@@ -1,0 +1,63 @@
+.picker { max-width:560px; margin:28px 0; border:1px solid #333; border-radius:12px; overflow:hidden; background:#111 }
+.heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 24px 0; color:#eee; font-size:15px; font-weight:500 }
+.heading small { color:#b4b4b4; font-size:11px; font-weight:400; border:1px solid #383838; border-radius:4px; padding:5px 8px }
+.dateBar { display:grid; grid-template-columns:1fr 18px 1fr; align-items:center; gap:12px; padding:18px 24px 22px; border-bottom:1px solid #303030 }
+.dateBar button { display:flex; align-items:center; gap:10px; min-width:0; border:1px solid #404040; border-radius:6px; padding:12px; color:#fff; background:#1e1e1e; text-align:left; transition:border-color .15s,background .15s }
+.dateBar button[aria-pressed="true"] { border-color:#e33a36; background:#281918 }
+.dateBar button > svg { width:17px; height:17px; color:#aaa; flex-shrink:0 }
+.dateBar button[aria-pressed="true"] > svg { color:#f37973 }
+.dateBar button > span { display:grid; gap:5px }
+.dateBar small { font-size:10px; color:#b4b4b4 }
+.dateBar strong { font-size:14px; font-weight:500; white-space:nowrap }
+.dateArrow { color:#777; justify-self:center }
+.calendar { padding:22px 24px }
+.monthHeader { display:flex; align-items:center; justify-content:space-between; gap:16px }
+.monthHeader h3 { margin:0; font-size:18px; font-weight:500 }
+.monthHeader > div { display:flex; gap:8px }
+.monthHeader button { display:grid; place-items:center; width:36px; height:36px; border:1px solid #404040; border-radius:6px; color:#eee; background:#222; transition:background .15s }
+.monthHeader button:not(:disabled):hover { background:#383838; border-color:#777 }
+.instruction { display:flex; align-items:center; gap:8px; margin:18px 0 22px; color:#ccc; font-size:12px; line-height:1.6; min-height:20px }
+.selectionDot { width:6px; height:6px; border-radius:50%; background:#e3423d; flex-shrink:0 }
+.grid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px }
+.weekday { text-align:center; font-size:11px; color:#aaa; padding-bottom:9px }
+.grid button { position:relative; min-width:0; height:52px; padding:5px 2px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1px; border:1px solid #3a3a3a; border-radius:5px; background:#252525; color:#f5f5f5; transition:background .12s,border-color .12s }
+.grid strong { font-size:15px; font-weight:500; line-height:20px }
+.grid small { min-height:10px; font-size:8px; line-height:10px; color:#bbb }
+.grid button:not(:disabled):hover { background:#414141; border-color:#999 }
+.grid button[data-range="true"] { background:#502522; border-color:#7e3731 }
+.grid button[data-start="true"],.grid button[data-end="true"] { background:#de2321; border-color:#f6645e; color:#fff; opacity:1 }
+.grid button[data-start="true"] small,.grid button[data-end="true"] small { color:#fff }
+.grid button[data-today="true"]:not([aria-pressed="true"]) { border-color:#b2b2b2 }
+.picker .grid button:disabled { opacity:1; cursor:default; background:#181818; border-color:#242424; color:#707070 }
+.picker .grid button[data-past="true"] { background:transparent; border-color:transparent; color:#494949 }
+.grid button[data-unavailable="true"]:not([data-past="true"]) strong { text-decoration:line-through; text-decoration-color:#777 }
+.picker .grid button[data-start="true"],.picker .grid button[data-end="true"] { background:#de2321; border-color:#f6645e; color:#fff }
+.picker .grid button[data-range="true"]:not([data-start="true"]):not([data-end="true"]) { background:#502522; border-color:#7e3731; color:#eee }
+.picker button:disabled { opacity:.4; cursor:default }
+.emptyDay { height:52px }
+.legend { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; padding-top:20px; margin-top:4px; font-size:10px; color:#b4b4b4 }
+.legend > span { display:inline-flex; align-items:center; gap:7px }
+.legend i { width:9px; height:9px; background:#353535; border:1px solid #666; border-radius:2px }
+.legend .unavailableMark { background:#181818; border-color:#333 }
+.legend .selectedMark { background:#de2321; border-color:#de2321 }
+.footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:17px 24px; border-top:1px solid #303030; background:#191919 }
+.footer p { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin:0; font-size:12px; color:#eee }
+.footer p > svg { color:#f37973; flex-shrink:0 }
+.footer p > span { color:#aaa; font-size:10px }
+.footer button { background:none; border:0; color:#c2c2c2; font-size:11px; text-decoration:underline; text-underline-offset:4px; padding:6px 0 }
+.picker button:focus-visible { outline:2px solid #fff; outline-offset:2px; z-index:1 }
+@media(max-width:600px) {
+ .heading { padding:18px 16px 0 }
+ .dateBar { padding:16px; gap:8px; grid-template-columns:1fr 14px 1fr }
+ .dateBar button { padding:10px 8px; gap:6px }
+ .dateBar strong { font-size:12px }
+ .dateBar button > svg { width:14px }
+ .calendar { padding:18px 14px }
+ .monthHeader h3 { font-size:17px }
+ .grid { gap:4px }
+ .grid button,.emptyDay { height:46px }
+ .grid strong { font-size:14px }
+ .legend { gap:16px }
+ .footer { padding:15px 16px }
+ .footer p > span { flex-basis:100%; margin-left:23px }
+}

@@ -10,6 +10,7 @@ import shared from "./contact-design.module.css";
 import listing from "./coaches-design.module.css";
 import bike from "./bikes-design.module.css";
 import s from "./tracks-design.module.css";
+import glow from "./ambient-glow.module.css";
 
 export function TrackPhoto({ track, eager = false }: { track: Track; eager?: boolean }) {
   const [failed, setFailed] = useState(false);
@@ -25,7 +26,7 @@ export default function TracksDesign({ tracks }: { tracks: Track[] | null }) {
   function clear() { setCity(""); setLayout(""); setQuery(""); setApplied({ city: "", layout: "", query: "" }); }
   return <div className={`${shared.page} ${listing.page}`}>
     <a href="#main-content" className={shared.skip}>Skip to content</a><PublicSiteHeader activePath="/tracks" />
-    <main id="main-content" className={`${listing.main} ${s.main}`}>
+    <main id="main-content" className={`${listing.main} ${s.main} ${glow.surface}`}>
       <header className={s.intro}><span className={s.eyebrow}>SOUTHERN CALIFORNIA / MOTOCROSS</span><h1>Find your next <span>track.</span></h1><p>From your first laps to your next race. Explore five SoCal riding destinations.</p></header>
       <form className={listing.filters} onSubmit={search} aria-label="Find a track">
         <CoachFilter label="Track location" value={city} appliedValue={applied.city} onChange={setCity} options={[{ value: "", label: "Any Location" }, ...Array.from(new Set((tracks || []).map(t => t.city))).map(value => ({ value, label: value }))]} />

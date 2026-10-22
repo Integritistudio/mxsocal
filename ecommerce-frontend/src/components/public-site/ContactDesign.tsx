@@ -25,7 +25,7 @@ export default function ContactDesign() {
     const selectedId = coachId || bikeId;
     const message = pageRef.current?.querySelector<HTMLTextAreaElement>('textarea[name="message"]');
     if (selectedId && /^[0-9a-f-]{36}$/i.test(selectedId) && name && name.length <= 100 && message && !message.value) {
-      message.value = coachId ? `I’d like to book a coaching session with ${name}.` : `I’d like to rent the ${name}. Please let me know about availability.`;
+      message.value = coachId ? `I’d like to book a coaching session with ${name}.` : `I’d like to plan a ride with the ${name}. Please let me know about availability.`;
     }
   }, []);
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function ContactDesign() {
         />
       </div>
       <motion.div className={s.contact} initial={false} whileInView={reduceMotion ? undefined : { y: [6, 0] }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}>
-        <section className={s.formSection} aria-labelledby="form-heading"><h2 id="form-heading">Get in Touch with MXSoCal</h2><p className={s.intro}>We are here to help with rentals, training programs, and any questions you have</p>
+        <section className={s.formSection} aria-labelledby="form-heading"><h2 id="form-heading">Get in Touch with MXSoCal</h2><p className={s.intro}>Ask us about planning your ride, choosing a bike, riding with buddies, or adding gear and coaching.</p>
           <form className={s.form} onSubmit={submit} noValidate aria-busy={status === "sending"}><div className={s.fields}>
             <div className={s.field}><label>First Name<input {...fieldProps("firstName")} name="firstName" autoComplete="given-name" placeholder="Enter your first name" required maxLength={49} /></label>{fieldError("firstName")}</div>
             <div className={s.field}><label>Last Name<input {...fieldProps("lastName")} name="lastName" autoComplete="family-name" placeholder="Enter your last name" required maxLength={49} /></label>{fieldError("lastName")}</div>

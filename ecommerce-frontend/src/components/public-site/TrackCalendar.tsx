@@ -7,7 +7,7 @@ export const monthLabel = (month: string) => new Intl.DateTimeFormat("en-US", { 
 export function MonthNavigation({ months, index, onChange, disabled = false }: { months: TrackAvailability[]; index: number; onChange: (index: number) => void; disabled?: boolean }) {
   return <div className={s.monthNavigation}><button type="button" aria-label="Previous month" disabled={disabled || index === 0} onClick={() => onChange(index - 1)}><FiChevronLeft /></button><h3 aria-live="polite">{monthLabel(months[index].month)}</h3><button type="button" aria-label="Next month" disabled={disabled || index === months.length - 1} onClick={() => onChange(index + 1)}><FiChevronRight /></button></div>;
 }
-export function MonthGrid({ calendar, selected, onSelect }: { calendar: TrackAvailability; selected: string; onSelect: (date: string) => void }) {
+export function MonthGrid({ calendar, selected, onSelect, range }: { calendar: TrackAvailability; selected: string; onSelect: (date: string) => void; range?: { start: string; end: string } }) {
   const [year, month] = calendar.month.split("-").map(Number);
   const count = new Date(Date.UTC(year, month, 0)).getUTCDate();
   const offset = new Date(Date.UTC(year, month - 1, 1)).getUTCDay();
@@ -19,7 +19,7 @@ export function MonthGrid({ calendar, selected, onSelect }: { calendar: TrackAva
       const past = date < calendar.today;
       const today = date === calendar.today;
       const status = calendar.days[date]?.status || "unavailable";
-      return <button key={date} type="button" className={s.calendarDay} data-status={status} data-past={past} data-today={today} disabled={past} aria-current={today ? "date" : undefined} aria-pressed={selected === date} aria-label={`${date}${today ? ", Today" : ""}: ${past ? "Past date" : status}`} onClick={() => onSelect(date)}><strong>{i + 1}</strong><span>{past ? "Past" : status === "available" ? "Available" : "Unavailable"}</span>{today && <small>Today</small>}</button>;
+      return <button key={date} type="button" className={s.calendarDay} data-status={status} data-past={past} data-today={today} data-in-range={!!range?.end && date >= range.start && date <= range.end} disabled={past || (!!range && status !== "available")} aria-current={today ? "date" : undefined} aria-pressed={selected === date || range?.start === date} aria-label={`${date}${today ? ", Today" : ""}: ${past ? "Past date" : status}`} onClick={() => onSelect(date)}><strong>{i + 1}</strong><span>{past ? "Past" : status === "available" ? "Available" : "Unavailable"}</span>{today && <small>Today</small>}</button>;
     })}
   </div>;
 }

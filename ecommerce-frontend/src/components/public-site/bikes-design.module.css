@@ -8,8 +8,9 @@
 .price { margin:0; display:flex; flex-direction:column; gap:0 }
 .price strong { font-size:24px; font-weight:400; line-height:36px }
 .price > span { font-size:16px; line-height:33px }
-.detailsLink { border:0; background:transparent; padding:8px 0; color:#de2321; font:inherit; font-size:15px; cursor:pointer; text-decoration:underline; text-decoration-color:transparent; text-underline-offset:5px; transition:color .3s ease,text-decoration-color .3s ease }
-.detailsLink:hover { color:#ff817e; text-decoration-color:currentColor }
+.detailsLink { display:inline-flex; align-items:center; justify-content:center; min-height:44px; border:1px solid #de2321; border-radius:6px; background:#de2321; padding:11px 20px; color:#fff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s ease,border-color .2s ease }
+.detailsLink:hover { background:#bc1d1b; border-color:#bc1d1b; color:#fff }
+.detailsLink:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px }
 .searchChip { display:inline-flex; gap:10px; align-items:center; padding:4px 12px; border:1px solid #de2321; border-radius:30px; color:#fff }
 .clear { display:inline-block; background:#de2321; color:#fff; border-radius:30px; padding:12px 24px; margin-top:20px }

@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { data } = await getPublicProduct((await params).id);
   if (!data) return { title: "Product Details | MXSoCal", robots: { index: false } };
   const p = data.product;
-  return { title: `${p.name} Rental | MXSoCal`, description: p.description?.slice(0, 160) || `Explore the ${p.name}, specifications, rental prices, and customer reviews.`, alternates: { canonical: `/${p.category === "bike" ? "bikes" : "products"}/${p.slug}` }, openGraph: { title: `${p.name} Rental | MXSoCal`, description: p.tagline, images: p.images.slice(0, 1) } };
+  return { title: `${p.name} | MXSoCal`, description: p.description?.slice(0, 160) || `Explore the ${p.name}, specifications, daily pricing, and customer reviews.`, alternates: { canonical: `/${p.category === "bike" ? "bikes" : "products"}/${p.slug}` }, openGraph: { title: `${p.name} | MXSoCal`, description: p.tagline, images: p.images.slice(0, 1) } };
 }
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;

@@ -1,0 +1,13 @@
+"use client";
+import { useEffect, useState, type FormEvent } from "react";
+import { useUser } from "@/context/UserContext";
+import { rideRequest } from "@/services/ride-requests";
+import s from "./admin-products.module.css";
+type Rates = { gearDailyRate: string | null; coaches: { id: string; firstName: string; lastName: string; dailyRate: string | null }[] };
+export default function RidePricingEditor() {
+  const { user } = useUser(); const [rates, setRates] = useState<Rates | null>(null); const [busy, setBusy] = useState(false); const [message, setMessage] = useState(""); const [error, setError] = useState("");
+  useEffect(() => { if (user?.role !== "admin") return; const controller = new AbortController(); void rideRequest<Rates>("pricing", "GET", undefined, controller.signal).then(setRates).catch(error => { if (!controller.signal.aborted) setError(error.message); }); return () => controller.abort(); }, [user?.role]);
+  if (user?.role !== "admin") return null;
+  async function save(event: FormEvent) { event.preventDefault(); if (!rates) return; setBusy(true); setMessage(""); setError(""); try { const result = await rideRequest<{ message: string }>("pricing", "PUT", rates); setMessage(result.message); } catch (error) { setError(error instanceof Error ? error.message : "Unable to save rates."); } finally { setBusy(false); } }
+  return <section className={s.panel}><div className={s.header}><div><h2>Daily rental rates</h2><p className={s.hint}>Gear is one flat daily charge per rider for any selection. Coach rates are per day for the group.</p></div></div>{error && <p className={s.error} role="alert">{error}</p>}{rates ? <form onSubmit={save}><fieldset disabled={busy}><label className={s.field}>Gear package ($ / rider / day)<input type="number" min="0" max="999999.99" step="0.01" value={rates.gearDailyRate ?? ""} onChange={event => setRates({ ...rates, gearDailyRate: event.target.value || null })} /></label><p className={s.hint}>One item or one from every category costs the same. Riders selecting no gear pay nothing for gear. A blank rate disables gear rental.</p><div className={s.grid}>{rates.coaches.map(coach => <label className={s.field} key={coach.id}>{coach.firstName} {coach.lastName} ($ / day)<input type="number" min="0" max="999999.99" step="0.01" value={coach.dailyRate ?? ""} onChange={event => setRates({ ...rates, coaches: rates.coaches.map(row => row.id === coach.id ? { ...row, dailyRate: event.target.value || null } : row) })} /></label>)}</div><div className={s.actions}><button className={s.button} disabled={busy}>{busy ? "Saving…" : "Save daily rates"}</button></div></fieldset></form> : <p role="status">Loading daily rates…</p>}{message && <p role="status" className={s.success}>{message}</p>}</section>;
+}

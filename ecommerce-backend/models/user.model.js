@@ -21,6 +21,7 @@ const User = sequelize.define(
     genderDescription: { type: DataTypes.STRING, allowNull: true },
     address: { type: DataTypes.TEXT, allowNull: true },
     emailVerifiedAt: { type: DataTypes.DATE, allowNull: true },
+    needsCoach: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     tokenVersion: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
     avatarData: { type: DataTypes.BLOB, allowNull: true },
     avatarContentType: { type: DataTypes.STRING, allowNull: true },
