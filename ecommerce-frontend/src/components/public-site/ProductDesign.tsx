@@ -12,6 +12,7 @@ import { PiMotorcycle } from "react-icons/pi";
 import { PublicSiteFooter, PublicSiteHeader } from "./PublicSiteChrome";
 import { productPrice, ratingCategories, type ProductResult, type PublicProduct, type DetailPair } from "./product-types";
 import ProductSkeleton from "./ProductSkeleton";
+import BikeViewer, { hasBikeView } from "./BikeViewer";
 import { filterReviews } from "./review-filters";
 import CoachFilter from "./CoachFilter";
 import shared from "./contact-design.module.css";
@@ -34,6 +35,7 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
   const [notice, setNotice] = useState("");
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
   const [videoOpen, setVideoOpen] = useState(false);
+  const [bikeViewOpen, setBikeViewOpen] = useState(false);
   const [openSpec, setOpenSpec] = useState<number | null>(0);
   const [reviewCount, setReviewCount] = useState(2);
   const [reviewRating, setReviewRating] = useState("");
@@ -66,12 +68,12 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
   }, [id, retry, initialData, user, loadingAuth]);
   useEffect(() => { const media = gsap.matchMedia(); media.add("(prefers-reduced-motion: no-preference)", () => { gsap.to(light.current, { x: 14, y: -10, duration: 16, repeat: -1, yoyo: true, ease: "sine.inOut" }); }, root); return () => media.revert(); }, []);
   useEffect(() => {
-    if (galleryIndex === null && !videoOpen) return;
+    if (galleryIndex === null && !videoOpen && !bikeViewOpen) return;
     gallery.current?.showModal();
     const overflow = document.body.style.overflow; document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = overflow; };
-  }, [galleryIndex, videoOpen]);
-  function closeGallery() { gallery.current?.close(); setGalleryIndex(null); setVideoOpen(false); }
+  }, [galleryIndex, videoOpen, bikeViewOpen]);
+  function closeGallery() { gallery.current?.close(); setGalleryIndex(null); setVideoOpen(false); setBikeViewOpen(false); }
   async function share() { try { if (navigator.share) await navigator.share({ title: data?.product.name, url: window.location.href }); else { await navigator.clipboard.writeText(window.location.href); setNotice("Link copied."); } } catch { setNotice("Use the page URL to share this product."); } }
   useEffect(() => { if (!notice) return; const timer = window.setTimeout(() => setNotice(""), 3000); return () => window.clearTimeout(timer); }, [notice]);
   useEffect(() => {
@@ -100,6 +102,9 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
     finally { setSubmitting(false); }
   }
   const p = data?.product;
+  // Temporarily hide Explore bike; enable again when the viewer is ready.
+  const exploreBikeEnabled = false;
+  const bikeViewAvailable = exploreBikeEnabled && !!p && hasBikeView(p.name, p.brand);
   const photos = p?.details.gallery?.length ? p.details.gallery : p?.images || [];
   const ratingProgress = data?.reviewCount && Number.isFinite(data.rating) ? Math.max(0, Math.min(5, data.rating)) * 20 : 0;
   const visibleReviews = Array.from(new Map([...(data?.reviews || []), ...(user ? data?.myReviews || [] : [])].map(review => [review.id, review])).values());
@@ -116,7 +121,7 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
         <p className={s.notice} role="status">{notice}</p>
         {!!p.details.badges?.length && <ul className={s.badges}>{p.details.badges.map((badge, i) => <li key={`${badge}-${i}`}><img src={asset(badgeIcons[i % badgeIcons.length])} alt="" />{badge}</li>)}</ul>}
         <div data-count={Math.min(photos.length, 5)} className={`${s.gallery} ${photos.length === 1 ? s.singlePhoto : ""}`}>
-          {photos.slice(0, 5).map((image, i) => <button key={`${image}-${i}`} type="button" onClick={() => setGalleryIndex(i === 4 && photos.length > 5 ? 5 : i)} aria-label={i === 4 && photos.length > 5 ? `View ${photos.length - 5} more photos of ${p.name}` : `View ${p.name} photo ${i + 1}`}><Photo src={image} alt={`${p.name} — photo ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />{i === 4 && photos.length > 5 && <span className={s.morePhotos} aria-hidden="true"><strong>+{photos.length - 5}</strong><small>View all photos</small></span>}</button>)}
+          {photos.slice(0, 5).map((image, i) => <button key={`${image}-${i}`} type="button" onClick={() => { if (i === 0 && bikeViewAvailable) setBikeViewOpen(true); else setGalleryIndex(i === 4 && photos.length > 5 ? 5 : i); }} aria-label={i === 0 && bikeViewAvailable ? `Explore ${p.name} from multiple angles` : i === 4 && photos.length > 5 ? `View ${photos.length - 5} more photos of ${p.name}` : `View ${p.name} photo ${i + 1}`}><Photo src={image} alt={`${p.name} — photo ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />{i === 0 && bikeViewAvailable && <span className={s.bikeViewBadge}><PiMotorcycle /> Explore bike <span>Drag to view</span></span>}{i === 4 && photos.length > 5 && <span className={s.morePhotos} aria-hidden="true"><strong>+{photos.length - 5}</strong><small>View all photos</small></span>}</button>)}
           {!photos.length && <span className={s.fallback}><PiMotorcycle size={80} />Photos coming soon</span>}
           {p.details.videoUrl && <button className={s.videoButton} type="button" onClick={() => setVideoOpen(true)}><FiPlay />Video</button>}
         </div>
@@ -137,6 +142,6 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
         {data.related.length > 0 && <section className={s.related}><h2>Related Listings</h2><div className={s.relatedTrack} ref={related}>{data.related.map(item => <article className={s.relatedCard} key={item.id}><Link className={s.relatedPhoto} href={booking(item)} aria-label={`Book ${item.name}`}><Photo src={item.images[0]} alt={item.name} loading="lazy" /><span><span>Book Now<FiArrowUpRight /></span></span></Link><div><h3><Link href={`/${item.category === "bike" ? "bikes" : "products"}/${item.slug || item.id}`}>{item.name}</Link></h3><p>{item.tagline}</p><ul>{item.features.map((feature, i) => <li key={i}>{feature}</li>)}</ul><div className={s.relatedPrice}><span>{productPrice(item)}<small>{item.pricePerDay !== null ? "/ day" : ""}</small></span><Link href={`/${item.category === "bike" ? "bikes" : "products"}/${item.slug || item.id}`}>View Details</Link></div></div></article>)}</div><div className={s.relatedControls}><div><button aria-label="Previous related products" onClick={() => related.current?.scrollBy({ left: -(related.current.clientWidth + 28), behavior: reduceMotion ? "instant" : "smooth" })}><FiArrowLeft /></button><button aria-label="Next related products" onClick={() => related.current?.scrollBy({ left: related.current.clientWidth + 28, behavior: reduceMotion ? "instant" : "smooth" })}><FiArrowRight /></button></div><Link href="/bikes">View All<FiArrowUpRight /></Link></div></section>}
       </>}
     </main><PublicSiteFooter />
-    <dialog ref={gallery} className={s.lightbox} aria-label={videoOpen ? "Product video" : "Product photos"} onClose={() => { setGalleryIndex(null); setVideoOpen(false); }} onClick={event => { if (event.target === event.currentTarget) closeGallery(); }}><button autoFocus className={s.close} onClick={closeGallery} aria-label="Close gallery"><FiX /></button>{p && (videoOpen ? <video src={p.details.videoUrl} controls autoPlay playsInline /> : galleryIndex !== null && <><Photo key={photos[galleryIndex]} src={photos[galleryIndex]} alt={`${p.name} — photo ${galleryIndex + 1}`} /><div className={s.galleryControls}><button aria-label="Previous photo" onClick={() => setGalleryIndex((galleryIndex - 1 + photos.length) % photos.length)}><FiArrowLeft /></button><span>{galleryIndex + 1} / {photos.length}</span><button aria-label="Next photo" onClick={() => setGalleryIndex((galleryIndex + 1) % photos.length)}><FiArrowRight /></button></div></> )}</dialog>
+    <dialog ref={gallery} className={s.lightbox} aria-label={bikeViewOpen ? "Interactive bike view" : videoOpen ? "Product video" : "Product photos"} onClose={() => { setGalleryIndex(null); setVideoOpen(false); setBikeViewOpen(false); }} onClick={event => { if (event.target === event.currentTarget) closeGallery(); }}><button autoFocus className={s.close} onClick={closeGallery} aria-label="Close gallery"><FiX /></button>{p && (bikeViewOpen ? <><BikeViewer name={p.name} /><button type="button" className={s.photoMode} onClick={() => { setBikeViewOpen(false); setGalleryIndex(0); }}>View listing photos</button></> : videoOpen ? <video src={p.details.videoUrl} controls autoPlay playsInline /> : galleryIndex !== null && <><Photo key={photos[galleryIndex]} src={photos[galleryIndex]} alt={`${p.name} — photo ${galleryIndex + 1}`} /><div className={s.galleryControls}><button aria-label="Previous photo" onClick={() => setGalleryIndex((galleryIndex - 1 + photos.length) % photos.length)}><FiArrowLeft /></button><span>{galleryIndex + 1} / {photos.length}</span><button aria-label="Next photo" onClick={() => setGalleryIndex((galleryIndex + 1) % photos.length)}><FiArrowRight /></button></div></> )}</dialog>
   </div>;
 }

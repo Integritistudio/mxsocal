@@ -205,3 +205,6 @@
   .overviewList dd { padding-left:0 }
 }
 @media(prefers-reduced-motion:reduce) { .ratingFill { transition:none } }
+.bikeViewBadge { position:absolute; left:18px; bottom:18px; display:flex; align-items:center; gap:8px; padding:10px 16px; border:1px solid #ffffff60; border-radius:30px; background:#111d; backdrop-filter:blur(8px); font-size:14px; pointer-events:none }
+.bikeViewBadge > span { font-size:11px; color:#ccc; border-left:1px solid #ffffff40; padding-left:10px }
+.photoMode { display:block; margin:14px auto 0; background:transparent; border:0; color:#ddd; text-decoration:underline; cursor:pointer; font-size:12px }

@@ -25,6 +25,7 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   { name: "Availability", icon: <CalenderIcon />, path: "/dashboard/availability", permissionKey: "availability:manage" },
+  { name: "Track Availability", icon: <CalenderIcon />, path: "/dashboard/track-availability", permissionKey: "availability:manage" },
   { name: "Stories / Blog", icon: <PageIcon />, path: "/dashboard/stories", permissionKey: "blog:manage" },
   { name: "Users", icon: <UserCircleIcon />, path: "/dashboard/users", permissionKey: "customer:manage" },
   {
@@ -60,7 +61,7 @@ const navItems: NavItem[] = [
 ];
 
 
-const menuOrder = ["Dashboard", "Bookings", "Products", "Coaches", "Availability", "Stories / Blog", "Users", "Managers"];
+const menuOrder = ["Dashboard", "Bookings", "Products", "Coaches", "Availability", "Track Availability", "Stories / Blog", "Users", "Managers"];
 navItems.sort((a, b) => menuOrder.indexOf(a.name) - menuOrder.indexOf(b.name));
 
 const othersItems: NavItem[] = [];

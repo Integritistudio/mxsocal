@@ -17,6 +17,7 @@ router.use("/auth", authRoutes);
 router.use("/user", userRoutes);
 router.use("/coach", coachRoutes);
 router.use("/stories", require("./story.route"));
+router.use("/tracks", require("./track.route"));
 router.use("/products", productRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/rental-checkout", require("./rental-checkout.route"));

@@ -4,12 +4,12 @@ import Link from "next/link";
 import { motion, useAnimationControls, useReducedMotion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { FiX } from "react-icons/fi";
-import { PiHouse, PiMotorcycle, PiBookOpen, PiInfo, PiEnvelope, PiCalendarCheck } from "react-icons/pi";
+import { PiHouse, PiMotorcycle, PiFlagCheckered, PiBookOpen, PiInfo, PiEnvelope, PiCalendarCheck } from "react-icons/pi";
 import s from "./contact-design.module.css";
 import { useUser } from "@/context/UserContext";
 const asset = (file: string) => `/images/contact/${file}`;
-const links = [["Home", "/"], ["Bikes", "/bikes"], ["Stories", "/stories"], ["About us", "/about-us"], ["Contact", "/contact-us"]];
-const menuIcons = [PiHouse, PiMotorcycle, PiBookOpen, PiInfo, PiEnvelope];
+const links = [["Home", "/"], ["Bikes", "/bikes"], ["Tracks", "/tracks"], ["Stories", "/stories"], ["About us", "/about-us"], ["Contact", "/contact-us"]];
+const menuIcons = [PiHouse, PiMotorcycle, PiFlagCheckered, PiBookOpen, PiInfo, PiEnvelope];
 
 export function PublicSiteHeader({ activePath, compact = false }: { activePath: string; compact?: boolean }) {
   const { user, loadingAuth } = useUser();

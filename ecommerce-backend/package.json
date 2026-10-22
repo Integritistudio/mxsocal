@@ -9,6 +9,7 @@
     "seed:admin": "node scripts/seed-admin.js",
     "seed:coaches": "node scripts/seed-coaches.js",
     "seed:bikes": "node scripts/seed-bikes.js",
+    "seed:tracks": "node scripts/seed-tracks.js",
     "seed:product-details": "node scripts/seed-product-details.js",
     "verify:product-details": "node scripts/verify-product-details.js",
     "test": "jest",

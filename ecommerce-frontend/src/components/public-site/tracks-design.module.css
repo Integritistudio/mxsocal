@@ -1,0 +1,82 @@
+.main { min-height:0; padding-bottom:100px; background:radial-gradient(ellipse at 0 20%,#6f272625,transparent 65%) }
+.intro { width:calc(100% - 120px); max-width:1337px; margin:0 auto 55px }
+.eyebrow { display:block; color:#df6966; font-size:12px; letter-spacing:2px; font-weight:500; margin-bottom:12px }
+.intro h1 { font-size:clamp(40px,5vw,68px); line-height:1.1; font-weight:700; letter-spacing:-2px; margin:0 0 20px }
+.intro h1 span { color:#de2321 }
+.intro p { color:#bbb; font-size:18px; line-height:1.7; max-width:600px }
+.search { width:100%; background:transparent; border:0; outline-offset:3px; padding:12px; color:#050b20; font:inherit; font-size:15px; min-width:0 }
+.location { display:flex; align-items:center; gap:7px; color:#c9c9c9; font-size:13px; margin-bottom:12px }
+.layoutSummary { color:#bbb; font-size:13px; max-width:65% }
+.trackGallery { display:grid; grid-template-columns:2fr 1fr; grid-template-rows:1fr 1fr; gap:12px; height:clamp(320px,40vw,550px); margin-top:30px; border-radius:20px; overflow:hidden }
+.trackGallery button { position:relative; padding:0; border:0; overflow:hidden; background:#171717; color:#fff }
+.trackGallery button:first-child { grid-row:span 2 }
+.trackGallery[data-count="1"] { display:block }
+.trackGallery[data-count="1"] button { width:100%; height:100% }
+.trackGallery img { width:100%; height:100%; object-fit:cover; transition:transform .4s }
+.trackGallery button:hover img { transform:scale(1.025) }
+.trackGallery button > span { position:absolute; bottom:14px; right:14px; padding:6px 13px; border-radius:30px; background:#000b; border:1px solid #fff5; font-size:12px }
+.photoDialog { position:fixed; inset:0; margin:auto; width:min(1200px,calc(100vw - 40px)); height:min(900px,calc(100dvh - 40px)); max-width:none; max-height:none; padding:0; border:1px solid #ffffff26; border-radius:22px; background:#111; color:#fff; overflow:hidden; box-shadow:0 24px 100px #0008 }
+.photoDialog[open] { display:grid; grid-template-rows:64px minmax(0,1fr) 76px }
+.photoDialog::backdrop { background:#000e; backdrop-filter:blur(8px) }
+.photoHeader { display:flex; justify-content:space-between; align-items:center; gap:16px; min-width:0; padding:0 22px; border-bottom:1px solid #ffffff12 }
+.photoHeader > span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:15px; font-weight:500 }
+.photoHeader button,.photoControls button { display:grid; place-items:center; width:40px; height:40px; flex-shrink:0; padding:0; border:1px solid #ffffff30; border-radius:50%; background:#ffffff08; color:#fff; cursor:pointer; transition:background .2s,border-color .2s }
+.photoHeader button:hover,.photoControls button:not(:disabled):hover { background:#de2321; border-color:#de2321 }
+.photoDialog button:focus-visible { outline:2px solid #fff; outline-offset:3px }
+.photoStage { min-width:0; min-height:0; padding:16px; overflow:hidden; display:flex; align-items:center; justify-content:center; touch-action:pan-y; background:#090909 }
+.fullPhoto { display:block; width:100%; height:100%; min-width:0; min-height:0; object-fit:contain; user-select:none }
+.photoControls { display:flex; align-items:center; justify-content:center; gap:26px; border-top:1px solid #ffffff12 }
+.photoControls > span { min-width:64px; text-align:center; font-size:14px; font-variant-numeric:tabular-nums }
+.photoControls > span > span { color:#888 }
+.photoControls button:disabled { opacity:.3; cursor:default }
+@media(max-width:600px) { .photoDialog { width:calc(100vw - 16px); height:calc(100dvh - 24px); border-radius:16px } .photoDialog[open] { grid-template-rows:58px minmax(0,1fr) 70px } .photoHeader { padding-inline:14px } .photoHeader > span { font-size:13px } .photoStage { padding:8px } }
+@media(prefers-reduced-motion:reduce) { .photoDialog button { transition:none } }
+.availabilitySection { scroll-margin-top:35px }
+.calendar { border:1px solid #ffffff30; border-radius:20px; padding:26px; background:#ffffff03 }
+.calendarHeading { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:20px }
+.calendarHeading h3 { font-size:23px; font-weight:500 }
+.calendarHeading > span { color:#aaa; font-size:12px }
+.legend { display:flex; flex-wrap:wrap; gap:18px; font-size:12px; margin-bottom:22px; color:#aaa }
+.legend > span::before { content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:#777; margin-right:7px }
+.legend > span[data-status="available"]::before { background:#6ac99e }
+.legend > span[data-status="unavailable"]::before { background:#de2321 }
+.calendarGrid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:7px }
+.weekday { text-align:center; color:#aaa; font-size:12px; padding-bottom:8px }
+.calendarDay { min-height:82px; min-width:0; padding:10px 5px; border:1px solid #ffffff20; background:#ffffff03; border-radius:10px; color:inherit; text-align:center; display:flex; flex-direction:column; gap:5px; align-items:center; justify-content:center }
+.calendarDay strong { font-size:18px; font-weight:500 }
+.calendarDay > span { font-size:10px; line-height:15px; color:#aaa }
+.calendarDay[data-status="available"] { background:#6ac99e12; border-color:#6ac99e60 }
+.calendarDay[data-status="available"] > span { color:#6ac99e }
+.calendarDay[data-status="unavailable"] { background:#de232112; border-color:#de232160 }
+.calendarDay[data-status="unavailable"] > span { color:#fa7d79 }
+.calendarDay[aria-pressed="true"] { outline:2px solid #fff; outline-offset:1px }
+.calendarDay[data-today="true"] { border:2px solid #fff }
+.calendarDay small { font-size:9px; line-height:12px; color:#fff }
+.calendarDay[data-past="true"] { opacity:.42; border-color:#ffffff15; background:#ffffff03; cursor:default }
+.calendarDay[data-past="true"] strong { text-decoration:line-through; color:#999 }
+.calendarDay[data-past="true"] > span { color:#999 }
+.monthNavigation { display:flex; align-items:center; gap:12px }
+.monthNavigation h3 { min-width:160px; text-align:center }
+.monthNavigation button { display:grid; place-items:center; width:36px; height:36px; border:1px solid #ffffff40; border-radius:50%; background:transparent; color:inherit }
+.monthNavigation button:not(:disabled):hover { background:#de2321; border-color:#de2321 }
+.monthNavigation button:disabled { opacity:.25; cursor:default }
+.dayDetails { padding:18px 0 0; font-size:14px; min-height:55px }
+.dayDetails strong { font-weight:500 }
+.adminCalendar { color:#f3f3f3; background:#171717; border-radius:16px; padding:20px; max-width:850px; margin-block:24px }
+.editorFields { border:0; padding:20px 0; display:grid; gap:18px; max-width:650px }
+@media(max-width:600px) { .trackGallery { height:340px; grid-template-columns:1.5fr 1fr } .calendar { padding:16px 10px } .calendarGrid { gap:4px } .calendarDay { min-height:67px; border-radius:7px; padding:6px 2px } .calendarDay > span { font-size:8px; line-height:12px; overflow-wrap:anywhere } }
+.photoFallback { width:100%; min-height:300px; height:100%; display:flex; flex-direction:column; gap:15px; align-items:center; justify-content:center; background:radial-gradient(ellipse at center,#54201e,#161616); color:#eee }
+.overview { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin:0 }
+.overview > div { display:grid; grid-template-columns:100px 1fr; gap:20px }
+.overview dt { color:#aaa }
+.overview dd { margin:0 }
+.layouts { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-bottom:25px }
+.layouts > div { border:1px solid #de232180; border-radius:16px; padding:24px 18px; background:#ffffff03 }
+.layouts span { color:#de2321; font-size:13px }
+.layouts h3 { font-size:18px; margin-top:12px; font-weight:500 }
+.note { color:#aaa; font-size:14px }
+.back { display:flex; gap:12px; align-items:center; font-size:14px; flex-shrink:0; margin-top:20px; color:#ddd }
+.back:hover { color:#de2321 }
+.endcap { display:flex; justify-content:space-between; align-items:center; gap:25px; border:1px solid #de2321; border-radius:24px; padding:35px; margin-top:40px }
+@media(max-width:1050px) { .intro { width:calc(100% - 64px) } }
+@media(max-width:750px) { .intro { width:calc(100% - 40px); margin-bottom:35px } .intro p { font-size:16px } .overview { grid-template-columns:1fr } .layouts { grid-template-columns:1fr } .layouts > div { padding:16px 20px; display:flex; align-items:center; gap:20px } .layouts h3 { margin-top:0 } .back { display:none } .endcap { flex-direction:column; align-items:stretch; padding:24px } .hero figcaption { font-size:11px } }
