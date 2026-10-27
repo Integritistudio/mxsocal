@@ -9,6 +9,7 @@ import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiSend, FiVolume2, FiVolumeX
 import { PublicSiteHeader, PublicSiteFooter } from "./PublicSiteChrome";
 import { StoryCard } from "@/components/stories/StoriesView";
 import type { Story } from "@/components/stories/types";
+import Aurora from "@/components/react-bits/Aurora";
 import shared from "./contact-design.module.css";
 import storiesStyles from "@/components/stories/stories.module.css";
 import s from "./home-design.module.css";
@@ -268,19 +269,16 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
               const name = `${coach.firstName} ${coach.lastName}`.trim();
               const book = `/contact-us?coach=${encodeURIComponent(coach.id)}&name=${encodeURIComponent(name)}`;
               return <article className={s.card} key={coach.id}>
-                <Link className={`${s.cardPhoto} ${s.coachPhoto}`} href={book} aria-label={`Book a session with ${name}`}>
+                <Link className={`${s.cardPhoto} ${s.coachPhoto}`} href={book} aria-label={`View details for ${name}`}>
                   {coach.profileImage ? <img className={s.coachPortrait} src={coach.profileImage} alt={name} loading="lazy" /> : null}
-                  <span><span>Book Now<FiArrowUpRight /></span></span>
+                  <span><span>View Details<FiArrowUpRight /></span></span>
                 </Link>
                 <div className={s.cardBody}>
                   <h3><Link href="/coaches">{name}</Link></h3>
                   <p>{coach.specialty || coach.experienceLabel || (coach.experience != null ? `${coach.experience} years coaching` : "Motocross coaching")}</p>
                   <div className={s.cardPrice}>
                     <span>{money(coach.dailyRate, "USD")}{coach.dailyRate != null && <small>/ day</small>}</span>
-                    <Link className={s.coachBtn} href={book} aria-label={`Book a session with ${name}`}>
-                      <span className={s.coachBtnIdle}>Book Session</span>
-                      <span className={s.coachBtnHover}>View Details</span>
-                    </Link>
+                    <Link className={s.coachBtn} href={book} aria-label={`View details for ${name}`}>View Details<FiArrowUpRight aria-hidden="true" /></Link>
                   </div>
                 </div>
               </article>;
@@ -291,14 +289,19 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
       </section>
 
       <section className={s.founder} aria-labelledby="home-founder-heading">
-        <p className={s.eyebrow}>Stay Tuned</p>
-        <h2 id="home-founder-heading">Become An <span className={s.brandAccent}>MXSoCal</span> Founder</h2>
-        <p className={s.founderLead}>Get Founder&apos;s Access</p>
-        <form className={s.founderForm} onSubmit={founderSubmit}>
-          <input name="email" type="email" required placeholder="Your Email Address" aria-label="Your email address" autoComplete="email" />
-          <button type="submit" aria-label="Get founder&apos;s access"><FiSend size={16} aria-hidden="true" /></button>
-        </form>
-        <p className={s.founderNote}>We Will Not Share Your Information With Third Parties Or Send You Spam</p>
+        <div className={s.founderAurora} aria-hidden="true">
+          <Aurora colorStops={["#7f1d1d", "#de2321", "#450a0a"]} amplitude={1.1} blend={0.55} speed={0.9} />
+        </div>
+        <div className={s.founderInner}>
+          <p className={s.eyebrow}>Stay Tuned</p>
+          <h2 id="home-founder-heading">Become An <span className={s.brandAccent}>MXSoCal</span> Founder</h2>
+          <p className={s.founderLead}>Get Founder&apos;s Access</p>
+          <form className={s.founderForm} onSubmit={founderSubmit}>
+            <input name="email" type="email" required placeholder="Your Email Address" aria-label="Your email address" autoComplete="email" />
+            <button type="submit" aria-label="Get founder&apos;s access"><FiSend size={16} aria-hidden="true" /></button>
+          </form>
+          <p className={s.founderNote}>We Will Not Share Your Information With Third Parties Or Send You Spam</p>
+        </div>
       </section>
 
       {stories.length > 0 && <section className={s.stories} aria-labelledby="home-stories-heading">

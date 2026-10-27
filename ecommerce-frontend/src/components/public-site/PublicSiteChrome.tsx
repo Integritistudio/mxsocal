@@ -84,7 +84,7 @@ export function PublicSiteHeader({ activePath, compact = false }: { activePath: 
 export function PublicSiteFooter() {
   return (
     <footer className={s.footer}><div className={s.footerBrand}><Link href="/" aria-label="MXSoCal home"><img src={asset("2051f.png")} alt="MXSoCal" width="212" height="87" /></Link><div className={s.footerSocial}>{[["08790.svg", "YouTube", "https://youtube.com/"], ["88500.svg", "Google", "https://google.com/"], ["d72a1.svg", "Instagram", "https://instagram.com/"], ["c56a7.svg", "LinkedIn", "https://linkedin.com/"]].map(([file, name, href]) => <a href={href} key={file} aria-label={name}><img src={asset(file)} alt="" /></a>)}</div></div>
-      <nav className={s.footerNav} aria-label="Footer navigation">{[...links.slice(0, 3), ["Coaches", "/coaches"], ...links.slice(3), ["Help Center", "/contact-us"]].map(([label, href]) => <a href={href} key={label}>{label}</a>)}</nav>
+      <nav className={s.footerNav} aria-label="Footer navigation">{[...links.slice(0, 3), ["Coaches", "/coaches"], ...links.slice(3)].map(([label, href]) => <a href={href} key={label}>{label}</a>)}</nav>
       <div className={s.footerContact}><p>Stop wrenching<br />Start experiencing</p><form action="/contact-us"><input name="email" type="email" aria-label="Your email" placeholder="Enter your email here" /><button type="submit">Contact us</button></form></div>
     </footer>
   );

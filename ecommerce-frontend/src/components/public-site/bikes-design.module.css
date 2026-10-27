@@ -1,15 +1,15 @@
 .info { padding-top:24px; min-width:0; max-width:390px }
 .info h2 { font-size:34px; font-weight:700; line-height:1.2; margin:0 0 24px }
-.tagline { font-size:24px; line-height:28px; margin:0; padding-bottom:31px; border-bottom:1px solid #fff }
+.tagline { font-size:24px; line-height:1.5; color:#d6d6d6; margin:0; padding-bottom:31px; border-bottom:1px solid #ffffff40 }
 .features { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; border-bottom:1px solid #fff; padding:20px 0 18px }
-.features > div { display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; font-size:14px; line-height:24px }
+.features > div { display:flex; flex-direction:column; align-items:center; gap:10px; text-align:center; font-size:15px; line-height:24px; color:#e0e0e0 }
 .features img { width:35.721px; height:35.721px; object-fit:contain }
 .priceRow { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; padding-top:25px }
 .price { margin:0; display:flex; flex-direction:column; gap:0 }
-.price strong { font-size:24px; font-weight:400; line-height:36px }
+.price strong { font-size:26px; font-weight:600; line-height:36px }
 .price > span { font-size:16px; line-height:33px }
-.detailsLink { display:inline-flex; align-items:center; justify-content:center; min-height:44px; border:1px solid #de2321; border-radius:6px; background:#de2321; padding:11px 20px; color:#fff; font:inherit; font-size:14px; font-weight:500; cursor:pointer; text-decoration:none; white-space:nowrap; transition:background .2s ease,border-color .2s ease }
-.detailsLink:hover { background:#bc1d1b; border-color:#bc1d1b; color:#fff }
+.detailsLink { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:46px; padding:12px 22px; border:1px solid transparent; border-radius:50px; background:#fff; color:#050b20; font-size:14px; font-weight:500; text-decoration:none; white-space:nowrap; transition:background .22s,color .22s,border-color .22s,box-shadow .22s }
+.detailsLink:hover { opacity:1; background:#de2321; color:#fff; border-color:#de2321; box-shadow:0 6px 22px #de23212e }
 .detailsLink:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .summary { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px }
 .searchChip { display:inline-flex; gap:10px; align-items:center; padding:4px 12px; border:1px solid #de2321; border-radius:30px; color:#fff }

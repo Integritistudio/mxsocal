@@ -2,8 +2,8 @@
 .heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:18px; margin-bottom:24px }
 .heading h2 { margin:0 0 8px; font-size:26px; font-weight:600 }
 .heading p { margin:0; font-size:14px; color:#aaa }
-.refresh { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:44px; padding:10px 18px; border:1px solid #555; border-radius:6px; background:#1a1a1a; color:#eee; font:inherit; font-size:13px; cursor:pointer }
-.refresh:hover:not(:disabled) { background:#292929; border-color:#de2321 }
+.refresh { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:46px; padding:12px 22px; border:1px solid transparent; border-radius:50px; background:#fff; color:#050b20; font:inherit; font-weight:500; font-size:14px; cursor:pointer; transition:background .22s,color .22s,border-color .22s,box-shadow .22s }
+.refresh:hover:not(:disabled) { background:#de2321; color:#fff; border-color:#de2321; box-shadow:0 6px 22px #de23212e }
 .refresh:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .refresh:disabled { opacity:.55; cursor:wait }
 .spinning { animation:spin 1s linear infinite }
@@ -12,7 +12,8 @@
 .receiptHeader { display:flex; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; gap:18px; padding:26px 28px 22px }
 .eyebrow { color:#aaa; font-size:10px; text-transform:uppercase; letter-spacing:1.6px }
 .receiptHeader h3 { margin:9px 0 0; font-size:24px; line-height:1.35; font-weight:500 }
-.status { font-size:11px; line-height:1.5; border:1px solid #786139; border-radius:4px; padding:6px 10px; color:#e4c88c; background:#2a2419 }
+.status { display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:500; line-height:1.5; border:1px solid #de232160; border-radius:50px; padding:7px 13px; color:#ffaaa6; background:#de232114 }
+.status::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0 }
 .status[data-status="approved"] { color:#83d7a7; border-color:#37674b; background:#192b21 }
 .status[data-status="cancelled"],.status[data-status="rejected"] { color:#bbb; border-color:#444; background:#222 }
 .meta { display:grid; grid-template-columns:2fr 1fr; gap:16px 24px; margin:0; padding:0 28px 24px; border-bottom:1px dashed #444 }

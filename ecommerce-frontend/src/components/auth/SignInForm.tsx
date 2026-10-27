@@ -5,11 +5,9 @@ import { signIn } from "@/services/auth";
 import { useUser } from "@/context/UserContext";
 import { useAlert } from "@/context/AlertContext";
 import { isValidEmail } from "@/utils/helpers";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import s from "@/layout/admin-theme.module.css";
 
-import Input from "@/components/form/input/InputField";
-import Label from "@/components/form/Label";
-import Button from "@/components/ui/button/Button";
 import { EyeCloseIcon, EyeIcon } from "@/icons";
 
 type FormData = {
@@ -60,6 +58,7 @@ export default function SignInForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (loading) return;
     const errors = validatateForm(formData);
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -74,12 +73,8 @@ export default function SignInForm() {
         if (response.user.role === "admin") {
           router.push("/dashboard");
         } else if (response.user.role === "manager") {
-          Object.keys(permissionMap)?.map((key: string) => {
-            if (response.user?.permissions?.includes(key)) {
-              router.push(permissionMap[key])
-              return;
-            }
-          })
+          const destination = Object.keys(permissionMap).find(key => response.user?.permissions?.includes(key));
+          router.push(destination ? permissionMap[destination] : "/profile");
         }
       } else {
         showAlert("error", "Failed to sign in. Please check your credentials and try again.", "Sign In Error");
@@ -99,66 +94,9 @@ export default function SignInForm() {
 
   };
 
-  return (
-    <div className="flex flex-col flex-1 lg:w-1/2 w-full">
-      <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-        <div>
-          <div className="mb-5 sm:mb-8">
-            <h1 className="mb-2 font-semibold text-gray-800 text-title-sm dark:text-white/90 sm:text-title-md">
-              Admin Sign In
-            </h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Sign in to the MxSocal admin panel.
-            </p>
-          </div>
-          <div>
-            <form noValidate onSubmit={handleSubmit}>
-              <div className="space-y-6">
-                <div>
-                  <Label>
-                    Email <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <Input name="email" placeholder="info@gmail.com" defaultValue={formData.email} type="email" onChange={handleChange} error={!!formErrors?.email} hint={formErrors?.email} />
-                </div>
-                <div>
-                  <Label>
-                    Password <span className="text-error-500">*</span>{" "}
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Enter your password"
-                      defaultValue={formData.password}
-                      onChange={handleChange}
-                      error={!!formErrors?.password}
-                      hint={formErrors?.password}
-                    />
-                    <span
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                    >
-                      {showPassword ? (
-                        <EyeIcon className="fill-gray-500 dark:fill-gray-400" />
-                      ) : (
-                        <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400" />
-                      )}
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
-                  </Button>
-                </div>
-              </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <div className={s.signin}><h1>Admin sign in</h1><p>Sign in with your staff account.</p><form noValidate onSubmit={handleSubmit}>
+    <label htmlFor="admin-email">Email address<input id="admin-email" name="email" type="email" autoComplete="username" value={formData.email} onChange={handleChange} placeholder="you@example.com" required aria-invalid={!!formErrors.email} aria-describedby={formErrors.email ? "email-error" : undefined} />{formErrors.email && <small id="email-error" role="alert">{formErrors.email}</small>}</label>
+    <label htmlFor="admin-password">Password<div className={s.password}><input id="admin-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" value={formData.password} onChange={handleChange} placeholder="Enter your password" required aria-invalid={!!formErrors.password} aria-describedby={formErrors.password ? "password-error" : undefined} /><button type="button" onClick={() => setShowPassword(value => !value)} aria-label={showPassword ? "Hide password" : "Show password"}>{showPassword ? <EyeIcon /> : <EyeCloseIcon />}</button></div>{formErrors.password && <small id="password-error" role="alert">{formErrors.password}</small>}</label>
+    <button className={s.loginButton} type="submit" disabled={loading}>{loading ? "Signing in..." : "Sign in"}</button>
+  </form></div>;
 }

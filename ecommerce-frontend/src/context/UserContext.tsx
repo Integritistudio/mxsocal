@@ -3,7 +3,7 @@ import { createContext, useContext, useState, useEffect, useCallback, useRef } f
 import { useRouter, usePathname } from "next/navigation";
 import { getProfile } from "@/services/auth";
 
-const publicRoutes = new Set(["/", "/contact-us", "/contact", "/about-us", "/coaches", "/coach", "/bikes", "/bike", "/stories", "/blogs", "/blog", "/news", "/error-404", "/sign-in", "/sign-up", "/signin", "/login", "/signup", "/forgot-password", "/reset-password", "/admin/login"]);
+const publicRoutes = new Set(["/", "/home1", "/home2", "/contact-us", "/contact", "/about-us", "/coaches", "/coach", "/bikes", "/bike", "/stories", "/blogs", "/blog", "/news", "/error-404", "/sign-in", "/sign-up", "/signin", "/login", "/signup", "/forgot-password", "/reset-password", "/admin/login"]);
 const isPublicRoute = (path: string) => publicRoutes.has(path) || path === "/tracks" || path === "/privacy-policy" || path === "/booking" || path === "/booking/success" || path === "/booking/checkout" || /^\/(?:products|bikes|stories|tracks)\/[^/]+$/.test(path);
 const normalizePath = (path: string) => path.replace(/\/+$/, "") || "/";
 

@@ -1,0 +1,55 @@
+.theme {
+  --color-brand-25:#fff5f4; --color-brand-50:#ffe8e6; --color-brand-100:#ffd1cd;
+  --color-brand-200:#ffaaa4; --color-brand-300:#f98780; --color-brand-400:#ee6159;
+  --color-brand-500:#de2321; --color-brand-600:#bd1e1b; --color-brand-700:#941916;
+  --color-brand-800:#681a17; --color-brand-900:#401613; --color-brand-950:#27100f;
+  --color-gray-950:#080808; --color-gray-900:#111; --color-gray-dark:#181818;
+  --color-gray-800:#292929; --color-gray-700:#414141; --color-gray-600:#757575;
+  --color-gray-500:#999; --color-gray-400:#b4b4b4; --color-gray-300:#ccc;
+  min-height:100dvh; background:#080808; color:#eee; color-scheme:dark;
+  font-family:var(--font-admin),Arial,sans-serif;
+}
+.theme :global(.menu-item-active) { background:#de23211a; color:#ff918b; border-left:2px solid #de2321 }
+.theme :global(.menu-item-icon-active) { color:#ff918b }
+.theme :global(.menu-item-inactive) { color:#ccc }
+.theme :global(.menu-item-inactive):hover { background:#ffffff08; color:#fff }
+.theme :global(.bg-brand-500) { background:#fff; color:#050b20; border-radius:50px }
+.theme :global(.bg-brand-500):hover:not(:disabled) { background:#de2321; color:#fff }
+.theme :is(button,a,input,select,textarea):focus-visible { outline:2px solid #ed7770; outline-offset:3px }
+.header { position:sticky; top:0; z-index:50; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:18px 26px; border-bottom:1px solid #303030; background:#111f; backdrop-filter:blur(16px) }
+.headerLeft,.headerRight { display:flex; align-items:center; gap:18px }
+.headerLeft > div { display:grid; gap:3px }
+.headerLeft strong { font-size:14px; font-weight:500 }
+.headerLeft small { color:#999; font-size:11px }
+.menuToggle { display:grid; place-items:center; width:42px; height:42px; border:1px solid #444; border-radius:50%; background:transparent; color:#eee; cursor:pointer }
+.siteLink { display:inline-flex; align-items:center; justify-content:center; gap:9px; padding:12px 20px; border-radius:50px; background:#fff; color:#050b20; font-size:13px; font-weight:500; transition:background .22s,color .22s }
+.siteLink:hover { background:#de2321; color:#fff }
+.auth { display:grid; grid-template-columns:1fr 1fr; min-height:100dvh }
+.authForm { display:flex; flex-direction:column; justify-content:center; padding:60px clamp(24px,6vw,110px) }
+.authTop { margin-bottom:48px; display:flex; align-items:center; justify-content:space-between; gap:20px }
+.authTop > a:last-child { font-size:12px; color:#bbb }
+.authBrand { display:flex; flex-direction:column; align-items:flex-start; justify-content:center; gap:24px; padding:80px clamp(32px,7vw,120px); background:radial-gradient(ellipse at 20% 45%,#de23212b,transparent 65%),#101010; border-left:1px solid #303030 }
+.authBrand > span { color:#f58f87; font-size:11px; text-transform:uppercase; letter-spacing:2px }
+.authBrand h2 { font-size:clamp(32px,3.5vw,54px); line-height:1.2; font-weight:500; max-width:500px }
+.authBrand p { color:#bcbcbc; font-size:15px; line-height:1.9; max-width:420px }
+.brand { display:inline-flex; flex-direction:column; gap:8px }
+.brand small { font-size:10px; color:#999; letter-spacing:1px; text-transform:uppercase }
+.brandMark { display:grid; place-items:center; background:#de2321; width:40px; height:40px; border-radius:50%; color:#fff; font-size:15px; font-weight:600 }
+.signin { width:100%; max-width:440px; margin:auto }
+.signin h1 { margin:0 0 12px; font-size:36px; font-weight:600; line-height:1.2 }
+.signin > p { color:#aaa; font-size:14px; margin-bottom:36px }
+.signin form { display:grid; gap:24px }
+.signin label { display:grid; gap:10px; color:#ddd; font-size:13px }
+.signin input { width:100%; height:50px; padding:12px 15px; border:1px solid #444; border-radius:8px; background:#171717; color:#fff; font:inherit }
+.signin input::placeholder { color:#888 }
+.signin input[aria-invalid="true"] { border-color:#de2321 }
+.signin label > small { color:#ffaaa6; font-size:12px }
+.password { position:relative }
+.password input { padding-right:50px }
+.password button { position:absolute; right:12px; top:12px; width:26px; height:26px; display:grid; place-items:center; border:0; background:none; color:#bbb; cursor:pointer }
+.password svg { width:22px; height:22px; fill:currentColor }
+.loginButton { min-height:48px; border:1px solid transparent; border-radius:50px; background:#fff; color:#050b20; font-size:14px; font-weight:500; cursor:pointer; margin-top:8px; transition:background .22s,color .22s }
+.loginButton:hover:not(:disabled) { background:#de2321; color:#fff }
+.loginButton:disabled { opacity:.55; cursor:wait }
+@media(max-width:900px) { .auth { grid-template-columns:1fr }.authBrand { display:none }.authForm { max-width:580px; width:100%; margin:auto; padding:36px 24px }.header { padding:14px 16px }.headerLeft small { display:none } }
+@media(max-width:600px) { .headerLeft > div,.siteLink { display:none }.headerRight { gap:10px } }

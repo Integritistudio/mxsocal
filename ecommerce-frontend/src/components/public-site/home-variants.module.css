@@ -1,0 +1,191 @@
+.page { background:#080808; color:#f4f4f4 }
+.page * { box-sizing:border-box }
+.wrap { width:min(1400px,calc(100% - 96px)); margin-inline:auto }
+.page h1,.page h2,.page h3,.page p { margin-top:0 }
+.page h2 { font-size:clamp(32px,3.6vw,52px); line-height:1.14; font-weight:500; letter-spacing:-1.6px; margin-bottom:24px }
+.page em { font-style:normal; color:#ef4a43 }
+.eyebrow { display:block; color:#f17b73; font-size:11px; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; line-height:1.8; margin-bottom:20px }
+.button { display:inline-flex; align-items:center; justify-content:center; gap:16px; min-height:48px; padding:13px 23px; background:#fff; color:#050b20; border:1px solid transparent; border-radius:50px; font-size:14px; font-weight:500; line-height:1.4; white-space:nowrap; text-decoration:none; transition:background .22s,color .22s,border-color .22s,transform .22s }
+.button svg { flex-shrink:0; font-size:18px }
+.button:hover { background:#de2321; color:#fff; border-color:#de2321; opacity:1 }
+.outline { background:transparent; color:#fff; border-color:#666 }
+.page :is(a,button,input,summary):focus-visible { outline:2px solid #f17b73; outline-offset:5px }
+.hero { position:relative; width:min(1500px,calc(100% - 96px)); min-height:680px; margin:26px auto 0; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:44px; padding:48px 0 90px }
+.heroCopy { grid-column:1; grid-row:1; z-index:2; padding:30px 0 }
+.hero h1 { font-size:clamp(64px,6.3vw,98px); font-weight:500; letter-spacing:-5px; line-height:1.01; margin:0 0 30px }
+.heroCopy > p { max-width:440px; color:#c4c4c4; font-size:16px; line-height:1.9; margin-bottom:30px }
+.heroActions { display:flex; align-items:center; flex-wrap:wrap; gap:24px }
+.heroSecondary { display:inline-flex; align-items:center; gap:12px; color:#ddd; font-size:13px; padding:12px 0 }
+.heroSecondary:hover { color:#ff918b }
+.heroCopy > .heroNote { display:flex; align-items:center; flex-wrap:wrap; gap:10px; font-size:11px; color:#999; line-height:1.8; margin:26px 0 0 }
+.heroNote svg { color:#f17b73 }
+.heroNote > span { height:3px; width:3px; border-radius:50%; background:#666 }
+.heroVisual { position:relative; grid-column:2; grid-row:1; height:610px; overflow:hidden; border-radius:180px 12px 12px 12px }
+.heroImage { width:100%; height:100%; object-fit:cover; object-position:40% center }
+.heroVisual::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg,#0009,transparent 40%) }
+.photoLabel { position:absolute; bottom:26px; left:26px; z-index:1; display:flex; align-items:center; gap:8px; font-size:12px }
+.heroIndex { position:absolute; bottom:33px; left:0; font-size:10px; letter-spacing:2px; color:#777 }
+.benefits { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); width:min(1400px,calc(100% - 96px)); margin:0 auto; border-block:1px solid #333; padding:28px 0 }
+.benefits > div { display:flex; align-items:center; justify-content:center; gap:14px; padding:8px 16px; border-right:1px solid #333; font-size:13px; line-height:1.6 }
+.benefits > div:first-child { justify-content:flex-start; padding-left:0 }
+.benefits > div:last-child { border:0 }
+.benefits svg { color:#ec4942; font-size:30px; flex-shrink:0 }
+.section { padding-top:100px }
+.sectionHeading { display:flex; align-items:flex-end; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:36px }
+.sectionHeading h2 { margin-bottom:0 }
+.sectionHeading .eyebrow { margin-bottom:14px }
+.sectionHeading > p { max-width:310px; color:#aaa; font-size:14px; line-height:1.9; margin-bottom:0 }
+.textLink { display:inline-flex; align-items:center; gap:12px; color:#ed8c85; font-size:13px; padding-block:10px }
+.textLink:hover { color:#fff }
+.bikeGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px }
+.bikeCard { display:flex; flex-direction:column; border:1px solid #393939; border-radius:12px; overflow:hidden; background:#141414 }
+.bikeImage { position:relative; height:265px; display:grid; place-items:center; background:#1a1a1a; overflow:hidden }
+.bikeImage > img { width:100%; height:100%; object-fit:contain; padding:20px; transition:transform .4s }
+.bikeImage > svg { font-size:64px; color:#777 }
+.bikeImage:hover > img { transform:scale(1.04) }
+.bikeImage > span { position:absolute; right:16px; bottom:16px; width:34px; height:34px; display:grid; place-items:center; border:1px solid #555; border-radius:50%; background:#111; color:#fff }
+.cardBody { flex:1; display:flex; flex-direction:column; padding:24px }
+.cardBody h3 { font-size:21px; font-weight:500; line-height:1.4; margin-bottom:10px }
+.cardBody > p { color:#bbb; font-size:14px; line-height:1.8; margin-bottom:12px }
+.cardBody ul { display:flex; gap:10px 18px; flex-wrap:wrap; padding:15px 0; margin:0 0 20px; border-bottom:1px solid #333; font-size:12px; color:#ccc; list-style:none }
+.cardBottom { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; margin-top:auto }
+.cardBottom > span { font-size:23px; font-weight:500 }
+.cardBottom small { display:block; color:#999; font-size:11px; font-weight:400; margin-top:4px }
+.cardBottom .button { font-size:12px; padding-inline:18px; min-height:44px; gap:10px }
+.planning { padding-block:100px }
+.planning ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:36px; padding:0; margin:0; list-style:none }
+.planning li { padding-top:25px; border-top:1px solid #555 }
+.planning li > span { display:block; font-size:12px; color:#ef7770; margin-bottom:24px }
+.planning h3 { font-size:20px; font-weight:500; line-height:1.4; margin-bottom:12px }
+.planning li p { color:#aaa; font-size:14px; line-height:1.9; max-width:350px; margin-bottom:0 }
+.experience { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; padding:40px; border:1px solid #4a2725; border-radius:12px; background:#141010; overflow:hidden }
+.experience > img { width:100%; height:410px; object-fit:cover; border-radius:6px }
+.experience > div { padding:20px 20px 20px 0; position:relative; z-index:1 }
+.experience p { font-size:15px; line-height:1.9; color:#bbb; max-width:420px; margin-bottom:28px }
+.experienceNumber { position:absolute; bottom:-20px; right:-10px; font-size:100px; font-weight:700; color:#ffffff03; letter-spacing:-6px; white-space:nowrap; pointer-events:none }
+.trackGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px }
+.trackCard { position:relative; display:flex; align-items:flex-end; min-height:340px; overflow:hidden; border-radius:10px; background:#1c1c1c; border:1px solid #ffffff25 }
+.trackCard > img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .5s }
+.trackCard:hover > img { transform:scale(1.035) }
+.trackCard::after { position:absolute; inset:0; content:""; background:linear-gradient(0deg,#000e, #0003 80%) }
+.trackCard > div { position:relative; z-index:1; width:100%; padding:28px }
+.trackCard small { color:#ddd; font-size:10px; letter-spacing:1px; text-transform:uppercase }
+.trackCard h3 { font-size:26px; font-weight:500; line-height:1.4; margin:10px 0 14px }
+.trackCard span { display:flex; align-items:center; justify-content:space-between; color:#eee; font-size:12px }
+.trackCard span svg { font-size:20px }
+.coaching { display:grid; grid-template-columns:1fr 1.2fr; gap:65px; align-items:center; padding-block:110px; border-bottom:1px solid #333 }
+.coachIntro p { color:#bbb; font-size:15px; line-height:1.9; max-width:390px; margin-bottom:28px }
+.coachGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px }
+.coachCard { display:flex; flex-direction:column; background:#151515; border:1px solid #383838; border-radius:10px; overflow:hidden }
+.coachCard > img,.coachPlaceholder { width:100%; aspect-ratio:4/5; object-fit:cover; object-position:center top; background:#222 }
+.coachPlaceholder { display:grid; place-items:center; color:#888; font-size:60px }
+.coachCard > div:last-child { padding:20px; flex:1; display:flex; flex-direction:column }
+.coachCard h3 { font-size:18px; font-weight:500; line-height:1.4; margin-bottom:8px }
+.coachCard p { font-size:12px; line-height:1.8; color:#bbb; margin-bottom:16px }
+.coachCard span { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:13px; color:#f3938c; margin-top:auto }
+.faq { display:grid; grid-template-columns:1fr 1.2fr; gap:80px; padding-block:100px }
+.faq details { border-bottom:1px solid #383838 }
+.faq summary { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:24px 0; cursor:pointer; font-size:16px; line-height:1.5; list-style:none }
+.faq summary::-webkit-details-marker { display:none }
+.faq details[open] summary svg { transform:rotate(45deg) }
+.faq details p { color:#bbb; font-size:14px; line-height:1.9; padding-bottom:24px; margin:0; max-width:540px }
+.finalCta { text-align:center; border:1px solid #5c2925; border-radius:12px; padding:75px 24px; background:radial-gradient(ellipse at 50% 100%,#de232126,transparent 75%),#111 }
+.finalCta h2 { font-size:clamp(40px,5.5vw,78px); margin-bottom:32px }
+.ctaNote { display:block; margin-top:18px; font-size:11px; color:#999 }
+.newsletter { display:flex; align-items:center; justify-content:space-between; gap:40px; padding-block:75px; border-bottom:1px solid #333 }
+.newsletter h2 { font-size:30px; letter-spacing:-.7px; margin-bottom:12px }
+.newsletter p { font-size:13px; color:#999; line-height:1.8; margin:0 }
+.newsletter .eyebrow { margin-bottom:12px }
+.newsletter form { width:min(100%,380px); flex-shrink:0 }
+.newsletter label { display:block; font-size:11px; color:#aaa; margin-bottom:10px }
+.newsletter form > div { display:flex; border-bottom:1px solid #777; padding-bottom:10px; gap:15px }
+.newsletter input { min-width:0; width:100%; padding:8px 0; background:none; color:#fff; border:0; font:inherit; font-size:14px }
+.newsletter button { display:grid; place-items:center; width:38px; height:38px; flex-shrink:0; border-radius:50%; background:#fff; color:#111; border:0; cursor:pointer }
+.newsletter button:hover { background:#de2321; color:#fff }
+.versions { display:flex; justify-content:center; gap:28px; padding:25px 20px; color:#999; font-size:12px }
+.versions a[aria-current="page"] { color:#ff8c85; text-decoration:underline; text-underline-offset:5px }
+.empty { color:#aaa; font-size:14px; line-height:1.8; padding:25px; border:1px dashed #555; border-radius:8px }
+.empty a { display:inline-flex; align-items:center; gap:8px; color:#f28a82; margin-left:8px }
+.concept .hero { display:flex; width:100%; min-height:640px; margin:0; padding:80px max(48px,calc((100vw - 1400px)/2)); overflow:hidden }
+.concept .heroVisual { position:absolute; inset:0; height:100%; width:100%; border-radius:0 }
+.concept .heroImage { object-position:center 58% }
+.concept .heroVisual::after { background:linear-gradient(90deg,#080808f5 0%,#080808da 30%,#08080835 75%),linear-gradient(0deg,#080808,transparent 25%) }
+.concept .photoLabel { left:auto; right:48px }
+.concept .heroCopy { max-width:650px }
+.concept .hero h1 { font-size:clamp(68px,7vw,108px); font-weight:700; text-transform:uppercase; font-style:italic; letter-spacing:-4px }
+.concept .hero em { font-style:italic }
+.concept .heroCopy > p { color:#ddd; max-width:450px }
+.concept .benefits { padding-block:24px }
+.about { display:grid; grid-template-columns:1fr 1fr; gap:70px; align-items:center; padding-top:90px }
+.aboutImage { height:510px; position:relative; border-radius:10px; overflow:hidden }
+.aboutImage img { width:100%; height:100%; object-fit:cover; object-position:center 35% }
+.aboutImage::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg,#000c,transparent 50%) }
+.aboutImage > span { position:absolute; z-index:1; bottom:28px; left:28px; font-size:22px; font-weight:500 }
+.aboutCopy p { color:#bbb; font-size:15px; line-height:1.9; margin-bottom:22px }
+.aboutCopy .button { margin-top:10px }
+.centerHeading { justify-content:center; text-align:center }
+.serviceGrid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:18px }
+.serviceCard { display:flex; flex-direction:column; border:1px solid #3b3b3b; border-radius:8px; overflow:hidden; background:#121212; transition:border-color .22s }
+.serviceCard:hover { border-color:#de2321 }
+.serviceImage { height:140px; overflow:hidden; background:#222 }
+.serviceImage img { width:100%; height:100%; object-fit:cover }
+.serviceCard:nth-child(4) .serviceImage img { object-fit:contain; padding:12px }
+.serviceCard > div:last-child { padding:20px 16px; display:flex; flex-direction:column; flex:1 }
+.serviceCard > div > svg { color:#ef4a43; font-size:28px; margin-bottom:14px }
+.serviceCard h3 { font-size:18px; font-weight:500; margin-bottom:12px }
+.serviceCard p { font-size:13px; color:#bcbcbc; line-height:1.8; margin-bottom:22px }
+.serviceCard span { display:flex; align-items:center; gap:10px; font-size:11px; color:#f18a82; margin-top:auto; line-height:1.7 }
+.quickPlan { margin-top:85px; padding:36px 0; border-block:1px solid #3b302e; background:radial-gradient(ellipse at 0 50%,#de232119,transparent 80%),#131010 }
+.quickPlan > div { display:flex; justify-content:space-between; align-items:center; gap:28px; flex-wrap:wrap }
+.quickPlan h2 { font-size:30px; margin:0; letter-spacing:-.7px }
+.quickPlan .eyebrow { margin-bottom:10px }
+.quickPlan p { font-size:12px; color:#ccc; line-height:1.7; margin:0 }
+.quickPlan p svg { display:block; color:#f15b53; font-size:26px; margin-bottom:12px }
+.concept .trackGrid { grid-template-columns:repeat(3,minmax(0,1fr)) }
+.concept .trackCard { min-height:310px }
+.concept .trackCard h3 { font-size:23px }
+.compactPlanning { padding-block:90px }
+@media(min-width:1600px) { .hero { gap:90px } }
+@media(max-width:1100px) {
+ .wrap,.benefits { width:calc(100% - 64px) }
+ .hero { width:calc(100% - 64px); gap:28px; min-height:580px }
+ .heroVisual { height:520px }
+ .hero h1 { font-size:72px; letter-spacing:-3px }
+ .heroCopy > p { font-size:14px }
+ .benefits > div { font-size:11px; gap:10px; padding-inline:12px }
+ .benefits svg { font-size:24px }
+ .bikeGrid { gap:16px }.cardBody { padding:20px }.bikeImage { height:220px }
+ .serviceGrid { grid-template-columns:repeat(3,minmax(0,1fr)) }
+ .coaching,.about { gap:35px }.experience { gap:30px; padding:28px }
+ .concept .hero { padding-inline:32px }
+ .concept .trackGrid { grid-template-columns:repeat(2,minmax(0,1fr)) }
+ .concept .trackCard:last-child { grid-column:1 / -1 }
+ .newsletter form { width:320px }
+}
+@media(max-width:750px) {
+ .wrap,.benefits { width:calc(100% - 36px) }
+ .page h2 { font-size:34px; letter-spacing:-1px }
+ .eyebrow { font-size:10px; letter-spacing:1.2px }
+ .hero { width:calc(100% - 36px); display:flex; flex-direction:column; align-items:stretch; gap:25px; padding:20px 0 50px; margin-top:0 }
+ .heroCopy { order:0; padding:20px 0 0 }.heroVisual { order:1; height:360px; border-radius:90px 8px 8px 8px }
+ .hero h1 { font-size:clamp(60px,11vw,82px); letter-spacing:-3px }.heroCopy > p { max-width:490px; font-size:15px }
+ .heroIndex { display:none }.heroActions { gap:20px }.heroCopy > .heroNote { font-size:10px }
+ .benefits { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 0; padding-block:22px }
+ .benefits > div,.benefits > div:first-child { justify-content:flex-start; padding:0 12px; font-size:12px; border:0 }
+ .benefits > div:last-child { grid-column:1 / -1 }
+ .section { padding-top:65px }.sectionHeading { align-items:flex-start; gap:18px; margin-bottom:28px }
+ .bikeGrid { grid-template-columns:1fr }.bikeImage { height:280px }.cardBody h3 { font-size:22px }
+ .planning { padding-block:65px }.planning ol { grid-template-columns:1fr; gap:28px }.planning li { padding-top:20px }.planning li > span { margin-bottom:12px }.planning li p { max-width:none }
+ .experience { grid-template-columns:1fr; padding:18px; gap:25px }.experience > img { height:300px }.experience > div { padding:0 6px 16px }.experienceNumber { font-size:65px }
+ .trackGrid,.concept .trackGrid { grid-template-columns:1fr; gap:18px }.trackCard { min-height:300px }.concept .trackCard:last-child { grid-column:auto }
+ .coaching { grid-template-columns:1fr; gap:32px; padding-block:65px }.coachGrid { gap:14px }.coachCard > div:last-child { padding:15px }.coachCard h3 { font-size:16px }.coachCard p { font-size:12px }
+ .faq { grid-template-columns:1fr; gap:20px; padding-block:65px }.faq summary { font-size:15px }
+ .finalCta { padding:50px 20px }.finalCta h2 { font-size:42px }
+ .newsletter { flex-direction:column; align-items:stretch; gap:26px; padding-block:55px }.newsletter form { width:100% }.newsletter h2 { font-size:28px }
+ .concept .hero { display:flex; min-height:650px; padding:50px 18px 100px }.concept .heroVisual { height:100%; order:0 }.concept .heroImage { object-position:45% center }.concept .heroCopy { position:relative }.concept .hero h1 { font-size:clamp(56px,10.5vw,80px); letter-spacing:-2px }
+ .concept .heroVisual::after { background:linear-gradient(90deg,#080808ed,#08080899),linear-gradient(0deg,#080808,transparent) }.concept .photoLabel { right:18px; bottom:26px }
+ .about { grid-template-columns:1fr; padding-top:60px; gap:32px }.aboutImage { height:380px }
+ .serviceGrid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px }.serviceCard:last-child { grid-column:1 / -1 }.serviceCard:last-child .serviceImage { height:200px }
+ .quickPlan { margin-top:55px }.quickPlan > div { gap:26px }.quickPlan > div > div { flex-basis:100% }.quickPlan p { flex:1; min-width:110px }.quickPlan .button { flex-basis:100% }
+}
+@media(prefers-reduced-motion:reduce) { .button,.bikeImage > img,.trackCard > img,.serviceCard { transition:none } }

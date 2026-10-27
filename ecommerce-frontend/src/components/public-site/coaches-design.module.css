@@ -33,7 +33,7 @@
 .filters > button:not(:disabled):active { transform:translateY(0); box-shadow:0 2px 8px #de232126 }
 .filters > button:disabled { opacity:.65; cursor:wait }
 .results { position:relative; z-index:1; display:grid; gap:71px; width:calc(100% - 120px); max-width:1337px; margin:auto }
-.card { position:relative; display:grid; grid-template-columns:545px minmax(0,1fr); gap:75px; min-height:498px; padding:54px 60px 78px 49px; border:1px solid #de2321; border-radius:26px }
+.card { position:relative; display:grid; grid-template-columns:545px minmax(0,1fr); gap:75px; min-height:498px; padding:54px 60px 78px 49px; border:1px solid #de2321; border-radius:26px; background:#121212; color:#f5f5f5 }
 .portrait { position:relative; height:364px; border-radius:26px; overflow:hidden; background:#161616; display:grid; place-items:center; color:#747474 }
 .portrait > img { position:absolute; left:0; top:0; width:100%; height:100%; max-width:none; object-fit:cover }
 .coachInfo { padding-top:24px; min-width:0 }
@@ -45,9 +45,11 @@
 .skills { font-size:24px; line-height:28px }
 .skills h3 { font-size:24px; font-weight:700; margin:0 }
 .skills ul { margin:0; padding-left:36px; list-style:disc }
-.level { color:#de2321; font-size:16px; line-height:28px; font-weight:300; margin:6px 0 0 39px }
-.page .book { position:absolute; right:60px; bottom:28px; display:inline-flex; align-items:center; justify-content:center; gap:17px; height:51px; min-width:155px; padding:12px 25px; background:#de2321; color:#fff; border:1px solid #de2321; border-radius:12px; font-size:15px; font-weight:500 }
-.page .book:hover { background:#000; color:#de2321; box-shadow:0 6px 22px #de23212e }
+.level { color:#ff918b; font-size:16px; line-height:28px; font-weight:500; margin:10px 0 0 39px }
+.page .book { position:absolute; right:60px; bottom:28px; display:inline-flex; align-items:center; justify-content:center; gap:12px; min-height:46px; min-width:155px; padding:12px 22px; background:#fff; color:#050b20; border:1px solid transparent; border-radius:50px; font-size:14px; font-weight:500; transition:background .22s,color .22s,border-color .22s,box-shadow .22s }
+.page .book:hover { background:#de2321; color:#fff; border-color:#de2321; box-shadow:0 6px 22px #de23212e }
+.page .book img { filter:brightness(0) }
+.page .book:hover img { filter:brightness(0) invert(1) }
 .book img { transition:transform .4s cubic-bezier(.22,1,.36,1) }
 .book:hover img { transform:translate(3px,-3px) }
 .more { position:relative; z-index:1; display:grid; place-items:center; width:54px; height:54px; padding:0; margin:65px auto 0; background:transparent; border:0; border-radius:50%; cursor:pointer; transition:transform .35s ease,box-shadow .35s ease }

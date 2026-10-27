@@ -156,8 +156,8 @@
 .resetConfirmation small { display:block; margin:14px auto 0; max-width:320px; color:#999; font-size:12px; line-height:20px }
 
 .savedActions { display:flex; align-items:center; flex-wrap:wrap; gap:16px 24px; margin-top:16px }
-.savedActions > a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border:1px solid #de2321; border-radius:6px; background:#de2321; color:#fff; font-size:13px; font-weight:500; text-decoration:none }
-.savedActions > a:hover { background:#bc1d1b; border-color:#bc1d1b }
+.savedActions > a { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:46px; padding:12px 22px; border:1px solid transparent; border-radius:50px; background:#fff; color:#050b20; font-size:14px; font-weight:500; text-decoration:none; white-space:nowrap; transition:background .22s,color .22s,border-color .22s,box-shadow .22s }
+.savedActions > a:hover { opacity:1; background:#de2321; color:#fff; border-color:#de2321; box-shadow:0 6px 22px #de23212e }
 .savedActions > a:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .savedPhoto { display:block; position:relative; overflow:hidden }
 .savedPhoto img { display:block; transition:transform .4s ease }

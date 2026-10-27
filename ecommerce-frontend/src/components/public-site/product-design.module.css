@@ -165,8 +165,8 @@
 .relatedPrice { display:flex; justify-content:space-between; align-items:end; gap:10px; margin-top:15px }
 .relatedPrice > span { font-size:18px }
 .relatedPrice small { display:block; font-size:12px; line-height:18px }
-.relatedPrice a { display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:10px 16px; border:1px solid var(--red); border-radius:6px; background:var(--red); font-size:12px; font-weight:500; color:#fff; text-decoration:none; white-space:nowrap }
-.relatedPrice a:hover { background:#bc1d1b; border-color:#bc1d1b; color:#fff }
+.relatedPrice a { display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:46px; padding:12px 22px; border:1px solid transparent; border-radius:50px; background:#fff; color:#050b20; font-size:14px; font-weight:500; text-decoration:none; white-space:nowrap; transition:background .22s,color .22s,border-color .22s,box-shadow .22s }
+.relatedPrice a:hover { opacity:1; background:#de2321; color:#fff; border-color:#de2321; box-shadow:0 6px 22px #de23212e }
 .relatedPrice a:focus-visible { outline:2px solid #fff; outline-offset:4px }
 .relatedControls { display:flex; justify-content:space-between; margin-top:24px; align-items:center; font-size:14px }
 .relatedControls > div { display:flex; gap:12px }

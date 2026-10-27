@@ -1,19 +1,2 @@
-import Calendar from "@/components/calendar/Calendar";
-import PageBreadcrumb from "@/components/common/PageBreadCrumb";
-import { Metadata } from "next";
-import React from "react";
-
-export const metadata: Metadata = {
-  title: "Next.js Calender | MxSocal | Powered by Integriti Studio",
-  description:
-    "This is Next.js Calender page for MxSocal  Tailwind CSS Admin Dashboard Template",
-  // other metadata
-};
-export default function page() {
-  return (
-    <div>
-      <PageBreadcrumb pageTitle="Calendar" />
-      <Calendar />
-    </div>
-  );
-}
+import { notFound } from "next/navigation";
+export default function Page() { notFound(); }

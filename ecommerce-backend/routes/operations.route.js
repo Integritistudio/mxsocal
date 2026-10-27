@@ -7,6 +7,7 @@ const User = require("../models/user.model");
 const { Booking, BookingAccessory } = require("../models/booking.model");
 const Availability = require("../models/resource-availability.model");
 const Email = require("../models/booking-email.model");
+const RideRequest = require("../models/ride-request.model");
 const { validateMonthBody } = require("../lib/resource-availability");
 router.use(require("../middleware/auth.middleware"), require("../middleware/account-access.middleware").staff);
 const allowed = (req, permission) => req.user.role === "admin" || req.user.permissions?.includes(permission);
@@ -62,7 +63,8 @@ router.get("/overview", permit("dashboard:view"), async (req, res) => {
     const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
     const [revenue, paidBookings, todaysRides, holds, products, coaches, pendingEmails] = await Promise.all([Booking.sum("totalPrice", { where: { paymentStatus: "paid" } }), Booking.count({ where: { paymentStatus: "paid" } }), Booking.count({ where: { bookingDate: today, status: "confirmed" } }), Booking.count({ where: { status: "pending", paymentStatus: "pending" } }), Product.findAll({ attributes: ["id", "name", "images", "category", "stockQuantity", "status", "available"] }), Coach.count(), Email.count({ where: { sentAt: null } })]);
     const upcoming = allowed(req, "booking:view") ? await Booking.findAll({ where: { bookingDate: { [Op.gte]: today }, status: "confirmed" }, include, order: [["bookingDate", "ASC"]], limit: 8 }) : [];
-    res.json({ revenue: Number(revenue || 0), paidBookings, todaysRides, holds, products, coaches, pendingEmails, upcoming: upcoming.map(present), today });
+    const [pendingRequests, approvedRequests] = await Promise.all([RideRequest.count({ where: { status: "requested" } }), RideRequest.count({ where: { status: "approved" } })]);
+    res.json({ pendingRequests, approvedRequests, revenue: Number(revenue || 0), paidBookings, todaysRides, holds, products, coaches, pendingEmails, upcoming: upcoming.map(present), today });
   } catch { res.status(503).json({ message: "Unable to load dashboard data." }); }
 });
 router.use("/availability/:type/:id", (req, res, next) => {

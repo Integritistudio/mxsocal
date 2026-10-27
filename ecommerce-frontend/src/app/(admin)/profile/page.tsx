@@ -5,7 +5,7 @@ import { Metadata } from "next";
 import React from "react";
 
 export const metadata: Metadata = {
-  title: "Profile | Ecommerce Admin Dashboard",
+  title: "Staff Profile | MXSoCal",
   description:
     "View and manage your user profile information",
 };
