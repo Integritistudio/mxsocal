@@ -50,6 +50,7 @@ async function fulfill(session) {
     if (participant.paidAt) return;
     if (!["pending_payment", "approved"].includes(request.status)) fail("Payment received for a closed request. Manual review is required.");
     await participant.update({ paidAt: new Date(), stripeSessionId: session.id, paymentIntentId: session.payment_intent }, { transaction });
+    await require("./ride-request-email").queuePaymentReceipt(participant, transaction);
     await completeGroup(request, transaction);
   });
 }
@@ -61,6 +62,7 @@ async function sign(id, body, audit) {
     if (body.accepted !== true || body.version !== terms.version || name.length < 2 || name.length > 100 || !["self", "guardian"].includes(body.signerRole) || body.adultConfirmed !== true) fail("Read the current terms, enter your full name, and confirm you are an adult rider or legal guardian.", 400);
     if (Number(request.draft.riders[participant.riderIndex].age) < 18 && body.signerRole !== "guardian") fail("A parent or legal guardian must sign for this rider.", 400);
     await participant.update({ signedAt: new Date(), waiver: { ...terms, signature: name, signerRole: body.signerRole, accepted: true, adultConfirmed: true, riderName: participant.name, riderIndex: participant.riderIndex, requestId: request.id, startDate: request.startDate, endDate: request.endDate, amountCents: participant.amountCents, ...audit }, ...(participant.amountCents === 0 ? { paidAt: new Date() } : {}) }, { transaction });
+    if (participant.paidAt) await require("./ride-request-email").queuePaymentReceipt(participant, transaction);
     await completeGroup(request, transaction);
   });
 }
@@ -93,6 +95,7 @@ async function checkout(id) {
 async function createSession(client, request, participant) {
   const url = require("./ride-participant-links").url(participant);
   return client.checkout.sessions.create({ mode: "payment", payment_method_types: ["card"], customer_email: participant.email, client_reference_id: participant.id,
+    payment_intent_data: { receipt_email: participant.email },
     metadata: { rideParticipantId: participant.id, rideRequestId: request.id, checkoutAttempt: String(participant.checkoutAttempt) },
     success_url: url, cancel_url: url,
     line_items: [{ quantity: 1, price_data: { currency: participant.currency, unit_amount: participant.amountCents, product_data: { name: `MXSoCal ride — ${participant.name} (${request.startDate} – ${request.endDate})` } } }],
@@ -101,12 +104,26 @@ async function createSession(client, request, participant) {
 async function reconcile(id) {
   const participant = await Participant.findByPk(id);
   if (participant?.stripeSessionId && !participant.paidAt) await fulfill(await stripe().checkout.sessions.retrieve(participant.stripeSessionId));
+  // Also fills the receipt queue for paid bookings created before receipt emails existed.
+  if (participant?.paidAt) await require("./ride-request-email").queuePaymentReceipt(participant);
 }
 async function view(id) {
   const participant = await Participant.findByPk(id);
   const request = participant && await Request.findByPk(participant.requestId);
   if (!request) fail("Ride not found.", 404);
-  return { id: participant.id, name: participant.name, amountCents: participant.amountCents, signedAt: participant.signedAt, paidAt: participant.paidAt, status: request.status, startDate: request.startDate, endDate: request.endDate, track: request.estimate.track?.name, items: riderItems(request, participant.riderIndex), terms, requiresGuardian: Number(request.draft.riders[participant.riderIndex].age) < 18, canComplete: request.status === "pending_payment" && request.startDate >= currentDate() };
+  let paymentReceiptUrl = null;
+  try { paymentReceiptUrl = await receiptUrl(participant); } catch { /* Booking details remain available during a Stripe outage. */ }
+  return { id: participant.id, requestId: request.id, riderIndex: participant.riderIndex, receiptUrl: paymentReceiptUrl, name: participant.name, amountCents: participant.amountCents, signedAt: participant.signedAt, paidAt: participant.paidAt, status: request.status, startDate: request.startDate, endDate: request.endDate, track: request.estimate.track?.name, items: riderItems(request, participant.riderIndex), terms, requiresGuardian: Number(request.draft.riders[participant.riderIndex].age) < 18, canComplete: request.status === "pending_payment" && request.startDate >= currentDate() };
+}
+async function receiptUrl(participant) {
+  if (!participant.paidAt || !participant.paymentIntentId) return null;
+  const intent = await stripe().paymentIntents.retrieve(participant.paymentIntentId, { expand: ["latest_charge"] });
+  if (intent.id !== participant.paymentIntentId || intent.status !== "succeeded" || intent.amount_received !== participant.amountCents || intent.currency !== participant.currency) fail("Receipt does not match this rider's payment.");
+  const url = intent.latest_charge?.receipt_url;
+  if (!url) return null;
+  const parsed = new URL(url);
+  if (parsed.protocol !== "https:" || !parsed.hostname.endsWith(".stripe.com")) fail("Invalid payment receipt URL.");
+  return url;
 }
 async function cancel(request, transaction) {
   const riders = await Participant.findAll({ where: { requestId: request.id }, transaction });
@@ -135,4 +152,4 @@ async function maintenance() {
     }
   } finally { maintenanceBusy = false; }
 }
-module.exports = { initialize, locked, fulfill, sign, checkout, reconcile, view, cancel, stripe, ensureOpen, completeGroup, fail, maintenance };
+module.exports = { initialize, locked, fulfill, sign, checkout, reconcile, view, cancel, stripe, ensureOpen, completeGroup, fail, maintenance, receiptUrl };

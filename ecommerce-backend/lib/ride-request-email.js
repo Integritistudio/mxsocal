@@ -15,6 +15,14 @@ exports.queueParticipant = async (participant, transaction, resend = false) => {
   }
   await participant.update({ lastLinkSentAt: new Date() }, { transaction });
 };
+exports.queuePaymentReceipt = async (participant, transaction) => {
+  await Email.findOrCreate({ where: { requestId: participant.requestId, kind: "paid", riderIndex: participant.riderIndex }, defaults: { email: participant.email }, transaction });
+};
+exports.queueRejection = async (request, transaction) => {
+  for (const [riderIndex, rider] of request.draft.riders.entries()) {
+    await Email.findOrCreate({ where: { requestId: request.id, kind: "rejected", riderIndex }, defaults: { email: rider.email }, transaction });
+  }
+};
 exports.deliver = async () => {
   const jobs = await db.transaction(async transaction => {
     const rows = await Email.findAll({ where: { sentAt: null, nextAttemptAt: { [Op.lte]: new Date() }, [Op.or]: [{ lockedUntil: null }, { lockedUntil: { [Op.lt]: new Date() } }] }, order: [["nextAttemptAt", "ASC"], ["id", "ASC"]], limit: 10, lock: transaction.LOCK.UPDATE, skipLocked: true, transaction });
@@ -25,6 +33,20 @@ exports.deliver = async () => {
     try {
       const request = await Request.findByPk(job.requestId);
       if (!request) { await job.destroy(); continue; }
+      if (job.kind === "rejected") {
+        if (request.status !== "rejected") { await job.update({ sentAt: new Date(), lockedUntil: null }); continue; }
+        await require("./account-mail").sendAccountMail({ email: job.email, ...require("./ride-request-rejection-email").rejectionEmail(request, job.riderIndex) });
+        await job.update({ sentAt: new Date(), lockedUntil: null });
+        continue;
+      }
+      if (job.kind === "paid") {
+        const participant = await require("../models/ride-participant.model").findOne({ where: { requestId: request.id, riderIndex: job.riderIndex } });
+        if (!participant?.paidAt) throw new Error("Payment receipt requires a paid rider.");
+        const receiptUrl = await require("./ride-participant-checkout").receiptUrl(participant);
+        await require("./account-mail").sendAccountMail({ email: participant.email, ...require("./ride-participant-email-template").paymentReceiptEmail(request, participant, receiptUrl) });
+        await job.update({ sentAt: new Date(), lockedUntil: null });
+        continue;
+      }
       if (job.kind === "checkout") {
         const participant = await require("../models/ride-participant.model").findOne({ where: { requestId: request.id, riderIndex: job.riderIndex } });
         if (request.status !== "pending_payment" || !participant || participant.paidAt) { await job.update({ sentAt: new Date(), lockedUntil: null }); continue; }

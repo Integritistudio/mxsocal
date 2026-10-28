@@ -97,6 +97,7 @@ router.patch("/admin/:id", access.staff, permit("booking:update"), async (req, r
         await Booking.update({ status: "cancelled" }, { where: { meta: { [Op.contains]: { requestId: request.id } } }, transaction });
       }
       await request.update({ status: req.body.status === "approved" ? "pending_payment" : req.body.status, reviewedBy: req.user.id, reviewedAt: new Date(), adminNote: req.body.note?.trim() || null }, { transaction });
+      if (request.status === "rejected") await requestMail.queueRejection(request, transaction);
       return request;
     });
     await request.reload({ include: [participants] });

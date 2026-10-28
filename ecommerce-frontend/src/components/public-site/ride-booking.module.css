@@ -13,6 +13,30 @@
 .steps button[aria-current="step"] span { background:#de2321; border-color:#de2321 }
 .main .steps button:disabled { cursor:default; opacity:1 }
 .flowLayout { display:block; max-width:1050px; margin-inline:auto }
+.flowWithSummary { display:grid; grid-template-columns:minmax(0,1fr) 290px; align-items:start; gap:32px; max-width:none }
+.stepCounter { display:block; margin-top:9px; color:#999; font-size:12px; font-weight:400; letter-spacing:.3px }
+.stepHint { color:#aaa; font-size:14px; line-height:1.8; margin:0 0 24px }
+.tripSummary { position:sticky; top:24px; padding:24px; background:linear-gradient(145deg,#251514,#111 65%); border:1px solid #ffffff2b; border-radius:16px }
+.tripSummary > span { color:#ef9994; font-size:10px; text-transform:uppercase; letter-spacing:1.5px }
+.tripSummary h3 { margin:12px 0 18px; font-size:22px; font-weight:500 }
+.tripSummarySection { padding:16px 0; border-top:1px solid #ffffff20; font-size:12px }
+.tripSummarySection > div { display:flex; justify-content:space-between; align-items:center }
+.tripSummarySection strong { font-weight:500; color:#eee }
+.tripSummarySection p { color:#aaa; line-height:1.8; margin:8px 0 }
+.tripSummarySection small { display:block; color:#aaa; font-size:11px; line-height:1.8 }
+.tripSummarySection button { border:0; color:#ef9994; background:transparent; font:inherit; font-size:11px; padding:4px 0 4px 12px; cursor:pointer }
+.tripSummary .total { font-size:13px; gap:10px }
+.tripSummary .total strong { font-size:19px }
+.nextSteps { border-top:1px solid #ffffff20; padding-top:18px; font-size:12px; line-height:1.8 }
+.nextSteps > strong { font-weight:500 }
+.nextSteps ol { list-style:decimal; margin:12px 0; padding-left:18px; color:#aaa }
+.nextSteps li { margin:6px 0 }
+.nextSteps small { color:#ef9994; font-size:10px }
+.riderEstimate { display:flex; align-items:center; justify-content:space-between; gap:12px; border-top:1px dashed #ffffff30; padding-top:14px; margin-top:14px; font-size:14px }
+.riderEstimate strong { color:#ef9994 }
+.content:not(.bikeDateLayout) > .actions { position:sticky; bottom:12px; z-index:3; padding:16px; border:1px solid #ffffff25; border-radius:14px; background:#111f; box-shadow:0 8px 35px #0006 }
+@media(max-width:1100px) { .flowWithSummary { grid-template-columns:minmax(0,1fr) 250px; gap:24px } .tripSummary { padding:18px } }
+@media(max-width:750px) { .flowWithSummary { display:flex; flex-direction:column } .tripSummary { position:static; width:100%; margin-top:24px } .content:not(.bikeDateLayout) > .actions { padding:12px; gap:10px; bottom:8px } .content:not(.bikeDateLayout) > .actions > .primary { flex:1; font-size:12px; padding:12px } }
 .selectedRental { display:flex; align-items:center; gap:16px; padding:18px 0; margin-top:24px; border-block:1px solid #ffffff25 }
 .selectedRental > img { width:80px; height:65px; object-fit:contain; border-radius:8px; background:#111 }
 .selectedRental > div { display:grid; gap:7px; flex:1; min-width:0 }

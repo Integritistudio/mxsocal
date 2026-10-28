@@ -19,6 +19,15 @@
 .pendingStatus { display:inline-flex; align-items:center; border:1px solid #71572c; border-radius:50px; padding:6px 12px; color:#f1ca85; background:#342817; font-size:12px; font-weight:500; line-height:1.5 }
 .waiverStatus { margin:18px 28px 0 }
 .signedStatus { color:#83d7a7; border-color:#37674b; background:#192b21 }
+.paidText { color:#83d7a7 }
+.paymentSummary { margin:0; padding:0 28px 20px; color:#aaa; font-size:13px }
+.paymentSummary strong { color:#83d7a7; font-weight:500 }
+.riderTabs { display:flex; flex-wrap:wrap; gap:10px; padding-top:24px }
+.riderTabs button { display:flex; align-items:center; gap:10px; border:1px solid #444; border-radius:8px; background:#191919; color:#ccc; padding:12px 18px; font:inherit; font-size:14px; cursor:pointer }
+.riderTabs button[aria-pressed="true"] { border-color:#de2321; background:#de23211c; color:#fff }
+.riderTabs small { color:#83d7a7; font-size:11px }
+.rider .progress { padding:10px 0; border-bottom:0 }
+.rider .progressRow { border-top:0; padding:6px 0 }
 .cardAction small { display:block; font-size:11px; color:#aaa; font-weight:400; margin-top:4px }
 .cardAction > span { display:flex; align-items:center; gap:10px; font-size:13px; color:#ffaaa6 }
 .cardAction svg { transition:transform .2s }
@@ -41,6 +50,7 @@ a.status:hover { border-color:#f1ca85 }
 .progress > p { font-size:12px; line-height:1.8; color:#aaa }
 .progressRow { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:16px 0; border-top:1px solid #333 }
 .progressRow strong { font-size:14px; font-weight:500 }
+.progressRow > div > strong { display:block }
 .progressRow small { display:block; font-size:12px; line-height:1.8; color:#aaa; margin-top:5px }
 .progressActions a,.progressActions button { display:inline-block; border:1px solid #71572c; border-radius:24px; padding:10px 16px; background:#342817; color:#f1ca85; font:inherit; font-size:12px; text-decoration:none; cursor:pointer }
 .progressActions button:disabled { opacity:.5; cursor:wait }
@@ -75,6 +85,7 @@ a.status:hover { border-color:#f1ca85 }
 .empty { padding:24px; border:1px dashed #444; color:#aaa; font-size:14px }
 .error { padding:16px; border:1px solid #de2321; color:#ffaaa5; font-size:14px }
 @media(max-width:600px) {
+ .paymentSummary { padding:0 16px 18px }
  .cardAction { padding:18px 16px; gap:12px; flex-wrap:wrap }
  .estimateStatus > strong { font-size:20px }
  .waiverStatus { margin:16px 16px 0 }

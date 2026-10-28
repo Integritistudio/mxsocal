@@ -1,15 +1,20 @@
-.page { min-height:70vh; padding:60px 20px 90px; background:#050505; color:#eee }
-.card { max-width:780px; margin:auto; padding:32px; background:#111; border:1px solid #393939; border-top:3px solid #de2321; border-radius:10px }
+.page { position:relative; isolation:isolate; min-height:70vh; padding:60px 20px 90px; background:#050505; color:#eee }
+.backgroundVideo { position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover; pointer-events:none }
+.videoOverlay { position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg,#0008,#000b 60%,#000e); pointer-events:none }
+.card { max-width:780px; margin:auto; padding:32px; background:#111e; backdrop-filter:blur(8px); border:1px solid #393939; border-top:3px solid #de2321; border-radius:10px }
 .eyebrow { color:#ffaaa6; font-size:12px; text-transform:uppercase; letter-spacing:1px }
 .card h1 { font-size:30px; margin:12px 0 }
 .card h2 { font-size:22px; margin:0 0 16px }
-.card p { line-height:1.8 }
+.card p { line-height:1.8; margin:0 0 16px }
 .steps { display:flex; flex-wrap:wrap; gap:12px; padding:0; margin:24px 0; list-style:none }
 .steps li { border:1px solid #71572c; color:#f1ca85; padding:10px 16px; border-radius:30px; font-size:13px }
 .steps li[data-done="true"] { color:#83d7a7; border-color:#37674b }
 .items { margin:24px 0; border-block:1px solid #333; padding:10px 0 }
 .items > div { display:flex; justify-content:space-between; align-items:baseline; gap:18px; padding:10px 0; font-size:14px }
 .items small { display:block; color:#aaa; font-size:12px }
+.items .itemRow { align-items:center }
+.itemImage { width:64px; height:64px; object-fit:contain; flex-shrink:0; border-radius:8px; background:#242424 }
+.itemDescription { flex:1; min-width:0; overflow-wrap:anywhere }
 .items strong { white-space:nowrap }
 .items .total { border-top:1px solid #333; margin-top:12px; padding-top:18px; font-size:20px }
 .terms { border:1px solid #393939; background:#191919; padding:20px; border-radius:8px }
@@ -24,7 +29,11 @@
 .card button:disabled { opacity:.5; cursor:wait }
 .card button.secondary { background:transparent; border-color:#555 }
 .card a { color:#ffaaa6; display:inline-block; margin-top:12px }
-.notice { padding:22px; background:#1b1b1b; border:1px solid #444; border-radius:8px; margin:24px 0 }
+.notice { display:grid; justify-items:start; gap:18px; padding:26px; background:#1b1b1b; border:1px solid #444; border-radius:8px; margin:28px 0 }
+.card .notice h2,.card .notice p,.card .notice a,.card .notice button { margin:0 }
+.footerActions { display:grid; justify-items:start; gap:18px; padding-top:8px }
+.card .footerActions p,.card .footerActions a,.card .footerActions button { margin:0 }
 .error { padding:14px; border:1px solid #de2321; color:#ffaaa6 }
 .muted { color:#aaa; font-size:12px }
 @media(max-width:600px) { .page { padding:30px 12px 60px } .card { padding:22px 16px } .card h1 { font-size:26px } .terms { padding:14px } .notice { padding:16px } }
+@media(max-width:600px) { .items .itemRow { gap:10px; font-size:12px } .itemImage { width:46px; height:46px } }

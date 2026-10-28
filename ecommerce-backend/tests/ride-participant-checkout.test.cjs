@@ -14,12 +14,13 @@ function harness() {
   const request = fixture(); request.update = async values => Object.assign(request, values);
   const amounts = splitAmounts(request);
   const riders = amounts.map((amountCents, i) => ({ id: `rider-${i}`, requestId: request.id, riderIndex: i, name: request.draft.riders[i].name, email: request.draft.riders[i].email, amountCents, currency: "usd", checkoutAttempt: 0, signedAt: null, paidAt: null, stripeSessionId: null, async update(values) { Object.assign(this, values); }, async save() {}, changed() {} }));
-  const sessions = new Map(), keys = [], bookingUpdates = [];
+  const sessions = new Map(), keys = [], bookingUpdates = [], receipts = new Set(), sessionParams = [];
   let creates = 0, tail = Promise.resolve();
   const transaction = { LOCK: { UPDATE: "UPDATE" } };
   const db = { transaction: callback => { const job = tail.then(() => callback(transaction)); tail = job.catch(() => {}); return job; } };
   const stripe = { checkout: { sessions: {
     create: async (params, options) => {
+      sessionParams.push(params);
       keys.push(options.idempotencyKey);
       const existing = [...sessions.values()].find(s => s.key === options.idempotencyKey);
       if (existing) return existing;
@@ -31,9 +32,10 @@ function harness() {
     expire: async id => { const session = sessions.get(id); session.status = "expired"; return session; },
   } } };
   const module = { exports: {} };
-  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "../lib/ride-participant-checkout.js"), "utf8"), { module, exports: module.exports, console, process: { env: { STRIPE_SECRET_KEY: "sk_test_fake" } }, require: name => {
+  vm.runInNewContext(fs.readFileSync(path.join(__dirname, "../lib/ride-participant-checkout.js"), "utf8"), { module, exports: module.exports, console, URL, process: { env: { STRIPE_SECRET_KEY: "sk_test_fake" } }, require: name => {
     if (name === "sequelize") return require("sequelize");
     if (name === "stripe") return () => stripe;
+    if (name === "./ride-request-email") return { queuePaymentReceipt: async participant => receipts.add(participant.id) };
     if (name.includes("config/database")) return db;
     if (name.includes("ride-request.model")) return { findByPk: async () => request };
     if (name.includes("ride-participant.model")) return { findByPk: async id => riders.find(r => r.id === id), findAll: async () => riders };
@@ -41,7 +43,7 @@ function harness() {
     if (name === "./ride-participant-links") return { url: p => `https://mxsocal.test/ride/complete/${p.id}#token=test` };
     return require(path.resolve(__dirname, "../lib", name));
   } });
-  return { ...module.exports, request, riders, sessions, keys, bookingUpdates, creates: () => creates };
+  return { ...module.exports, request, riders, sessions, keys, bookingUpdates, receipts, sessionParams, stripeClient: stripe, creates: () => creates };
 }
 const signature = (overrides = {}) => ({ signature: "Legal Rider Name", signerRole: "self", adultConfirmed: true, accepted: true, version: terms.version, ...overrides });
 test("group coach is entirely on owner; individual coaches belong to assigned riders", () => {
@@ -82,6 +84,9 @@ test("all riders must sign and pay; concurrent duplicate webhooks confirm exactl
   assert.equal(h.request.status, "approved");
   assert.equal(h.bookingUpdates.length, 1);
   assert.equal(h.bookingUpdates[0].paymentStatus, "paid");
+  assert.equal(h.receipts.size, 2);
+  assert.equal(h.sessionParams[0].payment_intent_data.receipt_email, "owner@example.com");
+  assert.equal(h.sessionParams[1].payment_intent_data.receipt_email, "buddy@example.com");
 });
 test("wrong totals, currency, live mode, metadata, and unsigned payments cannot fulfill", async () => {
   const h = harness(); await h.sign("rider-0", signature(), {}); await h.checkout("rider-0");
@@ -138,4 +143,22 @@ test("personal link tokens bind to participant and request", () => {
     assert.equal(links.valid(rider, "bad"), false);
     assert.ok(links.url(rider).includes("#token="));
   } finally { if (previous === undefined) delete process.env.RIDE_LINK_SECRET; else process.env.RIDE_LINK_SECRET = previous; }
+});
+test("Stripe receipt links match the paid rider and reject mismatched amounts", async () => {
+  const h = harness(), rider = h.riders[1];
+  rider.paidAt = new Date(); rider.paymentIntentId = "pi_buddy";
+  const intent = { id: "pi_buddy", status: "succeeded", amount_received: rider.amountCents, currency: "usd", latest_charge: { receipt_url: "https://pay.stripe.com/receipts/test" } };
+  h.stripeClient.paymentIntents = { retrieve: async id => { assert.equal(id, "pi_buddy"); return intent; } };
+  assert.equal(await h.receiptUrl(rider), intent.latest_charge.receipt_url);
+  intent.amount_received++;
+  await assert.rejects(() => h.receiptUrl(rider), /does not match/);
+  intent.amount_received--; intent.latest_charge.receipt_url = "https://example.com/fake";
+  await assert.rejects(() => h.receiptUrl(rider), /Invalid payment receipt/);
+});
+test("paid legacy rider gets a receipt job on refresh and Stripe outage preserves booking view", async () => {
+  const h = harness(), rider = h.riders[1];
+  rider.paidAt = new Date(); rider.paymentIntentId = "pi_buddy";
+  h.stripeClient.paymentIntents = { retrieve: async () => { throw Error("Stripe unavailable"); } };
+  await h.reconcile(rider.id); assert.ok(h.receipts.has(rider.id));
+  const view = await h.view(rider.id); assert.equal(view.riderIndex, 1); assert.equal(view.receiptUrl, null);
 });
