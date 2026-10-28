@@ -18,11 +18,11 @@ export default function CustomerAuth({ mode, nextPath = "/account", resetToken =
   const sessionPending = Boolean(loadingAuth || (user && (mode === "signin" || mode === "signup")));
   useEffect(() => {
     if (loadingAuth || !user || (mode !== "signin" && mode !== "signup")) return;
-    const safeNext = /^\/(?:account|bikes|products|booking)(?:\/|\?|$)/.test(nextPath) && !nextPath.includes("\\") ? nextPath : "/account";
+    const safeNext = /^\/(?:account|bikes|products|booking|ride\/complete)(?:\/|\?|$)/.test(nextPath) && !nextPath.includes("\\") ? nextPath : "/account";
     router.replace(user.role === "user" ? safeNext : "/dashboard");
   }, [loadingAuth, user, mode, nextPath, router]);
   const title = challenge ? "Verify your email" : mode === "signup" ? "Create your account" : mode === "forgot" ? "Forgot your password?" : mode === "reset" ? "Choose your password" : "Welcome back";
-  function finish(user: Parameters<typeof login>[0]) { login(user); const next = nextPath; const staffHome = user.role === "manager" ? Object.entries({ "dashboard:view": "/dashboard", "product:view": "/products", "coach:view": "/dashboard/coaches", "booking:view": "/bookings" }).find(([permission]) => user.permissions?.includes(permission))?.[1] || "/profile" : "/dashboard"; router.replace(user.role !== "user" ? staffHome : /^\/(?:account|bikes|products|booking)(?:\/|\?|$)/.test(next) && !next.includes("\\") ? next : "/account");  }
+  function finish(user: Parameters<typeof login>[0]) { login(user); const next = nextPath; const staffHome = user.role === "manager" ? Object.entries({ "dashboard:view": "/dashboard", "product:view": "/products", "coach:view": "/dashboard/coaches", "booking:view": "/bookings" }).find(([permission]) => user.permissions?.includes(permission))?.[1] || "/profile" : "/dashboard"; router.replace(user.role !== "user" ? staffHome : /^\/(?:account|bikes|products|booking|ride\/complete)(?:\/|\?|$)/.test(next) && !next.includes("\\") ? next : "/account");  }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); setError(""); setMessage("");
     const errors: Record<string, string> = {};

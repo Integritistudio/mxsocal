@@ -5,7 +5,8 @@ export type Rider = { name: string; email: string; phone: string; age?: string |
 export type RideDraft = { trackId: string | null; startDate: string; endDate: string; riders: Rider[]; coachId: string | null; coachMode?: "group" | "individual"; notes: string };
 export type RideCatalog = { tracks: RideTrack[]; products: RideProduct[]; bikes: RideProduct[]; coaches: RideCoach[]; today: string; lastDate: string; dates: string[]; needsCoach: boolean; gearDailyAmount: number | null };
 export type RideEstimate = { track: { id: string; name: string } | null; dates: string[]; items: { riderIndex?: number; riderName?: string; assignmentLabel?: string; included?: boolean; gearPackage?: boolean; productId?: string; coachId?: string; name: string; size?: string; image?: string; dailyAmount: number; days: number; amount: number }[]; coach: RideCoach | null; coaches?: (RideCoach & { assignmentLabel?: string })[]; totalAmount: number; currency: string; needsCoach: boolean };
-export type RideRequest = { id: string; status: string; startDate: string; endDate: string; draft: RideDraft; estimate: RideEstimate; adminNote?: string; expiredAt?: string | null; createdAt: string; User?: { name: string; email: string; phone: string } };
+export type RideParticipant = { id: string; riderIndex: number; name: string; amountCents: number; signedAt: string | null; paidAt: string | null; lastLinkSentAt?: string | null };
+export type RideRequest = { id: string; status: string; startDate: string; endDate: string; draft: RideDraft; estimate: RideEstimate; participants?: RideParticipant[]; adminNote?: string; expiredAt?: string | null; createdAt: string; User?: { name: string; email: string; phone: string } };
 export async function rideRequest<T>(path: string, method = "GET", data?: unknown, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`/api/ride-requests/${path}`, { method, signal, cache: "no-store", ...(data === undefined ? {} : { headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }) });
   const result = await response.json(); if (!response.ok) throw new Error(result.message || "Unable to process your ride request."); return result;
@@ -26,11 +27,15 @@ export function buddyDetailsValid(rider: Rider) {
 
 export const rideRequestTabs = [
   { key: "all", label: "All" }, { key: "requested", label: "Awaiting approval" },
-  { key: "approved", label: "Approved" }, { key: "rejected", label: "Rejected" },
+  { key: "pending_payment", label: "Pending payment" }, { key: "upcoming", label: "Upcoming rides" }, { key: "done", label: "Done" }, { key: "approved", label: "Approved" }, { key: "rejected", label: "Rejected" },
   { key: "expired", label: "Expired" }, { key: "cancelled", label: "Cancelled" },
 ];
 export function matchesRequestTab(request: RideRequest, tab: string) {
   if (tab === "all") return true;
+  if (tab === "upcoming" || tab === "done") {
+    const today = new Intl.DateTimeFormat("sv-SE", { timeZone: "America/Los_Angeles" }).format(new Date());
+    return request.status === "approved" && (tab === "done" ? request.endDate < today : request.endDate >= today);
+  }
   if (tab === "expired") return !!request.expiredAt;
   if (tab === "rejected") return request.status === "rejected" && !request.expiredAt;
   return request.status === tab;

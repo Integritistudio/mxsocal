@@ -14,7 +14,11 @@
 .summary:hover { background:#ffffff04 }
 .summary:focus-visible { outline:2px solid #ef7775; outline-offset:-4px; border-radius:8px }
 .cardAction { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 28px }
-.cardAction > strong { font-size:22px; font-weight:500 }
+.estimateStatus { display:flex; align-items:center; flex-wrap:wrap; gap:12px 18px }
+.estimateStatus > strong { font-size:22px; font-weight:500 }
+.pendingStatus { display:inline-flex; align-items:center; border:1px solid #71572c; border-radius:50px; padding:6px 12px; color:#f1ca85; background:#342817; font-size:12px; font-weight:500; line-height:1.5 }
+.waiverStatus { margin:18px 28px 0 }
+.signedStatus { color:#83d7a7; border-color:#37674b; background:#192b21 }
 .cardAction small { display:block; font-size:11px; color:#aaa; font-weight:400; margin-top:4px }
 .cardAction > span { display:flex; align-items:center; gap:10px; font-size:13px; color:#ffaaa6 }
 .cardAction svg { transition:transform .2s }
@@ -29,8 +33,20 @@
 .status { display:inline-flex; align-items:center; gap:7px; font-size:12px; font-weight:500; line-height:1.5; border:1px solid #de232160; border-radius:50px; padding:7px 13px; color:#ffaaa6; background:#de232114 }
 .status::before { content:""; width:6px; height:6px; border-radius:50%; background:currentColor; flex-shrink:0 }
 .status[data-status="approved"] { color:#83d7a7; border-color:#37674b; background:#192b21 }
+.status[data-status="pending_payment"] { color:#f1ca85; border-color:#71572c; background:#342817 }
+a.status { text-decoration:none }
+a.status:hover { border-color:#f1ca85 }
+.progress { padding:24px 0; border-bottom:1px solid #393939 }
+.progress h4 { margin:0 0 10px; font-size:17px }
+.progress > p { font-size:12px; line-height:1.8; color:#aaa }
+.progressRow { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:16px 0; border-top:1px solid #333 }
+.progressRow strong { font-size:14px; font-weight:500 }
+.progressRow small { display:block; font-size:12px; line-height:1.8; color:#aaa; margin-top:5px }
+.progressActions a,.progressActions button { display:inline-block; border:1px solid #71572c; border-radius:24px; padding:10px 16px; background:#342817; color:#f1ca85; font:inherit; font-size:12px; text-decoration:none; cursor:pointer }
+.progressActions button:disabled { opacity:.5; cursor:wait }
 .status[data-status="cancelled"],.status[data-status="rejected"] { color:#bbb; border-color:#444; background:#222 }
-.meta { display:grid; grid-template-columns:2fr 1fr; gap:16px 24px; margin:0; padding:0 28px 24px; border-bottom:1px dashed #444 }
+.metaSection { padding-bottom:24px; border-bottom:1px dashed #444 }
+.meta { display:grid; grid-template-columns:2fr 1fr; gap:16px 24px; margin:0; padding:0 28px }
 .meta dt { font-size:11px; color:#999; margin-bottom:6px }
 .meta dd { margin:0; font-size:13px; line-height:1.6 }
 .reference { grid-column:1 / -1 }
@@ -59,11 +75,13 @@
 .empty { padding:24px; border:1px dashed #444; color:#aaa; font-size:14px }
 .error { padding:16px; border:1px solid #de2321; color:#ffaaa5; font-size:14px }
 @media(max-width:600px) {
- .cardAction { padding:18px 16px; gap:12px }
- .cardAction > strong { font-size:20px }
+ .cardAction { padding:18px 16px; gap:12px; flex-wrap:wrap }
+ .estimateStatus > strong { font-size:20px }
+ .waiverStatus { margin:16px 16px 0 }
  .receiptHeader { padding:20px 16px }
  .receiptHeader h3 { font-size:21px }
- .meta { grid-template-columns:1fr; padding:0 16px 20px; gap:14px }
+ .metaSection { padding-bottom:20px }
+ .meta { grid-template-columns:1fr; padding:0 16px; gap:14px }
  .body { padding:0 16px 20px }
  .item { gap:10px; font-size:12px }
  .item img { width:42px; height:42px }

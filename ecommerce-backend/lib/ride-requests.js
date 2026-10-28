@@ -94,7 +94,7 @@ async function reserve(request, transaction) {
   for (const date of request.estimate.dates) for (const [index, rider] of request.draft.riders.entries()) {
     const assignedCoachId = request.draft.coachMode === "individual" ? rider.coachId : index === 0 ? request.draft.coachId : null;
     const assignedCoach = (request.estimate.coaches || [request.estimate.coach]).find(coach => coach?.id === assignedCoachId);
-    const row = await Booking.create({ userId: request.userId, productId: rider.bikeId, bookingDate: date, slots: [{ start: "00:00", end: "24:00" }], durationHours: 24, status: "confirmed", paymentStatus: "pending", totalPrice: 0, notes: request.draft.notes, meta: { source: "ride-request", requestId: request.id, riderIndex: index, riderName: rider.name, quantity: 1, currency: "USD", ...(assignedCoachId ? { coachId: assignedCoachId, coach: assignedCoach } : {}) } }, { transaction });
+    const row = await Booking.create({ userId: request.userId, productId: rider.bikeId, bookingDate: date, slots: [{ start: "00:00", end: "24:00" }], durationHours: 24, status: "pending", paymentStatus: "pending", totalPrice: 0, notes: request.draft.notes, meta: { source: "ride-request", requestId: request.id, riderIndex: index, riderName: rider.name, quantity: 1, currency: "USD", ...(assignedCoachId ? { coachId: assignedCoachId, coach: assignedCoach } : {}) } }, { transaction });
     for (const gear of rider.gear) await BookingAccessory.create({ bookingId: row.id, productId: gear.productId, size: gear.size || null, quantity: 1, price: 0 }, { transaction });
   }
 }

@@ -2,6 +2,10 @@ const router = require("express").Router();
 const { Op } = require("sequelize");
 const db = require("../config/database");
 const Request = require("../models/ride-request.model");
+const Participant = require("../models/ride-participant.model");
+const participantController = require("../controllers/ride-participant.controller");
+const participantCheckout = require("../lib/ride-participant-checkout");
+const participants = { model: Participant, as: "participants", attributes: ["id", "riderIndex", "name", "amountCents", "signedAt", "paidAt", "lastLinkSentAt"] };
 const User = require("../models/user.model");
 const Track = require("../models/track.model");
 const Pricing = require("../models/ride-pricing.model");
@@ -19,7 +23,11 @@ const permit = key => (req, res, next) => req.user.role === "admin" || req.user.
 router.get("/catalog", access.optionalAccount, async (req, res) => {
   try { res.json({ ...await service.catalog(req.query.startDate, req.query.endDate), needsCoach: req.account?.needsCoach !== false }); } catch (e) { error(res, e); }
 });
+router.get("/riders/:id", participantController.access, participantController.view);
+router.post("/riders/:id/waiver", participantController.access, participantController.sign);
+router.post("/riders/:id/checkout", participantController.access, participantController.pay);
 router.use(auth);
+router.post("/riders/:id/resend", participantController.resend);
 router.get("/pricing", access.admin, async (_req, res) => {
   try { const pricing = await Pricing.findByPk("default"); const coaches = await Coach.findAll({ attributes: ["id", "firstName", "lastName", "dailyRate"], order: [["displayOrder", "ASC"], ["firstName", "ASC"]] }); res.json({ gearDailyRate: pricing?.gearDailyRate ?? null, coaches }); }
   catch (e) { error(res, e); }
@@ -40,10 +48,10 @@ router.put("/pricing", access.admin, async (req, res) => {
   } catch (e) { error(res, e); }
 });
 router.get("/mine", async (req, res) => {
-  try { await expireRequests({ userId: req.user.id }); res.json({ requests: await Request.findAll({ where: { userId: req.user.id }, order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
+  try { await expireRequests({ userId: req.user.id }); res.json({ requests: await Request.findAll({ where: { userId: req.user.id }, include: [participants], order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
 });
 router.get("/admin", access.staff, permit("booking:view"), async (req, res) => {
-  try { await expireRequests(); res.json({ requests: await Request.findAll({ include: [{ model: User, attributes: ["id", "name", "email", "phone", "needsCoach"] }], order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
+  try { await expireRequests(); res.json({ requests: await Request.findAll({ include: [participants, { model: User, attributes: ["id", "name", "email", "phone", "needsCoach"] }], order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
 });
 router.post("/quote", async (req, res) => {
   try { res.json(await service.quote(req.body, req.account)); } catch (e) { error(res, e); }
@@ -73,7 +81,8 @@ router.patch("/admin/:id", access.staff, permit("booking:update"), async (req, r
       if (!request) { const e = new Error("Ride request not found."); e.status = 404; throw e; }
       if (request.status === "requested" && request.startDate < currentDate()) { const e = new Error("This request has expired because its first ride day has passed."); e.status = 409; throw e; }
       if (request.status === req.body.status) return request;
-      if (!(["approved", "rejected", "cancelled"].includes(req.body.status) && request.status === "requested") && !(request.status === "approved" && req.body.status === "cancelled")) { const e = new Error("This request has already been reviewed."); e.status = 409; throw e; }
+      if (request.status === "pending_payment" && req.body.status === "approved") return request;
+      if (!(["approved", "rejected", "cancelled"].includes(req.body.status) && request.status === "requested") && !(["approved", "pending_payment"].includes(request.status) && req.body.status === "cancelled")) { const e = new Error("This request has already been reviewed."); e.status = 409; throw e; }
       if (req.body.status === "approved") {
         if (request.draft.trackId) await Track.findByPk(request.draft.trackId, { transaction, lock: transaction.LOCK.UPDATE });
         const account = await User.findByPk(request.userId, { transaction, lock: transaction.LOCK.UPDATE });
@@ -81,11 +90,16 @@ router.patch("/admin/:id", access.staff, permit("booking:update"), async (req, r
         const checked = await service.quote(request.draft, account, transaction);
         if (checked.estimate.totalAmount !== request.estimate.totalAmount) { const e = new Error("Daily prices changed since this request. Ask the customer to review and submit a new request."); e.status = 409; throw e; }
         await service.reserve(request, transaction);
+        await participantCheckout.initialize(request, transaction);
       }
-      if (req.body.status === "cancelled") await Booking.update({ status: "cancelled" }, { where: { meta: { [Op.contains]: { requestId: request.id } } }, transaction });
-      await request.update({ status: req.body.status, reviewedBy: req.user.id, reviewedAt: new Date(), adminNote: req.body.note?.trim() || null }, { transaction });
+      if (req.body.status === "cancelled") {
+        await participantCheckout.cancel(request, transaction);
+        await Booking.update({ status: "cancelled" }, { where: { meta: { [Op.contains]: { requestId: request.id } } }, transaction });
+      }
+      await request.update({ status: req.body.status === "approved" ? "pending_payment" : req.body.status, reviewedBy: req.user.id, reviewedAt: new Date(), adminNote: req.body.note?.trim() || null }, { transaction });
       return request;
     });
+    await request.reload({ include: [participants] });
     res.json({ request });
   } catch (e) { error(res, e); }
 });

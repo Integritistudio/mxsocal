@@ -19,6 +19,7 @@ const server = http.createServer(app);
 
 app.use(cors(serverConfigs.CORS));
 app.post("/rental-checkout/webhook", express.raw({ type: "application/json" }), require("./controllers/rental-checkout.controller").webhook);
+app.post("/ride-requests/webhook", express.raw({ type: "application/json" }), require("./controllers/ride-participant.controller").webhook);
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
@@ -79,6 +80,8 @@ sequelize
     const rideMailMaintenance = setInterval(deliverRideMail, 10000);
     rideMailMaintenance.unref();
     void deliverRideMail();
+    const ridePaymentMaintenance = setInterval(() => { require("./lib/ride-participant-checkout").maintenance().catch(() => console.warn("Ride payment maintenance will retry.")); }, 30000);
+    ridePaymentMaintenance.unref();
 
     initSockets(server);
 

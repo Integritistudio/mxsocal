@@ -100,11 +100,14 @@ async function verify() {
     const approvalByUser = await api(`/ride-requests/admin/${first.data.request.id}`, users[0], "PATCH", { status: "approved" }); assert.equal(approvalByUser.status, 403);
     const approvals = await Promise.all([first, second].map(result => api(`/ride-requests/admin/${result.data.request.id}`, users[2], "PATCH", { status: "approved" })));
     assert.equal(approvals.filter(result => result.status === 200).length, 1, JSON.stringify(approvals));
-    assert.equal(await Booking.count({ where: { userId: users.map(user => user.id), status: "confirmed" } }), 4, "Two riders on two days");
+    assert.equal(await Booking.count({ where: { userId: users.map(user => user.id), status: "pending" } }), 4, "Two riders on two days reserved pending signatures and payment");
     const after = await api(`/ride-requests/catalog?startDate=${dates[0]}&endDate=${dates[1]}`);
     assert.equal(after.data.products.some(p => p.id === products[0].id), false);
     assert.equal(after.data.coaches.some(c => c.id === coach.id), false);
     const winner = approvals.find(result => result.status === 200).data.request;
+    assert.equal(winner.status, "pending_payment");
+    assert.equal(winner.participants.length, 2);
+    assert.equal(winner.participants.reduce((sum, rider) => sum + rider.amountCents, 0), winner.estimate.totalAmount);
     assert.equal(winner.estimate.track.id, track.id, "A selected track can be approved regardless of its calendar");
     const repeated = await api(`/ride-requests/admin/${winner.id}`, users[2], "PATCH", { status: "approved" }); assert.equal(repeated.status, 200);
     assert.equal(await Booking.count({ where: { userId: users.map(user => user.id) } }), 4);

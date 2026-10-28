@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "migrate:ride-participants": "node scripts/migrate-ride-participants.js",
     "migrate:ride-request-emails": "node scripts/migrate-ride-request-emails.js",
     "migrate:ride-request-expiry": "node scripts/migrate-ride-request-expiry.js",
     "seed:track-days": "node scripts/seed-track-days.js",

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 async function handle(request: Request, { params }: { params: Promise<{ path?: string[] }> }) {
   const path = (await params).path?.join("/") || "";
-  const valid = request.method === "GET" ? ["catalog", "mine", "admin", "pricing"].includes(path) : request.method === "POST" ? ["", "quote"].includes(path) : request.method === "PUT" ? path === "pricing" : request.method === "PATCH" && /^admin\/[a-f0-9-]{36}$/i.test(path);
+  const valid = request.method === "GET" ? ["catalog", "mine", "admin", "pricing"].includes(path) || /^riders\/[a-f0-9-]{36}$/i.test(path) : request.method === "POST" ? ["", "quote"].includes(path) || /^riders\/[a-f0-9-]{36}\/(waiver|checkout|resend)$/i.test(path) : request.method === "PUT" ? path === "pricing" : request.method === "PATCH" && /^admin\/[a-f0-9-]{36}$/i.test(path);
   if (!valid) return NextResponse.json({ message: "Not found." }, { status: 404 });
   try {
     let body: string | undefined;
@@ -13,7 +13,7 @@ async function handle(request: Request, { params }: { params: Promise<{ path?: s
     const query = new URLSearchParams(); const input = new URL(request.url).searchParams;
     if (path === "catalog") for (const key of ["startDate", "endDate"]) if (input.has(key)) query.set(key, input.get(key)!);
     const base = (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
-    const response = await fetch(`${base}/ride-requests/${path}${query.size ? `?${query}` : ""}`, { method: request.method, headers: { cookie: request.headers.get("cookie") || "", "Content-Type": "application/json" }, body, cache: "no-store", signal: AbortSignal.timeout(30000) });
+    const response = await fetch(`${base}/ride-requests/${path}${query.size ? `?${query}` : ""}`, { method: request.method, headers: { cookie: request.headers.get("cookie") || "", "Content-Type": "application/json", "x-ride-token": request.headers.get("x-ride-token") || "" }, body, cache: "no-store", signal: AbortSignal.timeout(30000) });
     return NextResponse.json(await response.json(), { status: response.status, headers: { "Cache-Control": "no-store", Vary: "Cookie" } });
   } catch { return NextResponse.json({ message: "Unable to reach the booking service. Please try again." }, { status: 503 }); }
 }

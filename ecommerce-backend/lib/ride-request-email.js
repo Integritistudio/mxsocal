@@ -6,6 +6,15 @@ exports.queue = async (request, transaction) => {
   const recipients = [{ kind: "admin", riderIndex: -1, email: null }, ...request.draft.riders.map((rider, index) => ({ kind: index === 0 ? "owner" : "buddy", riderIndex: index, email: rider.email }))];
   for (const recipient of recipients) await Email.findOrCreate({ where: { requestId: request.id, kind: recipient.kind, riderIndex: recipient.riderIndex }, defaults: { email: recipient.email }, transaction });
 };
+exports.queueParticipant = async (participant, transaction, resend = false) => {
+  const [job] = await Email.findOrCreate({ where: { requestId: participant.requestId, kind: "checkout", riderIndex: participant.riderIndex }, defaults: { email: participant.email }, transaction });
+  if (resend) {
+    await job.reload({ transaction, lock: transaction.LOCK.UPDATE });
+    if (job.lockedUntil && new Date(job.lockedUntil).getTime() > Date.now()) { const error = new Error("This email is already being sent. Try again shortly."); error.status = 429; throw error; }
+    await job.update({ sentAt: null, nextAttemptAt: new Date(), attempts: 0 }, { transaction });
+  }
+  await participant.update({ lastLinkSentAt: new Date() }, { transaction });
+};
 exports.deliver = async () => {
   const jobs = await db.transaction(async transaction => {
     const rows = await Email.findAll({ where: { sentAt: null, nextAttemptAt: { [Op.lte]: new Date() }, [Op.or]: [{ lockedUntil: null }, { lockedUntil: { [Op.lt]: new Date() } }] }, order: [["nextAttemptAt", "ASC"], ["id", "ASC"]], limit: 10, lock: transaction.LOCK.UPDATE, skipLocked: true, transaction });
@@ -16,6 +25,13 @@ exports.deliver = async () => {
     try {
       const request = await Request.findByPk(job.requestId);
       if (!request) { await job.destroy(); continue; }
+      if (job.kind === "checkout") {
+        const participant = await require("../models/ride-participant.model").findOne({ where: { requestId: request.id, riderIndex: job.riderIndex } });
+        if (request.status !== "pending_payment" || !participant || participant.paidAt) { await job.update({ sentAt: new Date(), lockedUntil: null }); continue; }
+        await require("./account-mail").sendAccountMail({ email: participant.email, ...require("./ride-participant-email-template").participantEmail(request, participant) });
+        await job.update({ sentAt: new Date(), lockedUntil: null });
+        continue;
+      }
       const email = job.kind === "admin" ? (process.env.ADMIN_EMAIL || "").trim() : job.email;
       if (typeof email !== "string" || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Notification recipient is invalid.");
       const context = { request, kind: job.kind, riderIndex: job.riderIndex };

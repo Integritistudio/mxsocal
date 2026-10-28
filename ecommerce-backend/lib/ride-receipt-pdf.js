@@ -19,7 +19,7 @@ exports.receiptPdf = async ({ request, kind, riderIndex, images = new Map() }) =
   doc.moveTo(44, 85).lineTo(doc.page.width - 44, 85).lineWidth(3).strokeColor("#de2321").stroke(); doc.y = 105;
   doc.font("Helvetica-Bold").fontSize(24).fillColor("#171717").text("Ride request receipt", 44, doc.y, { width }); doc.moveDown(.4);
   paragraph(`Reference: ${request.id}`, 9);
-  paragraph(request.status === "approved" ? "APPROVED - Payment arranged separately" : request.status === "requested" ? "AWAITING APPROVAL - No payment taken" : "REQUEST CLOSED", 10, "#b52320");
+  paragraph(request.status === "approved" ? "APPROVED" : request.status === "pending_payment" ? "PENDING PAYMENT - Each rider signs and pays individually" : request.status === "requested" ? "AWAITING APPROVAL - No payment taken" : "REQUEST CLOSED", 10, "#b52320");
   if (view.buddy) paragraph(`${request.draft.riders[0].name} added you as a buddy for an MXSoCal adventure. This receipt includes only your selections.`);
   paragraph(`Ride dates: ${date(request.startDate)} - ${date(request.endDate)} | ${request.estimate.dates?.length || request.estimate.items[0]?.days || 0} days`, 11, "#222222");
   paragraph(`Track: ${request.estimate.track?.name || "MXSoCal will select the best available track for your dates."}`);
