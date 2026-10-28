@@ -18,8 +18,13 @@ exports.deliver = async () => {
       if (!request) { await job.destroy(); continue; }
       const email = job.kind === "admin" ? (process.env.ADMIN_EMAIL || "").trim() : job.email;
       if (typeof email !== "string" || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Notification recipient is invalid.");
-      const content = require("./ride-request-email-template").rideRequestEmail({ request, kind: job.kind, riderIndex: job.riderIndex });
-      await require("./account-mail").sendAccountMail({ email, ...content });
+      const context = { request, kind: job.kind, riderIndex: job.riderIndex };
+      const view = require("./ride-receipt-data").receiptData(context);
+      const images = await require("./receipt-images").receiptImages(view.items);
+      const content = require("./ride-request-email-template").rideRequestEmail({ ...context, images });
+      const pdf = await require("./ride-receipt-pdf").receiptPdf({ ...context, images });
+      const attachments = [...images.values(), { filename: `MXSoCal-receipt-${request.id.slice(0, 8)}${job.kind === "buddy" ? `-buddy-${job.riderIndex}` : ""}.pdf`, content: pdf, contentType: "application/pdf" }];
+      await require("./account-mail").sendAccountMail({ email, ...content, attachments });
       await job.update({ sentAt: new Date(), lockedUntil: null });
     } catch (error) {
       console.error("Ride request email will retry:", error.name);

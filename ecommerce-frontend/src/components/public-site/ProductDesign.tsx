@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
+import DetailBreadcrumbs from "./DetailBreadcrumbs";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/context/UserContext";
 import { customerRequest } from "@/services/customer";
@@ -116,7 +117,7 @@ export default function ProductDesign({ id, initialData = null }: { id: string; 
       {!p && !error && <ProductSkeleton />}
       {error && <div role="alert" className={s.error}><h1>{error}</h1><button onClick={() => { setError(""); setRetry(value => value + 1); }}>Try again</button><Link href="/bikes">Explore our bikes</Link></div>}
       {p && data && <>
-        <nav className={s.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/bikes">{p.category === "bike" ? "Bikes" : "Equipment"}</Link><span>/</span><span>{p.name}</span></nav>
+        <DetailBreadcrumbs className={s.breadcrumb} pageKey={p.id}><Link href="/">Home</Link><span>/</span><Link href="/bikes">{p.category === "bike" ? "Bikes" : "Equipment"}</Link><span>/</span><span>{p.name}</span></DetailBreadcrumbs>
         <div className={s.titleRow}><div><h1>{p.name}</h1><p>{p.details.subtitle || p.tagline}</p></div><div className={s.titleActions}><div><button onClick={share}>Share<span><FiShare2 /></span></button><button aria-pressed={saved} onClick={toggleSaved}>{saved ? "Saved" : "Save"}<span>{saved ? <FiCheck /> : <FiBookmark />}</span></button></div><strong>{productPrice(p)}{p.pricePerDay !== null && <small> / day</small>}</strong></div></div>
         <p className={s.notice} role="status">{notice}</p>
         {!!p.details.badges?.length && <ul className={s.badges}>{p.details.badges.map((badge, i) => <li key={`${badge}-${i}`}><img src={asset(badgeIcons[i % badgeIcons.length])} alt="" />{badge}</li>)}</ul>}

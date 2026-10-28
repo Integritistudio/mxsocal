@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DetailBreadcrumbs from "./DetailBreadcrumbs";
 import { FiArrowUpRight, FiMapPin } from "react-icons/fi";
 import type { Track, TrackAvailability } from "@/lib/tracks";
 import TrackGallery from "./TrackGallery";
@@ -13,7 +14,7 @@ export default function TrackDetail({ track, availabilityMonths }: { track: Trac
     <a href="#main-content" className={shared.skip}>Skip to content</a><PublicSiteHeader activePath="/tracks" />
     <main id="main-content" className={p.main}>
       <div className={p.glow} aria-hidden="true" />
-      <nav className={p.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/tracks">Tracks</Link><span>/</span><span>{track.name}</span></nav>
+      <DetailBreadcrumbs className={p.breadcrumb} pageKey={track.id}><Link href="/">Home</Link><span>/</span><Link href="/tracks">Tracks</Link><span>/</span><span>{track.name}</span></DetailBreadcrumbs>
       <div className={p.titleRow}><div><span className={s.eyebrow}>{track.city.toUpperCase()} / CALIFORNIA</span><h1>{track.name}</h1><p>{track.tagline}</p></div><Link className={s.back} href="/tracks">All tracks <FiArrowUpRight /></Link></div>
       <ul className={p.badges}>{track.features.map(feature => <li key={feature}>{feature}</li>)}</ul>
       <TrackGallery track={track} />

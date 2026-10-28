@@ -49,6 +49,9 @@ function worker(fail=false) {
   if(name.includes('config/database'))return db;
   if(name.includes('ride-request-email.model'))return model;
   if(name.includes('ride-request.model'))return {findByPk:async()=>request};
+  if(name.includes('ride-receipt-data'))return require('../lib/ride-receipt-data');
+  if(name.includes('receipt-images'))return {receiptImages:async()=>new Map()};
+  if(name.includes('ride-receipt-pdf'))return {receiptPdf:async()=>Buffer.from('%PDF-test')};
   if(name.includes('email-template'))return {rideRequestEmail};
   if(name.includes('account-mail'))return {sendAccountMail:async mail=>{if(fail)throw new Error('offline');deliveries.push(mail);}};
   throw new Error(name);
@@ -60,6 +63,7 @@ test('queues one notification per role and buddy without duplicate jobs on retry
  assert.equal(ctx.jobs.size,4);
  await ctx.deliver();assert.deepEqual(ctx.deliveries.map(mail=>mail.email),['admin@example.com','owner@example.com','buddy@example.com','private@example.com']);
  assert.equal(ctx.updates.filter(values=>values.sentAt).length,4);
+ for(const mail of ctx.deliveries)assert.ok(mail.attachments.some(file=>file.contentType==='application/pdf')); 
 });
 test('delivery failures leave jobs unsent and schedule retries',async()=>{
  const ctx=worker(true);await ctx.queue(request,ctx.transaction);await ctx.deliver();

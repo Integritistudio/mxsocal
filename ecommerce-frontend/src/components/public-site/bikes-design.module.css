@@ -54,5 +54,8 @@
 }
 @media(prefers-reduced-motion:reduce) { .detailsLink { transition:none } }
 
-.breadcrumbs { position:relative; z-index:1; display:flex; align-items:center; gap:12px; scroll-margin-top:24px; margin-bottom:28px; font-size:13px; color:#aaa }
+.breadcrumbs { position:relative; z-index:1; display:flex; align-items:center; gap:12px; width:calc(100% - 120px); max-width:1337px; margin:0 auto 28px; scroll-margin-top:24px; font-size:13px; line-height:24px; color:#aaa }
 .breadcrumbs [aria-current="page"] { color:#fff }
+
+@media(max-width:1050px) { .breadcrumbs { width:calc(100% - 64px) } }
+@media(max-width:750px) { .breadcrumbs { width:calc(100% - 40px) } }

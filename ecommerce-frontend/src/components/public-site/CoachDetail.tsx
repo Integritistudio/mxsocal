@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
+import DetailBreadcrumbs from "./DetailBreadcrumbs";
 import { useState } from "react";
 import { FiArrowUpRight, FiAward, FiCheck, FiClock, FiShare2, FiTarget, FiUsers } from "react-icons/fi";
 import { PiUser } from "react-icons/pi";
@@ -33,7 +34,7 @@ export default function CoachDetail({ coach }: { coach: PublicCoach }) {
     <PublicSiteHeader activePath="/coaches" />
     <main id="main-content" className={s.main}>
       <div className={s.glow} aria-hidden="true" />
-      <nav className={s.breadcrumb} aria-label="Breadcrumb"><Link href="/">Home</Link><span>/</span><Link href="/coaches">Coaches</Link><span>/</span><span aria-current="page">{name}</span></nav>
+      <DetailBreadcrumbs className={s.breadcrumb} pageKey={coach.id}><Link href="/">Home</Link><span>/</span><Link href="/coaches">Coaches</Link><span>/</span><span aria-current="page">{name}</span></DetailBreadcrumbs>
       <div className={s.titleRow}>
         <div><p className={c.eyebrow}>MEET YOUR COACH</p><h1>{name}</h1><p>{coach.specialty || "Motocross coaching"}</p></div>
         <div className={s.titleActions}><div><button type="button" onClick={share}><span><FiShare2 /></span>Share profile</button></div><strong>{rate || "Let’s talk"}{rate && <small> / day</small>}</strong></div>
