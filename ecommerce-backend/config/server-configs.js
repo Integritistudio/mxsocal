@@ -1,11 +1,9 @@
 module.exports = {
   PORT: process.env.PORT || 8000,
   CORS: {
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:3001",
-      "https://7661f35b6798.ngrok-free.app",
-    ],
+    // Allow every origin while retaining credentialed requests (cookies).
+    // A literal "*" cannot be used with credentials in browsers.
+    origin: true,
     credentials: true,
     optionsSuccessStatus: 200,
     maxAge: 86400,

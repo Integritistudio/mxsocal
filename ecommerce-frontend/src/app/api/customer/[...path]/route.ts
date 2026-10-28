@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 const routes: Record<string, { target: string; methods: string[] }> = {
+  "admin/login": { target: "admin/login", methods: ["POST"] },
   accounts: { target: "accounts", methods: ["GET"] },
   signup: { target: "signup", methods: ["POST"] }, "verify-email": { target: "verify-email", methods: ["POST"] }, "resend-otp": { target: "resend-otp", methods: ["POST"] }, login: { target: "login", methods: ["POST"] }, logout: { target: "logout", methods: ["POST"] }, "forgot-password": { target: "forgot-password", methods: ["POST"] }, "reset-password": { target: "reset-password", methods: ["POST"] }, me: { target: "me", methods: ["GET"] }, profile: { target: "me", methods: ["PUT"] }, avatar: { target: "me/avatar", methods: ["GET", "POST"] }, saved: { target: "saved", methods: ["GET"] }, reviews: { target: "my-reviews", methods: ["GET"] }, customers: { target: "customers", methods: ["GET", "POST"] },
 };
@@ -7,7 +8,6 @@ async function handle(request: Request, { params }: { params: Promise<{ path: st
   const path = (await params).path.join("/");
   const route = routes[path] || (/^customers\/[\da-f-]{36}\/coaching$/i.test(path) ? { target: path, methods: ["PUT"] } : null) || (/^customers\/[\da-f-]{36}\/avatar$/i.test(path) ? { target: path, methods: ["GET"] } : null) || (/^saved\/[\da-f-]{36}$/i.test(path) ? { target: path, methods: ["PUT", "DELETE"] } : null);
   if (!route || !route.methods.includes(request.method)) return NextResponse.json({ message: "Not found." }, { status: 404 });
-  if (request.method !== "GET") { const origin = request.headers.get("origin"); if (origin && origin !== new URL(request.url).origin) return NextResponse.json({ message: "Please use the form on this website." }, { status: 403 }); }
   try {
     let body: FormData | string | undefined;
     const isUpload = path === "avatar" && request.method === "POST";

@@ -3,7 +3,6 @@ async function handle(request: Request, { params }: { params: Promise<{ path?: s
   const path = (await params).path?.join("/") || "";
   const valid = request.method === "GET" ? ["catalog", "mine", "admin", "pricing"].includes(path) : request.method === "POST" ? ["", "quote"].includes(path) : request.method === "PUT" ? path === "pricing" : request.method === "PATCH" && /^admin\/[a-f0-9-]{36}$/i.test(path);
   if (!valid) return NextResponse.json({ message: "Not found." }, { status: 404 });
-  if (request.method !== "GET" && request.headers.get("origin") !== new URL(request.url).origin) return NextResponse.json({ message: "Please use the booking form on this website." }, { status: 403 });
   try {
     let body: string | undefined;
     if (request.method !== "GET") {

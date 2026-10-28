@@ -8,6 +8,7 @@ import React from "react";
 import { DM_Sans } from "next/font/google";
 import s from "@/layout/admin-theme.module.css";
 const font = DM_Sans({ subsets: ["latin"], variable: "--font-admin" });
+import { useTheme } from "@/context/ThemeContext";
 import { useUser } from "@/context/UserContext";
 
 
@@ -18,6 +19,8 @@ export default function AdminLayout({
 }) {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
+  const { theme } = useTheme();
+  const themeClass = theme === "dark" ? "dark" : s.light;
   const { user, loadingAuth } = useUser()
 
 
@@ -29,10 +32,10 @@ export default function AdminLayout({
       ? "lg:ml-[290px]"
       : "lg:ml-[90px]";
 
-  if (loadingAuth || !user || user.role === "user") return <div className={`dark ${font.variable} ${s.theme} p-8`} role="status">Loading your account...</div>;
+  if (loadingAuth || !user || user.role === "user") return <div className={`${themeClass} ${font.variable} ${s.theme} p-8`} role="status">Loading your account...</div>;
 
   return (
-    <div className={`dark ${font.variable} ${s.theme} min-h-screen xl:flex xl:overflow-x-hidden`}>
+    <div className={`${themeClass} ${font.variable} ${s.theme} min-h-screen xl:flex xl:overflow-x-hidden`}>
       {/* Sidebar and Backdrop */}
       <AppSidebar />
       <Backdrop />

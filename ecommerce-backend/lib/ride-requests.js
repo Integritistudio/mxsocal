@@ -1,11 +1,12 @@
 const { Op } = require("sequelize");
 const Track = require("../models/track.model");
+const TrackAvailability = require("../models/track-availability.model");
 const ResourceAvailability = require("../models/resource-availability.model");
 const { Product, ProductAvailability, HelmetSpec, SuitSpec, GloveSpec } = require("../models/product.model");
 const Coach = require("../models/coach.model");
 const Pricing = require("../models/ride-pricing.model");
 const { Booking, BookingAccessory } = require("../models/booking.model");
-const { currentDate, availabilityMonths } = require("./track-availability");
+const { currentDate, availabilityMonths, trackAvailableForDates } = require("./track-availability");
 const { fail } = require("./rental-pricing");
 const { rideDates, normalizeDraft, dailyCents } = require("./ride-request-validation");
 const specs = [{ model: HelmetSpec, as: "helmetSpec" }, { model: SuitSpec, as: "suitSpec" }, { model: GloveSpec, as: "gloveSpec" }];
@@ -14,10 +15,11 @@ async function catalog(start, end, transaction) {
   const months = availabilityMonths();
   const tracks = await Track.findAll({ order: [["displayOrder", "ASC"]], transaction });
   const today = currentDate();
-  const publicTracks = tracks.map(t => ({ id: t.id, slug: t.slug, name: t.name, city: t.city, images: t.images || [] }));
+  const trackCalendars = await TrackAvailability.findAll({ where: { trackId: tracks.map(track => track.id), month: months }, transaction });
+  const publicTracks = tracks.filter(track => trackAvailableForDates(track.id, dates, trackCalendars)).map(t => ({ id: t.id, slug: t.slug, name: t.name, city: t.city, images: t.images || [] }));
   const last = new Date(`${months[1]}-01T12:00:00Z`); last.setUTCMonth(last.getUTCMonth() + 1, 0);
   const lastDate = last.toISOString().slice(0, 10);
-  const horizon = Array.from({ length: Math.round((Date.parse(lastDate) - Date.parse(today)) / 86400000) + 1 }, (_, i) => new Date(Date.parse(`${today}T12:00:00Z`) + i * 86400000).toISOString().slice(0, 10));
+  const horizon = Array.from({ length: Math.round((Date.parse(lastDate) - Date.parse(today)) / 86400000) + 1 }, (_, i) => new Date(Date.parse(`${today}T12:00:00Z`) + i * 86400000).toISOString().slice(0, 10)).filter(date => date > today);
   const pricing = await Pricing.findByPk("default", { transaction });
   const gearDailyAmount = pricing?.gearDailyRate == null ? null : dailyCents(pricing.gearDailyRate, "Gear rental");
   const products = await Product.findAll({ where: { available: true, status: "available", [Op.or]: [{ category: { [Op.ne]: "bike" } }, { pricePerDay: { [Op.not]: null } }] }, include: specs, transaction });
@@ -46,7 +48,7 @@ async function quote(body, account, transaction) {
   const draft = normalizeDraft(body, account);
   const data = await catalog(draft.startDate, draft.endDate, transaction);
   const track = data.tracks.find(t => t.id === draft.trackId);
-  if (draft.trackId && !track) fail("This track no longer exists. Choose another track or skip track selection.");
+  if (draft.trackId && !track) fail("This track is unavailable for your selected dates. Choose another track or skip track selection.");
   const quantities = new Map(); const items = [];
   for (const [index, rider] of draft.riders.entries()) {
     const selections = [{ productId: rider.bikeId, bike: true }, ...rider.gear];
@@ -68,25 +70,31 @@ async function quote(body, account, transaction) {
       items.push({ riderIndex: index, riderName: rider.name, name: "Gear rental", gearPackage: true, dailyAmount: data.gearDailyAmount, days: data.dates.length, amount: data.gearDailyAmount * data.dates.length });
     }
   }
-  let coach = null;
-  if (draft.coachId) {
-    coach = data.coaches.find(c => c.id === draft.coachId);
-    if (!coach) fail("This coach is unavailable for your whole ride. Choose another coach.");
-    const rate = dailyCents(coach.dailyRate, coach.name);
-    items.push({ name: coach.name, coachId: coach.id, image: coach.image, dailyAmount: rate, days: data.dates.length, amount: rate * data.dates.length });
-  }
+  const coachIds = [...new Set([draft.coachId, ...draft.riders.map(rider => rider.coachId)].filter(Boolean))];
+  const selectedCoaches = coachIds.map(id => {
+    const selected = data.coaches.find(coach => coach.id === id);
+    if (!selected) fail("This coach is unavailable for your whole ride. Choose another coach.");
+    const assignmentLabel = draft.coachMode === "individual" ? draft.riders.filter(rider => rider.coachId === id).map(rider => rider.name).join(", ") : "Whole group";
+    const rate = dailyCents(selected.dailyRate, selected.name);
+    items.push({ name: selected.name, coachId: id, assignmentLabel, image: selected.image, dailyAmount: rate, days: data.dates.length, amount: rate * data.dates.length });
+    return { ...selected, assignmentLabel };
+  });
+  const coach = selectedCoaches[0] || null;
   const totalAmount = items.reduce((sum, item) => sum + item.amount, 0);
   if (!Number.isSafeInteger(totalAmount) || totalAmount > 99999999) fail("This estimate is too large. Please contact us.");
-  return { draft, estimate: { track: track ? { id: track.id, name: track.name } : null, dates: data.dates, items, coach, totalAmount, currency: "USD", needsCoach: account.needsCoach !== false } };
+  return { draft, estimate: { track: track ? { id: track.id, name: track.name } : null, dates: data.dates, items, coach, coaches: selectedCoaches, totalAmount, currency: "USD", needsCoach: account.needsCoach !== false || draft.riders.length > 1 } };
 }
 async function lockSelections(draft, transaction) {
   const ids = [...new Set(draft.riders.flatMap(r => [r.bikeId, ...r.gear.map(g => g.productId)]))].sort();
   await Product.findAll({ where: { id: ids }, order: [["id", "ASC"]], transaction, lock: transaction.LOCK.UPDATE });
-  if (draft.coachId) await Coach.findByPk(draft.coachId, { transaction, lock: transaction.LOCK.UPDATE });
+  const coachIds = [...new Set([draft.coachId, ...draft.riders.map(rider => rider.coachId)].filter(Boolean))].sort();
+  if (coachIds.length) await Coach.findAll({ where: { id: coachIds }, order: [["id", "ASC"]], transaction, lock: transaction.LOCK.UPDATE });
 }
 async function reserve(request, transaction) {
   for (const date of request.estimate.dates) for (const [index, rider] of request.draft.riders.entries()) {
-    const row = await Booking.create({ userId: request.userId, productId: rider.bikeId, bookingDate: date, slots: [{ start: "00:00", end: "24:00" }], durationHours: 24, status: "confirmed", paymentStatus: "pending", totalPrice: 0, notes: request.draft.notes, meta: { source: "ride-request", requestId: request.id, riderIndex: index, riderName: rider.name, quantity: 1, currency: "USD", ...(index === 0 && request.draft.coachId ? { coachId: request.draft.coachId, coach: request.estimate.coach } : {}) } }, { transaction });
+    const assignedCoachId = request.draft.coachMode === "individual" ? rider.coachId : index === 0 ? request.draft.coachId : null;
+    const assignedCoach = (request.estimate.coaches || [request.estimate.coach]).find(coach => coach?.id === assignedCoachId);
+    const row = await Booking.create({ userId: request.userId, productId: rider.bikeId, bookingDate: date, slots: [{ start: "00:00", end: "24:00" }], durationHours: 24, status: "confirmed", paymentStatus: "pending", totalPrice: 0, notes: request.draft.notes, meta: { source: "ride-request", requestId: request.id, riderIndex: index, riderName: rider.name, quantity: 1, currency: "USD", ...(assignedCoachId ? { coachId: assignedCoachId, coach: assignedCoach } : {}) } }, { transaction });
     for (const gear of rider.gear) await BookingAccessory.create({ bookingId: row.id, productId: gear.productId, size: gear.size || null, quantity: 1, price: 0 }, { transaction });
   }
 }

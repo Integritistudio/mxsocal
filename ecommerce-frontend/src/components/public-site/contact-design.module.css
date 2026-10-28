@@ -1140,3 +1140,7 @@
 }
 
 
+
+.footerTrap { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap }
+.footerFeedback { min-height:24px; margin-top:12px; color:#ddd; font-size:13px; line-height:1.6 }
+.footerContact button:disabled { opacity:.65; cursor:wait }

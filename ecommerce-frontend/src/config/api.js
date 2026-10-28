@@ -1,5 +1,6 @@
 import axios from 'axios';
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+// Keep admin requests on the same origin as the login session cookie.
+const BASE_URL = '/api/admin';
 
 export const API_ENDPOINTS = {
     SIGN_IN: `${BASE_URL}/auth/login`,

@@ -24,6 +24,8 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
+  { name: "Contact messages", icon: <PageIcon />, path: "/dashboard/contact-messages", permissionKey: "customer:manage" },
+  { name: "Email captures", icon: <PageIcon />, path: "/dashboard/footer-contacts", permissionKey: "customer:manage" },
   { name: "Availability", icon: <CalenderIcon />, path: "/dashboard/availability", permissionKey: "availability:manage" },
   { name: "Track Availability", icon: <CalenderIcon />, path: "/dashboard/track-availability", permissionKey: "availability:manage" },
   { name: "Stories / Blog", icon: <PageIcon />, path: "/dashboard/stories", permissionKey: "blog:manage" },
@@ -61,7 +63,7 @@ const navItems: NavItem[] = [
 ];
 
 
-const menuOrder = ["Dashboard", "Bookings", "Products", "Coaches", "Availability", "Track Availability", "Stories / Blog", "Users", "Managers"];
+const menuOrder = ["Dashboard", "Bookings", "Products", "Coaches", "Availability", "Track Availability", "Stories / Blog", "Users", "Email captures", "Contact messages", "Managers"];
 navItems.sort((a, b) => menuOrder.indexOf(a.name) - menuOrder.indexOf(b.name));
 
 const othersItems: NavItem[] = [];
@@ -78,7 +80,7 @@ const AppSidebar: React.FC = () => {
   ) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => {
-        if (user?.role === "manager" && ["/managers", "/dashboard/users", "/dashboard/stories"].includes(nav.path || "")) return;
+        if (user?.role === "manager" && ["/managers", "/dashboard/users", "/dashboard/stories", "/dashboard/footer-contacts", "/dashboard/contact-messages"].includes(nav.path || "")) return;
         if (user?.role === "manager") {
           if (!hasPermission(nav?.permissionKey)) {
             return;

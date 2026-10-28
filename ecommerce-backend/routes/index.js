@@ -11,6 +11,7 @@ const { uploadFiles } = require("../lib/upload");
 
 const upload = multer();
 const router = express.Router();
+router.use("/footer-contacts", require("./footer-contact.route"));
 router.use("/contact", require("./contact.route"));
 
 router.use("/auth", authRoutes);
@@ -25,5 +26,7 @@ router.use("/rental-checkout", require("./rental-checkout.route"));
 router.use("/operations", require("./operations.route"));
 router.use("/notifications", notificationRoutes);
 router.use("/upload", require("../middleware/auth.middleware"), require("../middleware/account-access.middleware").staff, upload.array("files"), uploadFiles);
+
+router.get("/search", require("../controllers/search.controller").search);
 
 module.exports = router;

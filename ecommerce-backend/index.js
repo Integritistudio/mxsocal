@@ -11,6 +11,7 @@ const sequelize = require("./config/database");
 const serverConfigs = require("./config/server-configs");
 const logger = require("./helpers/logger");
 const router = require("./routes");
+require("./models/contact-email.model");
 const { initSockets } = require("./sockets");
 
 const app = express();
@@ -45,6 +46,39 @@ sequelize
     console.log("✅ Database models synced!");
     const rentalMaintenance = setInterval(() => { require("./controllers/rental-checkout.controller").runMaintenance().catch(() => console.warn("Booking maintenance will retry.")); }, 10000);
     rentalMaintenance.unref();
+    let expiryBusy = false;
+    const expireRideRequests = async () => {
+      if (expiryBusy) return;
+      expiryBusy = true;
+      try { await require("./lib/ride-request-expiry").expireRequests(); }
+      catch (error) { console.error("Ride request expiry will retry:", error.name); }
+      finally { expiryBusy = false; }
+    };
+    const requestExpiryMaintenance = setInterval(expireRideRequests, 60000);
+    requestExpiryMaintenance.unref();
+    void expireRideRequests();
+    let contactMailBusy = false;
+    const deliverContactMail = async () => {
+      if (contactMailBusy) return;
+      contactMailBusy = true;
+      try { await require("./lib/contact-email").deliver(); }
+      catch (error) { console.error("Admin contact email worker will retry:", error.name); }
+      finally { contactMailBusy = false; }
+    };
+    const contactMaintenance = setInterval(deliverContactMail, 10000);
+    contactMaintenance.unref();
+    void deliverContactMail();
+    let rideMailBusy = false;
+    const deliverRideMail = async () => {
+      if (rideMailBusy) return;
+      rideMailBusy = true;
+      try { await require("./lib/ride-request-email").deliver(); }
+      catch (error) { console.error("Ride request mail worker will retry:", error.name); }
+      finally { rideMailBusy = false; }
+    };
+    const rideMailMaintenance = setInterval(deliverRideMail, 10000);
+    rideMailMaintenance.unref();
+    void deliverRideMail();
 
     initSockets(server);
 

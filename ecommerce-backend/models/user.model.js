@@ -16,6 +16,8 @@ const User = sequelize.define(
     },
     firstName: { type: DataTypes.STRING, allowNull: true },
     lastName: { type: DataTypes.STRING, allowNull: true },
+    heightCm: { type: DataTypes.DECIMAL(5, 1), allowNull: true, validate: { min: 30, max: 300 } },
+    weightKg: { type: DataTypes.DECIMAL(5, 1), allowNull: true, validate: { min: 1, max: 500 } },
     dateOfBirth: { type: DataTypes.DATEONLY, allowNull: true },
     gender: { type: DataTypes.STRING, allowNull: true },
     genderDescription: { type: DataTypes.STRING, allowNull: true },

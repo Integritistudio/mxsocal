@@ -1,6 +1,6 @@
 .picker { max-width:560px; margin:28px 0; border:1px solid #333; border-radius:12px; overflow:hidden; background:#111 }
-.heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 24px 0; color:#eee; font-size:15px; font-weight:500 }
-.heading small { color:#b4b4b4; font-size:11px; font-weight:400; border:1px solid #383838; border-radius:4px; padding:5px 8px }
+.heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:20px 24px 0; color:#eee; font-size:15px; font-weight:500 }
+.heading small { color:#fff; font-size:12px; font-weight:600; line-height:1.5; border:1px solid #e3423d; border-radius:6px; padding:8px 12px; background:#de232130; box-shadow:0 0 0 1px #de232110 }
 .dateBar { display:grid; grid-template-columns:1fr 18px 1fr; align-items:center; gap:12px; padding:18px 24px 22px; border-bottom:1px solid #303030 }
 .dateBar button { display:flex; align-items:center; gap:10px; min-width:0; border:1px solid #404040; border-radius:6px; padding:12px; color:#fff; background:#1e1e1e; text-align:left; transition:border-color .15s,background .15s }
 .dateBar button[aria-pressed="true"] { border-color:#e33a36; background:#281918 }

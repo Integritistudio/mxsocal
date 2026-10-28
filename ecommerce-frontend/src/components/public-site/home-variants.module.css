@@ -5,10 +5,11 @@
 .page h2 { font-size:clamp(32px,3.6vw,52px); line-height:1.14; font-weight:500; letter-spacing:-1.6px; margin-bottom:24px }
 .page em { font-style:normal; color:#ef4a43 }
 .eyebrow { display:block; color:#f17b73; font-size:11px; font-weight:600; letter-spacing:1.8px; text-transform:uppercase; line-height:1.8; margin-bottom:20px }
-.button { display:inline-flex; align-items:center; justify-content:center; gap:16px; min-height:48px; padding:13px 23px; background:#fff; color:#050b20; border:1px solid transparent; border-radius:50px; font-size:14px; font-weight:500; line-height:1.4; white-space:nowrap; text-decoration:none; transition:background .22s,color .22s,border-color .22s,transform .22s }
+.page a.button { display:inline-flex; align-items:center; justify-content:center; gap:16px; min-height:48px; padding:13px 23px; background:#fff; color:#050b20; border:1px solid transparent; border-radius:50px; font-size:14px; font-weight:500; line-height:1.4; white-space:nowrap; text-decoration:none; transition:background .22s,color .22s,border-color .22s,transform .22s }
 .button svg { flex-shrink:0; font-size:18px }
-.button:hover { background:#de2321; color:#fff; border-color:#de2321; opacity:1 }
-.outline { background:transparent; color:#fff; border-color:#666 }
+.page a.button:hover { background:#de2321; color:#fff; border-color:#de2321; opacity:1 }
+.page a.button.outline { background:transparent; color:#fff; border-color:#666 }
+.page a.button.outline:hover { background:#de2321; color:#fff; border-color:#de2321 }
 .page :is(a,button,input,summary):focus-visible { outline:2px solid #f17b73; outline-offset:5px }
 .hero { position:relative; width:min(1500px,calc(100% - 96px)); min-height:680px; margin:26px auto 0; display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:44px; padding:48px 0 90px }
 .heroCopy { grid-column:1; grid-row:1; z-index:2; padding:30px 0 }

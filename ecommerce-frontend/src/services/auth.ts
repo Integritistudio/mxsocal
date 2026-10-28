@@ -1,8 +1,8 @@
-import { apiInstance, API_ENDPOINTS } from "../config/api";
+import { apiInstance } from "../config/api";
 
 export const signIn = async (email: string, password: string): Promise<any> => {
     const data = { email, password };
-    return await apiInstance(`${API_ENDPOINTS.SIGN_IN.replace(/\/login$/, "")}/admin/login`, {
+    return await apiInstance("/api/customer/admin/login", {
         method: "POST",
         data,
     });

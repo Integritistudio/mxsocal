@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiPause, FiPlay, FiSend, FiVolume2, FiVolumeX } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiPause, FiPlay, FiVolume2, FiVolumeX } from "react-icons/fi";
 import type { HomeBike } from "@/lib/home-content";
+import FooterContactForm from "./FooterContactForm";
 import Aurora from "@/components/react-bits/Aurora";
 import s from "./home-one.module.css";
 
@@ -274,12 +275,7 @@ export function HomeOnePaddock() {
 }
 
 export function HomeOneFounder() {
-  function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const email = new FormData(event.currentTarget).get("email");
-    const value = typeof email === "string" ? email.trim() : "";
-    window.location.href = value ? `/contact-us?email=${encodeURIComponent(value)}` : "/contact-us";
-  }
+
   return <section className={s.founder} aria-labelledby="home-one-founder">
     <div className={s.founderAurora} aria-hidden="true">
       <Aurora colorStops={["#7f1d1d", "#de2321", "#450a0a"]} amplitude={1.1} blend={0.55} speed={0.9} />
@@ -288,10 +284,7 @@ export function HomeOneFounder() {
       <p className={s.founderEyebrow}>Stay Tuned</p>
       <h2 id="home-one-founder">Become An <span className={s.brandAccent}>MXSoCal</span> Founder</h2>
       <p className={s.founderLead}>Get Founder&apos;s Access</p>
-      <form className={s.founderForm} onSubmit={submit}>
-        <input name="email" type="email" required placeholder="Your Email Address" aria-label="Your email address" autoComplete="email" />
-        <button type="submit" aria-label="Get founder&apos;s access"><FiSend size={16} aria-hidden="true" /></button>
-      </form>
+      <FooterContactForm founder className={s.founderForm} />
       <p className={s.founderNote}>We Will Not Share Your Information With Third Parties Or Send You Spam</p>
     </div>
   </section>;

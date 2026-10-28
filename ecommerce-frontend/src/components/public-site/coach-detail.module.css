@@ -1,0 +1,43 @@
+.eyebrow { display:block; color:#ef7775; font-size:12px!important; font-weight:500; letter-spacing:2px; margin-bottom:12px!important }
+.hero { display:grid; grid-template-columns:1.15fr 1fr; min-height:540px; border:1px solid #ffffff24; border-radius:16px; overflow:hidden; margin-top:30px; background:linear-gradient(125deg,#171717,#0b0b0b 65%,#301313) }
+.portrait { position:relative; min-height:540px; overflow:hidden; background:#171717 }
+.portrait > img { position:absolute; width:100%; height:100%; top:0; left:0; object-fit:cover; object-position:center 25%; transition:transform .7s }
+.portrait:hover > img { transform:scale(1.025) }
+.heroCopy { padding:64px 50px; align-self:center }
+.heroCopy h2 { font-size:46px; line-height:1.14; font-weight:500; letter-spacing:-1.5px; margin-bottom:24px }
+.heroCopy > p { color:#bbb; margin-bottom:30px; max-width:380px }
+.heroCopy > a { margin-top:30px }
+.heroFoot { display:flex; align-items:center; gap:12px; color:#aaa; font-size:13px; margin-top:30px }
+.heroFoot svg { flex-shrink:0; color:#ef7775; width:20px; height:20px }
+.overview { display:grid; grid-template-columns:1fr 1fr; gap:28px 35px; margin:0 }
+.overview > div { border-bottom:1px solid #ffffff20; padding-bottom:20px }
+.overview dt { display:flex; align-items:center; gap:12px; color:#aaa; font-size:13px }
+.overview dt svg { color:#ef7775; width:19px; height:19px }
+.overview dd { margin:7px 0 0 31px; overflow-wrap:anywhere }
+.bio { white-space:pre-line }
+.intro { color:#aaa; margin-top:-20px!important; margin-bottom:26px!important }
+.skills { list-style:none; display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0; margin:0 }
+.skills li { display:flex; align-items:center; gap:16px; padding:20px; border:1px solid #ffffff25; border-radius:12px; background:#ffffff03; transition:border-color .25s,background .25s }
+.skills li:hover { border-color:#de232180; background:#de232110 }
+.skills li > span { color:#ef7775; font-size:12px }
+.skills strong { font-size:15px; font-weight:400; flex:1 }
+.skills svg { color:#aaa; flex-shrink:0 }
+.levels { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px }
+.levels article { padding:26px; border:1px solid #ffffff25; border-radius:12px }
+.levels svg { color:#ef7775; width:24px; height:24px; margin-bottom:16px }
+.levels h3 { font-size:18px; font-weight:500; margin-bottom:12px }
+.levels p { font-size:14px; color:#aaa; line-height:25px }
+.booking { border:1px solid #ffffff30; border-radius:16px; padding:28px 22px; background:#101010 }
+.bookingHeading { display:grid; gap:12px }
+.bookingHeading > span { color:#aaa; font-size:10px; letter-spacing:1.5px }
+.bookingHeading strong { font-size:26px; font-weight:500; line-height:36px }
+.bookingHeading small { font-size:14px; color:#aaa; font-weight:400 }
+.nextStep > p { color:#bbb; max-width:650px; margin-bottom:26px }
+.nextStep > a { margin-top:26px }
+.nextStep h2 { margin-bottom:18px }
+.back { display:flex; justify-content:center; margin-top:25px }
+.back a { display:inline-flex; align-items:center; gap:12px; font-size:15px }
+.back a:hover { color:#ef7775 }
+@media(max-width:1050px) { .hero { min-height:430px } .portrait { min-height:430px } .heroCopy { padding:36px 28px } .heroCopy h2 { font-size:36px } .bookingHeading { grid-column:1/-1 } }
+@media(max-width:650px) { .hero { grid-template-columns:1fr; margin-top:22px } .portrait { min-height:370px } .heroCopy { padding:32px 24px } .heroCopy h2 { font-size:34px } .heroFoot { margin-top:24px } .overview { grid-template-columns:1fr; gap:18px } .skills { grid-template-columns:1fr } .levels { grid-template-columns:1fr } .booking { padding:22px 18px } .bookingHeading strong { font-size:24px } }
+@media(prefers-reduced-motion:reduce) { .portrait > img,.skills li { transition:none } .portrait:hover > img { transform:none } }

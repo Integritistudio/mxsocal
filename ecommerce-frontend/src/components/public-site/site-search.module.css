@@ -1,0 +1,29 @@
+.root { position:relative; flex-shrink:0; width:240px; z-index:20 }
+.form { display:flex; align-items:center; gap:10px; border:1px solid #ffffff70; border-radius:30px; height:46px; padding:0 16px; background:#0003; color:#fff }
+.form:focus-within { border-color:#fff }
+.form > svg { flex-shrink:0; width:17px }
+.form input { width:100%; min-width:0; border:0; outline:none; background:transparent; color:#fff; font:inherit; font-size:14px }
+.form input::placeholder { color:#bbb }
+.form input::-webkit-search-cancel-button { display:none }
+.form button { display:grid; place-items:center; border:0; border-radius:50%; background:transparent; color:#ccc; padding:5px; cursor:pointer }
+.dropdown { position:absolute; top:calc(100% + 12px); left:0; width:420px; max-width:calc(100vw - 40px); max-height:min(65svh,560px); overflow-y:auto; overscroll-behavior:contain; border:1px solid #ffffff30; border-radius:16px; background:#131313; box-shadow:0 20px 60px #0009; padding:8px; color:#fff; text-align:left }
+.count { padding:12px; color:#aaa; font-size:12px; border-bottom:1px solid #ffffff15 }
+.dropdown section { padding-top:10px }
+.dropdown h2 { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#ed7773; padding:8px 12px; font-weight:600 }
+.dropdown h2 span { color:#aaa; margin-left:6px }
+.dropdown a { display:flex; align-items:center; justify-content:space-between; gap:16px; border-radius:8px; padding:12px; font-size:14px; line-height:1.5; overflow-wrap:anywhere; text-decoration:none; color:#eee }
+.dropdown a:hover,.dropdown a:focus-visible { background:#ffffff0d; color:#fff }
+.dropdown a > span { color:#ed7773; flex-shrink:0 }
+.message { padding:14px 12px; color:#bbb; font-size:13px; line-height:1.6 }
+.message button,.pagination button { border:1px solid #555; background:transparent; color:#fff; border-radius:20px; padding:7px 12px; cursor:pointer; font:inherit; font-size:12px }
+.pagination { display:flex; justify-content:space-between; align-items:center; gap:10px; padding:14px 8px 8px; border-top:1px solid #ffffff20; margin-top:10px; font-size:11px; color:#aaa }
+.pagination button:disabled { opacity:.35; cursor:default }
+.mobile { width:100%; margin-bottom:20px }
+.mobile .dropdown { width:100%; max-width:100%; max-height:50svh }
+@media(max-width:1300px) and (min-width:1051px) { .root { width:200px } }
+@media(max-width:1050px) { .root:not(.mobile) { display:none } }
+
+.dropdown a > .thumbnail { display:grid; place-items:center; width:52px; height:52px; flex-shrink:0; border-radius:8px; overflow:hidden; background:#242424; color:#888 }
+.thumbnail img { display:block; width:100%; height:100%; object-fit:cover }
+.thumbnail[data-bike="true"] img { object-fit:contain }
+.dropdown a > .resultTitle { flex:1; min-width:0; flex-shrink:1; color:inherit }

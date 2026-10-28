@@ -12,6 +12,7 @@ const RideRequest = sequelize.define("RideRequest", {
   estimate: { type: DataTypes.JSONB, allowNull: false },
   privacyAcceptedAt: { type: DataTypes.DATE, allowNull: false },
   privacyVersion: { type: DataTypes.STRING, allowNull: false, defaultValue: "booking-2026-10" },
+  expiredAt: { type: DataTypes.DATE, allowNull: true },
   reviewedBy: { type: DataTypes.UUID, allowNull: true },
   reviewedAt: { type: DataTypes.DATE, allowNull: true },
   adminNote: { type: DataTypes.TEXT, allowNull: true },

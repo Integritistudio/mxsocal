@@ -7,6 +7,9 @@ const Track = require("../models/track.model");
 const Pricing = require("../models/ride-pricing.model");
 const Coach = require("../models/coach.model");
 const { Booking } = require("../models/booking.model");
+const { expireRequests } = require("../lib/ride-request-expiry");
+const { currentDate } = require("../lib/track-availability");
+const requestMail = require("../lib/ride-request-email");
 const service = require("../lib/ride-requests");
 const { uuid } = require("../lib/ride-request-validation");
 const auth = require("../middleware/auth.middleware");
@@ -37,10 +40,10 @@ router.put("/pricing", access.admin, async (req, res) => {
   } catch (e) { error(res, e); }
 });
 router.get("/mine", async (req, res) => {
-  try { res.json({ requests: await Request.findAll({ where: { userId: req.user.id }, order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
+  try { await expireRequests({ userId: req.user.id }); res.json({ requests: await Request.findAll({ where: { userId: req.user.id }, order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
 });
 router.get("/admin", access.staff, permit("booking:view"), async (req, res) => {
-  try { res.json({ requests: await Request.findAll({ include: [{ model: User, attributes: ["id", "name", "email", "phone", "needsCoach"] }], order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
+  try { await expireRequests(); res.json({ requests: await Request.findAll({ include: [{ model: User, attributes: ["id", "name", "email", "phone", "needsCoach"] }], order: [["createdAt", "DESC"]], limit: 100 }) }); } catch (e) { error(res, e); }
 });
 router.post("/quote", async (req, res) => {
   try { res.json(await service.quote(req.body, req.account)); } catch (e) { error(res, e); }
@@ -53,16 +56,22 @@ router.post("/", access.accountLimit, async (req, res) => {
     if (existing) return res.json({ request: existing });
     const result = await service.quote(req.body, req.account);
     if (req.body.expectedTotalAmount !== result.estimate.totalAmount) return res.status(409).json({ message: "Your estimate changed. Refresh availability and review the updated total before submitting." });
-    const [request] = await Request.findOrCreate({ where: { userId: req.user.id, clientKey: req.body.clientKey }, defaults: { ...result, startDate: result.draft.startDate, endDate: result.draft.endDate, privacyAcceptedAt: new Date() } });
+    const request = await db.transaction(async transaction => {
+      const [saved, created] = await Request.findOrCreate({ where: { userId: req.user.id, clientKey: req.body.clientKey }, defaults: { ...result, startDate: result.draft.startDate, endDate: result.draft.endDate, privacyAcceptedAt: new Date() }, transaction });
+      if (created) await requestMail.queue(saved, transaction);
+      return saved;
+    });
     res.status(201).json({ request });
   } catch (e) { error(res, e); }
 });
 router.patch("/admin/:id", access.staff, permit("booking:update"), async (req, res) => {
   if (!uuid(req.params.id) || !["approved", "rejected", "cancelled"].includes(req.body?.status) || (req.body.note !== undefined && (typeof req.body.note !== "string" || req.body.note.length > 1000))) return res.status(400).json({ message: "Choose a valid request action and a note under 1,000 characters." });
   try {
+    await expireRequests();
     const request = await db.transaction(async transaction => {
       const request = await Request.findByPk(req.params.id, { transaction, lock: transaction.LOCK.UPDATE });
       if (!request) { const e = new Error("Ride request not found."); e.status = 404; throw e; }
+      if (request.status === "requested" && request.startDate < currentDate()) { const e = new Error("This request has expired because its first ride day has passed."); e.status = 409; throw e; }
       if (request.status === req.body.status) return request;
       if (!(["approved", "rejected", "cancelled"].includes(req.body.status) && request.status === "requested") && !(request.status === "approved" && req.body.status === "cancelled")) { const e = new Error("This request has already been reviewed."); e.status = 409; throw e; }
       if (req.body.status === "approved") {

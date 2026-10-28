@@ -12,7 +12,7 @@ export default function BookingDatePicker({ availableDates, today, lastDate, sta
   const monthDate = new Date(`${today.slice(0, 7)}-01T12:00:00Z`); monthDate.setUTCMonth(monthDate.getUTCMonth() + month);
   const prefix = monthDate.toISOString().slice(0, 7); const year = monthDate.getUTCFullYear(); const number = monthDate.getUTCMonth();
   const count = new Date(Date.UTC(year, number + 1, 0)).getUTCDate(); const offset = monthDate.getUTCDay();
-  const available = new Set(availableDates);
+  const available = new Set(availableDates.filter(date => date > today));
   const canEnd = (date: string) => {
     if (!start || date <= start) return false;
     for (let day = start; day <= date; day = addDays(day, 1)) if (!available.has(day)) return false;
@@ -31,7 +31,7 @@ export default function BookingDatePicker({ availableDates, today, lastDate, sta
     if (date) setMonth(date.slice(0, 7) === today.slice(0, 7) ? 0 : 1);
   }
   return <section className={s.picker} aria-label="Ride dates">
-    <div className={s.heading}><span>Ride dates</span><small>Minimum 2 days</small></div>
+    <div className={s.heading}><span>Ride dates</span><small>Minimum 2 days &middot; From tomorrow</small></div>
     <div className={s.dateBar}>
       <button type="button" aria-pressed={mode === "start"} onClick={() => focusField("start")}><FiCalendar /><span><small>Start date</small><strong>{start ? label(start) : "Select date"}</strong></span></button>
       <FiArrowRight className={s.dateArrow} aria-hidden="true" />
@@ -50,7 +50,7 @@ export default function BookingDatePicker({ availableDates, today, lastDate, sta
         {Array.from({ length: offset }, (_, i) => <span key={`blank-${i}`} aria-hidden="true" />)}
         {Array.from({ length: count }, (_, i) => {
           const date = `${prefix}-${String(i + 1).padStart(2, "0")}`; const past = date < today; const open = available.has(date); const from = date === start; const to = date === end;
-          const disabled = past || !open || (mode === "end" ? !canEnd(date) : !available.has(addDays(date, 1)) || date >= lastDate);
+          const disabled = date <= today || !open || (mode === "end" ? !canEnd(date) : !available.has(addDays(date, 1)) || date >= lastDate);
           const inside = !!start && !!(preview || end) && date >= start && date <= (preview || end);
           return <button key={date} type="button" data-day={date} data-past={past} data-unavailable={!open} data-start={from} data-end={to} data-range={inside} data-today={date === today} disabled={disabled} aria-current={date === today ? "date" : undefined} aria-pressed={from || to} aria-label={`${label(date)}${from ? ", ride start" : to ? ", ride end" : past ? ", past date" : disabled ? ", unavailable for this selection" : ", available"}`} onMouseEnter={() => setHover(date)} onFocus={() => setHover(date)} onBlur={() => setHover("")} onClick={() => select(date)}><strong>{i + 1}</strong><small>{from ? "Start" : to ? "End" : date === today ? "Today" : ""}</small></button>;
         })}

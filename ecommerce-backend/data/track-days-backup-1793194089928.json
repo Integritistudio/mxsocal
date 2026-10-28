@@ -1,0 +1,23 @@
+[
+  {
+    "id": "3b1b8b12-3116-48b6-96d8-aaae00093274",
+    "trackId": "157b24c6-355f-464a-b458-bdf8c09459a6",
+    "month": "2026-10",
+    "days": {
+      "2026-10-22": {
+        "note": "",
+        "status": "available"
+      },
+      "2026-10-23": {
+        "note": "",
+        "status": "available"
+      },
+      "2026-10-24": {
+        "note": "",
+        "status": "available"
+      }
+    },
+    "createdAt": "2026-10-22T14:59:56.804Z",
+    "updatedAt": "2026-10-22T15:00:04.869Z"
+  }
+]

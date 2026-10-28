@@ -8,6 +8,7 @@ router.post("/photo", auth, staff, require("../middleware/review-upload.middlewa
 router.get("/photos/:filename", require("../controllers/coach-photo.controller").image);
 router.post("/", auth, staff, coach.addCoach);
 router.get("/public", coach.getPublicCoaches);
+router.get("/public/:id", coach.getPublicCoachById);
 router.get("/", auth, staff, coach.getCoaches);
 router.get("/:id", auth, staff, coach.getCoachById);
 router.delete("/:id", auth, staff, coach.deleteCoach);

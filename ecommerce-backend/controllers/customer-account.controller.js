@@ -43,7 +43,15 @@ exports.signup = async (req, res) => {
     if (latest && Date.now() - new Date(latest.updatedAt).getTime() < 60000) return res.status(429).json({ message: "Please wait a minute before requesting another code." });
     const otp = crypto.randomInt(0, 1000000).toString().padStart(6, "0");
     const challenge = await Challenge.create({ email: data.email, purpose: "signup", payload: { ...data, passwordHash: await bcrypt.hash(req.body.password, 12) }, secretHash: hash(otp), expiresAt: new Date(Date.now() + 600000) });
-    try { await otpMail(challenge, otp); } catch { await challenge.destroy(); throw new Error("Delivery failed"); }
+    try { await otpMail(challenge, otp); } catch (error) {
+      // Log only transport diagnostics, never recipients, credentials, or codes.
+      console.warn("Signup verification email delivery failed.", {
+        code: typeof error.code === "string" ? error.code.slice(0, 60) : undefined,
+        command: typeof error.command === "string" ? error.command.split(" ")[0].slice(0, 30) : undefined,
+        responseCode: typeof error.responseCode === "number" ? error.responseCode : undefined,
+      });
+      await challenge.destroy(); throw new Error("Delivery failed");
+    }
     res.status(202).json({ challengeId: challenge.id, message: "We sent a six-digit code to your email. Enter it within 10 minutes." });
   } catch { res.status(503).json({ message: "We couldn’t send the verification email. Please try again shortly." }); }
 };
@@ -121,6 +129,9 @@ const genders = ["", "woman", "man", "non-binary", "transgender", "genderfluid",
 exports.updateProfile = async (req, res) => {
   if (Object.hasOwn(req.body || {}, "needsCoach")) return res.status(403).json({ message: "Only an admin can change your coaching requirement." });
   const body = req.body || {}; const data = {};
+  const measurements = require("../lib/profile-measurements").measurements(body);
+  if (measurements.error) return res.status(400).json({ message: measurements.error });
+  Object.assign(data, measurements.data);
   for (const key of ["firstName", "lastName"]) if (body[key] !== undefined) { if (!nameValid(body[key])) return res.status(400).json({ message: "Enter your first and last names." }); data[key] = body[key].trim(); }
   for (const [key, max] of Object.entries({ phone: 25, country: 100, state: 100, city: 100, zipCode: 20, bio: 2000, address: 1000 })) if (body[key] !== undefined) { if (typeof body[key] !== "string" || body[key].length > max) return res.status(400).json({ message: `Check your ${key}.` }); data[key] = body[key].trim() || null; }
   if (data.phone && !/^\+?[\d\s().-]{7,25}$/.test(data.phone)) return res.status(400).json({ message: "Enter a valid phone number, or leave it blank." });

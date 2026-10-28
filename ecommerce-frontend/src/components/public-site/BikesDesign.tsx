@@ -43,9 +43,17 @@ export default function BikesDesign({ initialSearch = "" }: { initialSearch?: st
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [failedImages, setFailedImages] = useState<Record<string, boolean>>({});
+  const breadcrumbs = useRef<HTMLElement>(null);
   const pageRef = useRef<HTMLDivElement>(null);
   const light = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
+  useEffect(() => {
+    let frame = 0;
+    const showBreadcrumbs = () => { frame = requestAnimationFrame(() => breadcrumbs.current?.scrollIntoView({ block: "start", behavior: "instant" })); };
+    showBreadcrumbs();
+    window.addEventListener("pageshow", showBreadcrumbs);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("pageshow", showBreadcrumbs); };
+  }, [initialSearch]);
   const load = useCallback(async (signal: AbortSignal) => {
     setLoading(true); setError("");
     try {
@@ -70,6 +78,7 @@ export default function BikesDesign({ initialSearch = "" }: { initialSearch?: st
     <a className={shared.skip} href="#main-content">Skip to content</a>
     <PublicSiteHeader activePath="/bikes" />
     <main id="main-content" className={listing.main}>
+      <nav ref={breadcrumbs} className={s.breadcrumbs} aria-label="Breadcrumb"><Link href="/">Home</Link><span aria-hidden="true">/</span><span aria-current="page">Bikes</span></nav>
       <h1 className={listing.srOnly}>Explore Our Bikes</h1>
       <div className={listing.light} ref={light} aria-hidden="true"><div><div><img src={asset("6e53c.svg")} alt="" width="2301.77" height="3977.04" /></div></div></div>
       <form className={listing.filters} onSubmit={search} aria-label="Find a bike">
@@ -85,7 +94,7 @@ export default function BikesDesign({ initialSearch = "" }: { initialSearch?: st
         {!loading && !error && !bikes.length && <div className={listing.message}><h2>No bikes match those filters</h2><p>Try a different bike, engine size, or budget.</p>{initialSearch ? <Link className={s.clear} href="/bikes">Show all bikes</Link> : <button type="button" onClick={() => { setFilters(empty); setApplied({ ...empty }); setPage(1); }}>Clear filters</button>}</div>}
         {bikes.map(bike => <motion.article key={bike.id} className={listing.card} initial={false} whileInView={reduceMotion ? undefined : { y: [8, 0] }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}>
           <div className={listing.portrait}>{bike.images[0] && !failedImages[bike.id] ? <img src={bike.images[0]} alt={bike.name} loading="lazy" onError={() => setFailedImages(previous => ({ ...previous, [bike.id]: true }))} /> : <PiMotorcycle size={80} aria-label="Bike image unavailable" />}<Link className={listing.portraitOverlay} href={`/bikes/${bike.slug || bike.id}`} aria-label={`View details for ${bike.name}`}><span>View Details<FiArrowUpRight size={18} aria-hidden="true" /></span></Link></div>
-          <div className={s.info}><h2>{bike.name}</h2><p className={s.tagline}>{bike.tagline}</p><div className={s.features}>{bike.features.map((feature, index) => <div key={`${feature}-${index}`}><img src={asset(icons[index])} alt="" width="36" height="36" /><span>{feature}</span></div>)}</div><div className={s.priceRow}><p className={s.price}><strong>{price(bike)}</strong>{bike.pricePerDay !== null && <span>/ day</span>}</p><Link className={s.detailsLink} href={`/bikes/${bike.slug || bike.id}`}>View Details</Link></div></div>
+          <div className={s.info}><h2>{bike.name}</h2><p className={s.tagline}>{bike.tagline}</p><div className={s.features}>{bike.features.map((feature, index) => <div key={`${feature}-${index}`}><img src={asset(icons[index])} alt="" width="36" height="36" /><span>{feature}</span></div>)}</div><div className={s.priceRow}><p className={s.price}><strong>{price(bike)}</strong>{bike.pricePerDay !== null && <span>/ day</span>}</p></div></div>
           <Link className={listing.book} href={bookingUrl(bike)}>Book Now<img src={asset("3f168.svg")} alt="" /></Link>
         </motion.article>)}
         {loading && bikes.length > 0 && <ListingSkeleton variant="bike" count={Math.min(4, Math.max(1, total - bikes.length))} />}

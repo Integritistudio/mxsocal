@@ -3,7 +3,7 @@
 .intro > span,.summary > span { color:#ed7773; letter-spacing:2px; font-size:11px; font-weight:600 }
 .intro h1 { font-size:36px; line-height:1.25; font-weight:600; margin:0 0 12px }
 .intro p,.muted { color:#a8a8a8; line-height:1.7; font-size:14px }
-.steps { display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin:35px 0 }
+.steps { scroll-margin-top:24px; display:grid; grid-template-columns:repeat(6,1fr); gap:14px; margin:35px 0 }
 .steps button { display:flex; align-items:center; gap:12px; text-align:left; border:0; border-bottom:1px solid #ffffff30; padding:0 0 18px; background:transparent; color:#c4c4c4; font:inherit; font-size:13px; cursor:pointer }
 .steps button span { display:grid; place-items:center; border:1px solid #ffffff35; background:#202020; width:35px; height:35px; border-radius:50%; flex-shrink:0 }
 .steps button[data-complete="true"] { border-color:#4cba8050 }
@@ -25,7 +25,7 @@
 .changeBikeField { max-width:550px; padding:20px; margin:20px 0; border:1px solid #ffffff25; border-radius:12px }
 .changeBikeField label { display:grid; gap:12px; font-size:14px }
 @media(max-width:600px) { .primaryBike { gap:18px } .primaryBike > img { width:145px; height:125px } .primaryBike h3 { font-size:19px } }
-.content { min-width:0 }
+.content { display:flex; flex-direction:column; align-items:stretch; min-width:0 }
 .content > h2 { font-size:30px; font-weight:600; margin:0 0 20px; outline:none }
 .content h3 { font-size:18px; font-weight:500 }
 .main button,.main input,.main select,.main textarea { font:inherit }
@@ -68,7 +68,7 @@
 .gearPreference label { display:inline-flex; align-items:center; gap:9px; font-size:13px; color:#ddd; cursor:pointer }
 .main .gearPreference input { width:17px; height:17px; padding:0; accent-color:#de2321; flex-shrink:0 }
 .gearPreference .textButton { flex-basis:100%; padding-bottom:0 }
-.coachCard img { object-fit:cover; border-radius:12px }
+.productCard.coachCard img { height:240px; object-fit:contain; object-position:center top; border-radius:12px; background:#181818 }
 .buddyInvite { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:24px 0; border-block:1px solid #ffffff25; margin:30px 0 15px }
 .buddyInvite p { font-size:13px; color:#aaa; line-height:1.7; max-width:420px; margin-top:8px }
 .primary,.secondary { display:inline-flex; align-items:center; justify-content:center; gap:12px; border:1px solid #de2321; border-radius:30px; padding:13px 24px; color:#fff; font-size:14px; text-decoration:none }
@@ -109,7 +109,7 @@
 .consent { display:flex; align-items:flex-start; gap:12px; font-size:13px; line-height:1.7; margin:24px 0; color:#ccc }
 .consent input { width:18px; height:18px; flex-shrink:0; accent-color:#de2321; margin-top:3px }
 .consent a { color:#fff; text-decoration:underline; text-underline-offset:3px }
-.error { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:15px; border:1px solid #de2321; background:#de232115; border-radius:12px; padding:18px; margin:20px 0; font-size:14px; line-height:1.7 }
+.error { display:flex; width:fit-content; max-width:100%; margin-inline:auto; align-items:center; justify-content:center; text-align:center; overflow-wrap:anywhere; flex-wrap:wrap; gap:15px; border:1px solid #de2321; background:#de232115; border-radius:12px; padding:18px; margin:20px auto; font-size:14px; line-height:1.7 }
 .error button { border:0; background:transparent; color:#fff; text-decoration:underline }
 .empty { padding:25px; border:1px dashed #ffffff40; border-radius:14px; color:#aaa; line-height:1.8; font-size:14px }
 .success { max-width:750px; margin:50px auto; padding:45px; border:1px solid #de2321; border-radius:24px; display:flex; flex-direction:column; align-items:start; gap:20px; line-height:1.8 }
@@ -124,3 +124,52 @@
 .customerRequests h3 { font-weight:500; font-size:18px }
 @media(max-width:1100px) { .main { width:calc(100% - 48px) } .flowLayout { grid-template-columns:minmax(0,1fr) 240px; gap:24px } .trackGrid { grid-template-columns:1fr } .productGrid { grid-template-columns:repeat(2,minmax(0,1fr)) } .steps button { flex-direction:column; align-items:start; gap:9px; font-size:11px } .contactFields { grid-template-columns:1fr } }
 @media(max-width:750px) { .main { width:calc(100% - 32px); padding-top:35px } .flowLayout { display:flex; flex-direction:column } .content { width:100% } .summary { position:static; width:100% } .steps { gap:8px; margin-block:30px } .steps button { font-size:10px; line-height:1.5 } .steps button span { width:30px; height:30px } .panel { padding:18px 12px } .buddyInvite { flex-direction:column; align-items:start } .productCard img,.gearChoice img { height:125px } .productCard,.gearChoice { padding:16px 10px } .productGrid { gap:12px } .dateFields { gap:10px } .dateFields input { padding:10px 6px!important; font-size:12px!important } .content > h2 { font-size:26px } .total { font-size:18px } .success { padding:25px } }
+.guestMain { position:relative; isolation:isolate; width:100%; max-width:none; min-height:calc(100svh - 120px); padding:90px 24px; display:flex; align-items:center; justify-content:center; overflow:hidden; background:#171717 url('/images/contact/b541a.png') center/cover }
+.backdrop { position:absolute; inset:0; z-index:-2; pointer-events:none }
+.backdrop video { width:100%; height:100%; object-fit:cover }
+.guestMain::before { content:""; position:absolute; inset:0; z-index:-1; background:rgba(0,0,0,.58); pointer-events:none }
+.signInCard { width:100%; max-width:560px; text-align:center; padding:30px 0 }
+.signInCard h1 { font-size:clamp(38px,5vw,64px); font-weight:600; line-height:1.12; letter-spacing:-1.5px; margin:0 0 22px }
+.signInCard p { max-width:440px; margin:0 auto; font-size:16px; color:#e0e0e0; line-height:1.8 }
+.signInCard .signInHint { margin-top:20px; font-size:14px; color:#ccc }
+.signInButton { margin-top:28px; padding:15px 28px }
+.page .signInButton:hover { color:#000 }
+.signInCard > small { display:block; font-size:12px; color:#ccc; margin-top:20px }
+.videoControl { position:absolute; bottom:24px; right:24px; display:flex; align-items:center; gap:8px; border:1px solid #ffffff40; border-radius:30px; color:#fff; background:#1119; padding:10px 14px; font-size:11px!important }
+@media(max-width:650px) { .guestMain { min-height:calc(100svh - 95px); padding:70px 24px 95px } .signInCard p { font-size:14px } .videoControl { bottom:20px; right:20px } }
+
+/* Bike and date selection with the continuation button below the calendar. */
+.content.bikeDateLayout { display:grid; grid-template-columns:minmax(280px,1fr) minmax(396px,528px); grid-template-rows:auto 1fr auto; align-items:start; gap:24px 48px }
+.bikeDateLayout > h2 { grid-column:1; grid-row:1; margin:0 }
+.bikeSelection { grid-column:1; grid-row:2; align-self:start; min-width:0 }
+.bikeDateLayout .primaryBike { display:flex; flex-direction:column; align-items:flex-start; border:0; padding:0; margin:0; gap:24px }
+.bikeDateLayout .primaryBike > img { width:100%; max-width:560px; height:auto; aspect-ratio:4 / 3; object-fit:contain; flex-shrink:0 }
+.bikeDateLayout .primaryBike > div { min-width:0; width:100% }
+.bikeDateLayout .primaryBike h3 { font-size:24px; line-height:1.4 }
+.bikeDateLayout .primaryBike p { font-size:16px }
+.dateSelection { grid-column:2; grid-row:1 / span 2; min-width:0 }
+.dateSelection > section { width:100%; max-width:none; margin:0 }
+.bikeDateLayout > .actions { grid-column:2; grid-row:3; align-self:start; margin:0; display:flex; justify-content:flex-end }
+.bikeDateLayout > .actions > .primary { width:auto; min-height:50px; border-radius:30px; padding:13px 28px; gap:12px }
+@media(min-width:1101px) { .flowLayout:has(.bikeDateLayout) { max-width:1250px } }
+@media(max-width:1100px) { .content.bikeDateLayout { grid-template-columns:minmax(240px,1fr) minmax(374px,1.1fr); column-gap:28px } }
+@media(max-width:750px) { .content.bikeDateLayout { display:flex; flex-direction:column; gap:24px } .bikeSelection,.dateSelection { width:100% } .bikeDateLayout .primaryBike > img { max-width:none; aspect-ratio:4 / 3 } .bikeDateLayout > .actions { width:100%; margin:0 } .bikeDateLayout > .actions > .primary { width:100% } }
+
+.sizeField { border:0; min-width:0; margin:0 }
+.sizeField legend { padding:0; margin-bottom:10px }
+.sizeButtons { display:flex; flex-wrap:wrap; justify-content:center; gap:8px }
+.sizeButtons button { display:grid; place-items:center; flex:0 0 42px; width:42px; height:42px; border:1px solid #ffffff35; border-radius:50%; background:#1c1c1c; color:#ddd; padding:0; font-size:13px }
+.sizeButtons button:not(:disabled):hover { border-color:#ed7773; background:#de232120 }
+.sizeButtons button[aria-pressed="true"] { background:#de2321; border-color:#de2321; color:#fff }
+.sizeButtons button:disabled { text-decoration:line-through }
+
+.guestMain .success { width:100%; max-width:650px; margin:0; padding:30px 0; border:0; border-radius:0; align-items:center; text-align:center; gap:22px }
+.guestMain .success > svg { width:64px; height:64px; padding:15px; border:1px solid #ffffff60; border-radius:50%; background:#ffffff10; color:#fff }
+.guestMain .success h2 { font-size:clamp(32px,4vw,48px); line-height:1.15; letter-spacing:-1px; outline:none }
+.guestMain .success p { color:#e0e0e0; max-width:540px; font-size:15px; line-height:1.8 }
+.guestMain .success strong { font-size:14px; letter-spacing:1px }
+.page .success .primary:hover { color:#000 }
+
+.submitSpinner { display:inline-block; width:17px; height:17px; flex-shrink:0; border:2px solid #ffffff50; border-top-color:#fff; border-radius:50%; animation:bookingSubmitSpin .75s linear infinite }
+@keyframes bookingSubmitSpin { to { transform:rotate(360deg) } }
+@media(prefers-reduced-motion:reduce) { .submitSpinner { animation:none } }

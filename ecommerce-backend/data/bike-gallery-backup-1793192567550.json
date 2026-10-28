@@ -1,0 +1,818 @@
+[
+  {
+    "id": "d489a180-6379-48f8-8f7a-3c7d377ca4fd",
+    "images": [
+      "/images/bikes/1cc67.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2024",
+          "250cc",
+          "Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Motocross / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2024"
+          },
+          {
+            "label": "Engine",
+            "value": "250cc"
+          },
+          {
+            "label": "Transmission",
+            "value": "Manual"
+          },
+          {
+            "label": "Color",
+            "value": "Honda colors"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Ask our team for rider suitability"
+          },
+          {
+            "label": "Suspension",
+            "value": "Factory suspension"
+          },
+          {
+            "label": "Seat Height",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Weight",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "Varies by riding conditions"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine",
+                "value": "250cc"
+              },
+              {
+                "label": "Transmission",
+                "value": "Manual"
+              },
+              {
+                "label": "Fuel",
+                "value": "Gasoline"
+              },
+              {
+                "label": "Model Year",
+                "value": "2024"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Weight",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "Confirm when booking"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "Lightweight, Race-Ready",
+      "features": [
+        "Low Hours",
+        "Beginner",
+        "Track Ready"
+      ]
+    }
+  },
+  {
+    "id": "8fc2b6c5-b716-4b30-ba9c-80e20cdc95da",
+    "images": [
+      "/images/bikes/cd178.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2024",
+          "450cc",
+          "Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Motocross / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2024"
+          },
+          {
+            "label": "Engine",
+            "value": "450cc"
+          },
+          {
+            "label": "Transmission",
+            "value": "Manual"
+          },
+          {
+            "label": "Color",
+            "value": "Yamaha colors"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Ask our team for rider suitability"
+          },
+          {
+            "label": "Suspension",
+            "value": "Factory suspension"
+          },
+          {
+            "label": "Seat Height",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Weight",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "Varies by riding conditions"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine",
+                "value": "450cc"
+              },
+              {
+                "label": "Transmission",
+                "value": "Manual"
+              },
+              {
+                "label": "Fuel",
+                "value": "Gasoline"
+              },
+              {
+                "label": "Model Year",
+                "value": "2024"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Weight",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "Confirm when booking"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "High-Power MX Bike",
+      "features": [
+        "Lightly Ridden",
+        "Pro Suspension",
+        "Popular Choice"
+      ]
+    }
+  },
+  {
+    "id": "b5fed483-2fdd-4c81-8c5c-3bf7ef46b423",
+    "images": [
+      "/images/bikes/bb11e.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2024",
+          "35–45 miles",
+          "6-Speed Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "gallery": [
+          "/images/product-detail/7a4a5.png",
+          "/images/product-detail/9e6e4.png",
+          "/images/product-detail/63b2d.png",
+          "/images/product-detail/c125c.png",
+          "/images/product-detail/05378.png",
+          "/images/bikes/bb11e.png"
+        ],
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Enduro / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2024"
+          },
+          {
+            "label": "Engine",
+            "value": "293cc, 2-Stroke, Single-Cylinder"
+          },
+          {
+            "label": "Transmission",
+            "value": "6-Speed Manual"
+          },
+          {
+            "label": "Color",
+            "value": "KTM Orange / White"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Intermediate to Advanced"
+          },
+          {
+            "label": "Suspension",
+            "value": "WP XPLOR Front & Rear"
+          },
+          {
+            "label": "Seat Height",
+            "value": "37.8 in (960 mm)"
+          },
+          {
+            "label": "Weight",
+            "value": "243 lbs (110 kg)"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "2.3 gal (8.7 L)"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "35–45 miles per tank"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine Type",
+                "value": "293cc, 2-Stroke, Single-Cylinder"
+              },
+              {
+                "label": "Cooling System",
+                "value": "Liquid-Cooled"
+              },
+              {
+                "label": "Fuel System",
+                "value": "Electronic Fuel Injection (EFI)"
+              },
+              {
+                "label": "Power Delivery",
+                "value": "Strong low-end torque"
+              },
+              {
+                "label": "Clutch",
+                "value": "Hydraulic Wet Clutch"
+              },
+              {
+                "label": "Frame",
+                "value": "Lightweight Chromoly Steel"
+              },
+              {
+                "label": "Front Suspension",
+                "value": "WP XPLOR USD Forks"
+              },
+              {
+                "label": "Rear Suspension",
+                "value": "WP XPLOR PDS Shock"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "37.8 in (960 mm)"
+              },
+              {
+                "label": "Weight",
+                "value": "243 lbs (110 kg)"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "2.3 gal (8.7 L)"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "Enduro Adventure Ready",
+      "features": [
+        "Low Hours",
+        "Easy Handling",
+        "Off-Road Ready"
+      ]
+    }
+  },
+  {
+    "id": "d0741f92-18a0-419b-84c0-873e2bfef680",
+    "images": [
+      "/images/bikes/da83f.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2024",
+          "250cc",
+          "Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Motocross / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2024"
+          },
+          {
+            "label": "Engine",
+            "value": "250cc"
+          },
+          {
+            "label": "Transmission",
+            "value": "Manual"
+          },
+          {
+            "label": "Color",
+            "value": "Husqvarna colors"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Ask our team for rider suitability"
+          },
+          {
+            "label": "Suspension",
+            "value": "Factory suspension"
+          },
+          {
+            "label": "Seat Height",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Weight",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "Varies by riding conditions"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine",
+                "value": "250cc"
+              },
+              {
+                "label": "Transmission",
+                "value": "Manual"
+              },
+              {
+                "label": "Fuel",
+                "value": "Gasoline"
+              },
+              {
+                "label": "Model Year",
+                "value": "2024"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Weight",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "Confirm when booking"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "Pro Racing Suspension",
+      "features": [
+        "Low Hours",
+        "Beginner",
+        "Track Ready"
+      ]
+    }
+  },
+  {
+    "id": "db0b8feb-5cd6-47ca-a903-36365449cc6f",
+    "images": [
+      "/images/bikes/1cc67.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2025",
+          "250cc",
+          "Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Motocross / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2025"
+          },
+          {
+            "label": "Engine",
+            "value": "250cc"
+          },
+          {
+            "label": "Transmission",
+            "value": "Manual"
+          },
+          {
+            "label": "Color",
+            "value": "Honda colors"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Ask our team for rider suitability"
+          },
+          {
+            "label": "Suspension",
+            "value": "Factory suspension"
+          },
+          {
+            "label": "Seat Height",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Weight",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "Varies by riding conditions"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine",
+                "value": "250cc"
+              },
+              {
+                "label": "Transmission",
+                "value": "Manual"
+              },
+              {
+                "label": "Fuel",
+                "value": "Gasoline"
+              },
+              {
+                "label": "Model Year",
+                "value": "2025"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Weight",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "Confirm when booking"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "Ready For Your Next Track Day",
+      "features": [
+        "Low Hours",
+        "Easy Handling",
+        "Track Ready"
+      ]
+    }
+  },
+  {
+    "id": "400d0549-5b70-4214-a8e1-6fcefa180bb9",
+    "images": [
+      "/images/bikes/cd178.png"
+    ],
+    "attributes": {
+      "details": {
+        "badges": [
+          "2025",
+          "450cc",
+          "Manual",
+          "Petrol"
+        ],
+        "address": "Southern California",
+        "overview": [
+          {
+            "label": "Bike Type",
+            "value": "Motocross / Off-Road Dirt Bike"
+          },
+          {
+            "label": "Model Year",
+            "value": "2025"
+          },
+          {
+            "label": "Engine",
+            "value": "450cc"
+          },
+          {
+            "label": "Transmission",
+            "value": "Manual"
+          },
+          {
+            "label": "Color",
+            "value": "Yamaha colors"
+          },
+          {
+            "label": "Condition",
+            "value": "Low Hours · Excellent"
+          },
+          {
+            "label": "Rider Level",
+            "value": "Ask our team for rider suitability"
+          },
+          {
+            "label": "Suspension",
+            "value": "Factory suspension"
+          },
+          {
+            "label": "Seat Height",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Weight",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Fuel Tank Capacity",
+            "value": "Confirm when booking"
+          },
+          {
+            "label": "Range (Approx.)",
+            "value": "Varies by riding conditions"
+          }
+        ],
+        "subtitle": "Off-Road Dirt Bike",
+        "mapEmbedUrl": "https://www.google.com/maps?q=Southern%20California&output=embed",
+        "specifications": [
+          {
+            "rows": [
+              {
+                "label": "Engine",
+                "value": "450cc"
+              },
+              {
+                "label": "Transmission",
+                "value": "Manual"
+              },
+              {
+                "label": "Fuel",
+                "value": "Gasoline"
+              },
+              {
+                "label": "Model Year",
+                "value": "2025"
+              }
+            ],
+            "title": "Engine and Transmission"
+          },
+          {
+            "rows": [
+              {
+                "label": "Seat Height",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Weight",
+                "value": "Confirm when booking"
+              },
+              {
+                "label": "Fuel Tank Capacity",
+                "value": "Confirm when booking"
+              }
+            ],
+            "title": "Dimensions & Weight"
+          },
+          {
+            "rows": [
+              {
+                "label": "Terrain",
+                "value": "Off-road trails and designated riding areas"
+              },
+              {
+                "label": "Safety",
+                "value": "Helmet and protective riding equipment required"
+              },
+              {
+                "label": "Support",
+                "value": "Our team will help match the bike to your experience"
+              }
+            ],
+            "title": "Intended Use"
+          }
+        ]
+      },
+      "tagline": "Power For Experienced Riders",
+      "features": [
+        "Low Hours",
+        "Pro Suspension",
+        "Track Ready"
+      ]
+    }
+  }
+]

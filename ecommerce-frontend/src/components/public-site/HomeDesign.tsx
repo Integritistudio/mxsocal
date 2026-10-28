@@ -3,12 +3,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useEffect, useRef, useState, type FormEvent, type RefObject } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import { useReducedMotion } from "framer-motion";
-import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiSend, FiVolume2, FiVolumeX } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiArrowUpRight, FiVolume2, FiVolumeX } from "react-icons/fi";
 import { PublicSiteHeader, PublicSiteFooter } from "./PublicSiteChrome";
 import { StoryCard } from "@/components/stories/StoriesView";
 import type { Story } from "@/components/stories/types";
+import FooterContactForm from "./FooterContactForm";
 import Aurora from "@/components/react-bits/Aurora";
 import shared from "./contact-design.module.css";
 import storiesStyles from "@/components/stories/stories.module.css";
@@ -131,12 +132,7 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
     if (!muted) void node.play().catch(() => undefined);
   }, [muted]);
 
-  function founderSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const email = new FormData(event.currentTarget).get("email");
-    const value = typeof email === "string" ? email.trim() : "";
-    window.location.href = value ? `/contact-us?email=${encodeURIComponent(value)}` : "/contact-us";
-  }
+
 
   return <div className={`${shared.page} ${s.page}`}>
     <a className={shared.skip} href="#main-content">Skip to content</a>
@@ -267,7 +263,7 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
           <div className={s.track} ref={coachTrack}>
             {coaches.map(coach => {
               const name = `${coach.firstName} ${coach.lastName}`.trim();
-              const book = `/contact-us?coach=${encodeURIComponent(coach.id)}&name=${encodeURIComponent(name)}`;
+              const book = `/coaches/${encodeURIComponent(coach.id)}`;
               return <article className={s.card} key={coach.id}>
                 <Link className={`${s.cardPhoto} ${s.coachPhoto}`} href={book} aria-label={`View details for ${name}`}>
                   {coach.profileImage ? <img className={s.coachPortrait} src={coach.profileImage} alt={name} loading="lazy" /> : null}
@@ -296,10 +292,7 @@ export default function HomeDesign({ stories }: { stories: Story[] }) {
           <p className={s.eyebrow}>Stay Tuned</p>
           <h2 id="home-founder-heading">Become An <span className={s.brandAccent}>MXSoCal</span> Founder</h2>
           <p className={s.founderLead}>Get Founder&apos;s Access</p>
-          <form className={s.founderForm} onSubmit={founderSubmit}>
-            <input name="email" type="email" required placeholder="Your Email Address" aria-label="Your email address" autoComplete="email" />
-            <button type="submit" aria-label="Get founder&apos;s access"><FiSend size={16} aria-hidden="true" /></button>
-          </form>
+          <FooterContactForm founder className={s.founderForm} />
           <p className={s.founderNote}>We Will Not Share Your Information With Third Parties Or Send You Spam</p>
         </div>
       </section>

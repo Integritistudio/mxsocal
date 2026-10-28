@@ -9,7 +9,7 @@
 .table { overflow:auto }
 .table table { width:100%; border-collapse:collapse; text-align:left; min-width:650px }
 .table th,.table td { border-bottom:1px solid #98a2b333; padding:15px 12px; font-size:14px; vertical-align:middle }
-.table th { color:#aaa; font-weight:500 }
+.table th { color:var(--admin-muted,#667085); font-weight:500 }
 .table a { color:#de2321 }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px }
 .field { display:flex; flex-direction:column; gap:7px; font-size:14px; min-width:0 }
@@ -27,7 +27,7 @@
 .actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:25px }
 .error { padding:12px 15px; background:#fef3f2; color:#b42318; border-radius:8px; margin-block:16px; font-size:14px }
 .success { padding:12px 15px; background:#ecfdf3; color:#027a48; border-radius:8px; margin-block:16px; font-size:14px }
-.hint { color:#aaa; font-size:13px; line-height:22px; margin-bottom:15px }
+.hint { color:var(--admin-muted,#667085); font-size:13px; line-height:22px; margin-bottom:15px }
 .status { border-radius:20px; padding:4px 10px; font-size:12px; background:#f2f4f7; color:#383838 }
 .status[data-status=approved] { background:#ecfdf3; color:#027a48 }
 .status[data-status=pending] { background:#fffaeb; color:#b54708 }
@@ -49,7 +49,7 @@
 .imageGrid { display:flex; gap:16px; flex-wrap:wrap; align-items:start }
 .imageTile { width:170px; border:1px solid #98a2b344; padding:10px; border-radius:12px }
 .imageTile img { width:148px; height:135px; object-fit:contain; background:#f2f4f7; border-radius:8px }
-.imageTile > span { display:block; font-size:12px; color:#aaa; margin:9px 0 }
+.imageTile > span { display:block; font-size:12px; color:var(--admin-muted,#667085); margin:9px 0 }
 .imageTile .iconActions { justify-content:space-between }
 .uploadTile { width:170px; height:225px; border:2px dashed #98a2b366; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; color:#de2321; font-size:14px }
 .uploadTile:focus-within { outline:2px solid #de2321 }
@@ -70,14 +70,14 @@
 .metric { display:grid; gap:14px; padding:24px; background:#fff; border:1px solid #98a2b344; border-radius:16px }
 :global(.dark) .metric { background:#151515 }
 .metric > svg { width:30px; height:30px; color:#de2321 }
-.metric > span { color:#aaa; font-size:14px }
+.metric > span { color:var(--admin-muted,#667085); font-size:14px }
 .metric > strong { font-size:30px; font-weight:600 }
 .dashboardColumns { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; margin-top:24px }
 .dashboardColumns h2 { font-size:18px; font-weight:600; margin-bottom:16px }
 .upcomingRow { display:flex; align-items:center; gap:15px; padding:16px 0; border-bottom:1px solid #98a2b333 }
 .upcomingRow img { width:70px; height:60px; object-fit:cover; border-radius:8px }
 .upcomingRow > div { display:grid; gap:5px; font-size:14px }
-.upcomingRow small { color:#aaa; font-size:12px }
+.upcomingRow small { color:var(--admin-muted,#667085); font-size:12px }
 .bookingAdminList { display:grid; gap:16px; margin-top:24px }
 .bookingAdminCard { border:1px solid #98a2b344; border-radius:12px; overflow:hidden }
 .bookingAdminSummary { display:flex; width:100%; align-items:center; gap:20px; padding:20px; text-align:left; background:transparent; color:inherit; border:0; cursor:pointer }
@@ -137,28 +137,28 @@
 .calendarMain { padding:20px; min-width:0 }
 .calendarMonthBar { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px }
 .calendarMonthBar h3 { font-size:19px; font-weight:600 }
-.calendarMonthBar p { font-size:11px; color:#aaa; margin-top:5px }
+.calendarMonthBar p { font-size:11px; color:var(--admin-muted,#667085); margin-top:5px }
 .calendarMonthBar p span { margin:0 4px }
 .calendarMonthActions { display:flex; gap:5px; align-items:center }
 .calendarMonthActions button { width:28px; height:32px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; display:grid; place-items:center; cursor:pointer }
 .calendarMonthActions input { min-width:0; max-width:145px; padding:6px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; font-size:12px }
 .calendarPresets { display:flex; gap:5px; align-items:center; flex-wrap:wrap; margin:20px 0 }
-.calendarPresets span { color:#aaa; font-size:11px; margin-right:3px }
+.calendarPresets span { color:var(--admin-muted,#667085); font-size:11px; margin-right:3px }
 .calendarPresets button { font-size:11px; border:1px solid #98a2b333; background:transparent; color:inherit; border-radius:20px; padding:5px 10px; cursor:pointer }
 .calendarPresets button:hover { border-color:#de2321; color:#de2321 }
 .calendarWeekdays,.calendarDates { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px }
-.calendarWeekdays { padding-bottom:10px; text-align:center; color:#aaa; font-size:11px }
+.calendarWeekdays { padding-bottom:10px; text-align:center; color:var(--admin-muted,#667085); font-size:11px }
 .calendarDates > button { min-height:88px; border:1px solid #98a2b333; border-radius:8px; padding:8px; color:inherit; text-align:left; background:transparent; cursor:pointer; min-width:0 }
 .calendarDates > button > div { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px }
 .calendarDates strong { font-size:14px; font-weight:600 }
 .calendarDates svg { width:13px; height:13px }
 .dayStatus { font-size:9px; line-height:15px; display:block; color:#067647 }
-.calendarDates small { font-size:9px; line-height:13px; color:#aaa; display:block; margin-top:3px; overflow-wrap:anywhere }
+.calendarDates small { font-size:9px; line-height:13px; color:var(--admin-muted,#667085); display:block; margin-top:3px; overflow-wrap:anywhere }
 .calendarDates button[data-state=closed] { background:#f0443807 }
 .calendarDates button[data-state=closed] .dayStatus { color:#b42318 }
 .calendarDates button[data-state=custom] .dayStatus { color:#de2321 }
 .calendarDates button[aria-pressed=true] { background:#de232112; border-color:#de2321; box-shadow:0 0 0 1px #de2321 }
-.calendarLegend { display:flex; gap:16px; flex-wrap:wrap; font-size:10px; color:#aaa; margin-top:18px }
+.calendarLegend { display:flex; gap:16px; flex-wrap:wrap; font-size:10px; color:var(--admin-muted,#667085); margin-top:18px }
 .calendarLegend span { display:flex; gap:6px; align-items:center }
 .calendarLegend span:before { content:""; width:6px; height:6px; border-radius:50%; background:#12b76a }
 .calendarLegend span[data-state=custom]:before { background:#de2321 }
@@ -191,14 +191,14 @@
 .activeResourceBanner img { width:100px; height:75px; object-fit:contain; border-radius:10px; background:#f2f4f7 }
 .activeResourceBanner span { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:#de2321 }
 .activeResourceBanner h2 { font-size:22px; font-weight:600; margin:5px 0 }
-.activeResourceBanner p { font-size:12px; color:#aaa; line-height:20px }
+.activeResourceBanner p { font-size:12px; color:var(--admin-muted,#667085); line-height:20px }
 :global(.dark) .activeResourceBanner { background:#151515; color:#eee }
 .availabilityGuide { display:flex; gap:24px; flex-wrap:wrap; padding:16px 0 24px; border-top:1px solid #98a2b333; font-size:12px; color:#aaa }
 .availabilityGuide span { display:flex; gap:8px; align-items:center }
 .availabilityGuide b { display:grid; place-items:center; width:23px; height:23px; border-radius:50%; background:#de232112; color:#de2321; font-weight:600 }
 .selectionTools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:13px; border:1px solid #de232125; background:#de232106; border-radius:10px; margin-bottom:20px }
 .selectionTools strong { font-size:12px; font-weight:600 }
-.selectionTools small { display:block; color:#aaa; font-size:10px; margin-top:4px }
+.selectionTools small { display:block; color:var(--admin-muted,#667085); font-size:10px; margin-top:4px }
 .selectionTools > div:last-child { display:flex; gap:6px; flex-wrap:wrap }
 .selectionTools button { border:1px solid #98a2b344; border-radius:7px; padding:7px 10px; background:transparent; color:inherit; font-size:11px; cursor:pointer }
 .selectionTools button:last-child { color:#b42318; border-color:#f0443833 }
@@ -207,7 +207,7 @@
 :global(.dark) .calendarPanel .calendarSaveBar { background:#151515 }
 @media(max-width:650px) { .activeResourceBanner { padding:16px; gap:14px } .activeResourceBanner img { width:75px; height:65px } .activeResourceBanner h2 { font-size:18px } .availabilityGuide { gap:10px; font-size:10px } .availabilityGuide b { width:20px; height:20px } }
 .calendarSaveBar > span { font-size:12px; font-weight:500 }
-.calendarSaveBar small { display:block; color:#aaa; font-size:10px; margin-top:5px; font-weight:400 }
+.calendarSaveBar small { display:block; color:var(--admin-muted,#667085); font-size:10px; margin-top:5px; font-weight:400 }
 .calendarSaveBar > div { display:flex; gap:10px }
 .calendarSaveBar .button,.calendarSaveBar .smallButton { font-size:12px }
 .calendarFeedback { min-height:28px }
@@ -229,11 +229,16 @@
 :global(.dark) .panel { background:#121212; border-color:#333 }
 :global(.dark) .metric { background:#151515; border-color:#333; border-radius:12px }
 :global(.dark) .field select option { background:#181818; color:#eee }
-.header a,.button { min-height:44px; background:#fff; color:#050b20; border:1px solid transparent; border-radius:50px; font-weight:500; transition:background .22s,color .22s,border-color .22s }
+.header a,.button { min-height:44px; background:#bd1e1b; color:#fff; border:1px solid transparent; border-radius:50px; font-weight:500; transition:background .22s,color .22s,border-color .22s }
+:global(.dark) .header a,:global(.dark) .button { background:#fff; color:#050b20 }
 .header a:hover,.button:hover:not(:disabled) { background:#de2321; color:#fff; border-color:#de2321 }
-.secondary { background:#ffffff08; border:1px solid #444; color:#eee }
-.danger { background:#de232118; color:#ffaaa6; border-color:#de232150 }
+.button.secondary { background:transparent; border:1px solid #98a2b3; color:#344054 }
+:global(.dark) .button.secondary { background:#ffffff08; border-color:#666; color:#eee }
+.button.secondary:hover:not(:disabled) { background:#bd1e1b; border-color:#bd1e1b; color:#fff }
+.button.danger { background:#fff0ee; color:#b42318; border-color:#de232150 }
+:global(.dark) .button.danger { background:#de232118; color:#ffaaa6 }
+.button.danger:hover:not(:disabled) { background:#b42318; color:#fff }
 .metric > svg { width:26px; height:26px; color:#f17e77 }
-.metric > span { color:#bbb; line-height:1.6 }
+.metric > span { color:var(--admin-muted,#667085); line-height:1.6 }
 .metric > strong { font-size:32px; letter-spacing:-.5px }
 .button:focus-visible,.smallButton:focus-visible { outline:2px solid #ed7770; outline-offset:3px }

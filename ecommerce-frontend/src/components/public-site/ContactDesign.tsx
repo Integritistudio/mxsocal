@@ -124,8 +124,8 @@ export default function ContactDesign() {
           <motion.button disabled={status === "sending"} type="submit" initial="rest" whileHover="hover" whileFocus="hover" whileTap={reduceMotion ? undefined : { scale: 0.985 }} transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}>{status === "sending" ? "Sending…" : "Send Message"}<motion.span className={s.sendIcon} aria-hidden="true" variants={{ rest: { x: 0, y: 0 }, hover: { x: reduceMotion ? 0 : 3, y: reduceMotion ? 0 : -3 } }} transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}><img src={asset("16497.svg")} alt="" /></motion.span></motion.button>
           {feedback && <p className={s.feedback} role={status === "error" ? "alert" : "status"}>{feedback}</p>}</form>
         </section>
-        <aside className={s.details}><h2>Contact details</h2><p>Etiam pharetra egestas interdum blandit viverra morbi consequat mi non bibendum egestas quam egestas nulla.</p>
-          <dl><div><dt><img src={asset("5ad4f.svg")} alt="" />Address</dt><dd>329 Queensberry Street, North<br />Melbourne VIC3051, Australia.</dd></div><div><dt><img src={asset("40f30.svg")} alt="" />Email</dt><dd><a href="mailto:ali@boxcars.com">ali@boxcars.com</a></dd></div><div><dt><img src={asset("339e0.svg")} alt="" />Phone</dt><dd><a href="tel:+76956039967">+76 956 039 967</a></dd></div></dl>
+        <aside className={s.details}><h2>Contact details</h2><p>Have a question about bikes, tracks, gear, or coaching? Contact the MXSoCal team to help plan your California riding experience.</p>
+          <dl><div><dt><img src={asset("5ad4f.svg")} alt="" />Address</dt><dd>California, USA.</dd></div><div><dt><img src={asset("40f30.svg")} alt="" />Email</dt><dd><a href="mailto:contact@mxsocal.com">contact@mxsocal.com</a></dd></div></dl>
           <h3>Follow us</h3><div className={s.social}><a href="https://facebook.com/" aria-label="Facebook"><FaFacebookF /></a><a href="https://twitter.com/" aria-label="Twitter"><FaTwitter /></a><a href="https://instagram.com/" aria-label="Instagram"><FaInstagram /></a><a href="https://linkedin.com/" aria-label="LinkedIn"><FaLinkedinIn /></a></div>
         </aside>
       </motion.div>

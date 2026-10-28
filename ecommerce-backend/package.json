@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "migrate:ride-request-emails": "node scripts/migrate-ride-request-emails.js",
+    "migrate:ride-request-expiry": "node scripts/migrate-ride-request-expiry.js",
+    "seed:track-days": "node scripts/seed-track-days.js",
+    "migrate:profile-measurements": "node scripts/migrate-profile-measurements.js",
+    "seed:bike-galleries": "node scripts/update-bike-galleries.js --apply",
+    "migrate:contact-emails": "node scripts/migrate-contact-emails.js",
+    "migrate:footer-contacts": "node scripts/migrate-footer-contacts.js",
     "data": "node scripts/database-transfer.js",
     "data:dump": "node scripts/database-transfer.js --export",
     "data:verify": "node scripts/database-transfer.js --verify",

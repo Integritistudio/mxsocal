@@ -3,6 +3,16 @@ const { Op } = require("sequelize");
 
 // Deliberately exclude email, phone, address, and uploaded documents.
 const publicAttributes = ["id", "firstName", "lastName", "bio", "profileImage", "experience", "specialty", "experienceLabel", "skills", "coachingLevels", "dailyRate", "imagePresentation"];
+exports.getPublicCoachById = async (req, res) => {
+  if (!/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(req.params.id)) return res.status(404).json({ message: "Coach not found." });
+  try {
+    const coach = await Coach.findByPk(req.params.id, { attributes: publicAttributes });
+    if (!coach) return res.status(404).json({ message: "Coach not found." });
+    return res.json({ coach });
+  } catch {
+    return res.status(503).json({ message: "This coach is temporarily unavailable. Please try again." });
+  }
+};
 exports.getPublicCoaches = async (req, res) => {
   const { level = "", specialty = "", budget = "", page = "1" } = req.query;
   if (Object.keys(req.query).some(key => !["level", "specialty", "budget", "page"].includes(key)) || [level, specialty, budget, page].some(value => typeof value !== "string") || !/^[1-9]\d{0,3}$/.test(page) || specialty.length > 100 || (level && !["Beginner", "Intermediate", "Advanced"].includes(level)) || (budget && (!/^\d{1,5}$/.test(budget) || Number(budget) <= 0))) {
