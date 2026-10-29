@@ -8,6 +8,8 @@ const { Booking, BookingAccessory } = require("../models/booking.model");
 const Availability = require("../models/resource-availability.model");
 const Email = require("../models/booking-email.model");
 const RideRequest = require("../models/ride-request.model");
+const RideParticipant = require("../models/ride-participant.model");
+const RideEmail = require("../models/ride-request-email.model");
 const { validateMonthBody } = require("../lib/resource-availability");
 router.use(require("../middleware/auth.middleware"), require("../middleware/account-access.middleware").staff);
 const allowed = (req, permission) => req.user.role === "admin" || req.user.permissions?.includes(permission);
@@ -60,11 +62,25 @@ router.post("/bookings/:id/email", permit("booking:update"), async (req, res) =>
 });
 router.get("/overview", permit("dashboard:view"), async (req, res) => {
   try {
-    const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Los_Angeles", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date());
-    const [revenue, paidBookings, todaysRides, holds, products, coaches, pendingEmails] = await Promise.all([Booking.sum("totalPrice", { where: { paymentStatus: "paid" } }), Booking.count({ where: { paymentStatus: "paid" } }), Booking.count({ where: { bookingDate: today, status: "confirmed" } }), Booking.count({ where: { status: "pending", paymentStatus: "pending" } }), Product.findAll({ attributes: ["id", "name", "images", "category", "stockQuantity", "status", "available"] }), Coach.count(), Email.count({ where: { sentAt: null } })]);
-    const upcoming = allowed(req, "booking:view") ? await Booking.findAll({ where: { bookingDate: { [Op.gte]: today }, status: "confirmed" }, include, order: [["bookingDate", "ASC"]], limit: 8 }) : [];
-    const [pendingRequests, approvedRequests] = await Promise.all([RideRequest.count({ where: { status: "requested" } }), RideRequest.count({ where: { status: "approved" } })]);
-    res.json({ pendingRequests, approvedRequests, revenue: Number(revenue || 0), paidBookings, todaysRides, holds, products, coaches, pendingEmails, upcoming: upcoming.map(present), today });
+    const today = require("../lib/track-availability").currentDate();
+    const snapshot = await sequelize.transaction({ isolationLevel: "REPEATABLE READ", readOnly: true }, async transaction => {
+      const legacyPaid = { paymentStatus: "paid", [Op.and]: [sequelize.literal(`COALESCE("Booking"."meta"->>'source', '') <> 'ride-request'`), sequelize.literal(`LOWER(COALESCE("Booking"."meta"->>'currency', 'USD')) = 'usd'`)] };
+      const [requests, participants, legacyRevenue, legacyPayments, products, coaches, rentalEmails, rideEmails] = await Promise.all([
+        RideRequest.findAll({ attributes: ["id", "status", "startDate", "endDate", "expiredAt", [sequelize.literal(`COALESCE("RideRequest"."estimate"->>'totalAmount', '0')::bigint`), "estimatedCents"], [sequelize.literal(`jsonb_array_length("RideRequest"."draft"->'riders')`), "riderCount"], [sequelize.literal(`"RideRequest"."estimate"->'track'->>'name'`), "trackName"]], transaction, raw: true }),
+        RideParticipant.findAll({ attributes: ["requestId", "amountCents", "signedAt", "paidAt"], where: { currency: "usd" }, transaction, raw: true }),
+        Booking.sum("totalPrice", { where: legacyPaid, transaction }), Booking.count({ where: legacyPaid, transaction }),
+        Product.findAll({ attributes: ["id", "name", "images", "category", "stockQuantity", "status", "available"], transaction }), Coach.count({ transaction }),
+        Email.count({ where: { sentAt: null }, transaction }), RideEmail.count({ where: { sentAt: null }, transaction }),
+      ]);
+      const rides = require("../lib/ride-dashboard").summarizeRides(requests, participants, today);
+      const upcomingIds = rides.upcoming.slice(0, 8).map(r => r.id);
+      const upcomingRows = allowed(req, "booking:view") && upcomingIds.length ? await RideRequest.findAll({ where: { id: upcomingIds }, attributes: ["id"], include: [{ model: User, attributes: ["name"] }], transaction }) : [];
+      const owners = new Map(upcomingRows.map(r => [r.id, r.User?.name]));
+      const upcomingRequests = allowed(req, "booking:view") ? rides.upcoming.slice(0, 8).map(r => ({ id: r.id, startDate: r.startDate, endDate: r.endDate, trackName: r.trackName, riderCount: Number(r.riderCount), amountPaid: r.amountPaidCents / 100, ownerName: owners.get(r.id) || "Customer" })) : [];
+      const { upcoming, ...metrics } = rides;
+      return { ...metrics, revenue: (rides.collectedCents + Math.round(Number(legacyRevenue || 0) * 100)) / 100, rideRevenue: rides.collectedCents / 100, legacyRevenue: Number(legacyRevenue || 0), paidBookings: rides.paidRiders + legacyPayments, upcomingGroups: upcoming.length, upcomingRequests, products, coaches, pendingEmails: rentalEmails + rideEmails };
+    });
+    res.set("Cache-Control", "no-store").json({ ...snapshot, today, timeZone: "America/Los_Angeles", generatedAt: new Date().toISOString() });
   } catch { res.status(503).json({ message: "Unable to load dashboard data." }); }
 });
 router.use("/availability/:type/:id", (req, res, next) => {

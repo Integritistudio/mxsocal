@@ -9,6 +9,24 @@
 .workspaceTabs button { display:flex; align-items:center; gap:9px; border:0; border-radius:8px; background:transparent; color:var(--muted); font:inherit; font-size:14px; padding:12px 20px; cursor:pointer }
 .workspaceTabs button[aria-pressed="true"] { background:var(--surface); color:var(--ink); box-shadow:0 2px 6px #0001 }
 .operations { display:grid; gap:22px }
+.analyticsTimestamp { color:var(--muted); font-size:11px; margin:-12px 0 0 }
+.dashboardMetrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px }
+.analyticsCard { display:grid; gap:12px; padding:24px; background:var(--surface); border:1px solid var(--line); border-radius:14px }
+.analyticsCard > svg { color:#de2321; width:21px; height:21px }
+.analyticsCard > span { color:var(--muted); font-size:13px }
+.analyticsCard > strong { font-size:30px; line-height:1.2; font-weight:600; overflow-wrap:anywhere }
+.analyticsCard > small { color:var(--muted); font-size:11px; line-height:1.7 }
+.analyticsNote { padding:18px 22px; border:1px solid var(--line); border-radius:12px; background:var(--soft); font-size:12px; line-height:1.8 }
+.analyticsNote strong { font-weight:600 }
+.analyticsNote p { margin:7px 0 0; color:var(--muted) }
+.operationsStrip { display:flex; flex-wrap:wrap; gap:14px 24px; padding:18px 0; border-block:1px solid var(--line); color:var(--muted); font-size:12px }
+.operationsStrip strong { color:var(--ink) }
+.upcomingGroup { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; padding:20px 0; border-top:1px solid var(--line) }
+.upcomingGroup h3 { margin:10px 0 6px; font-size:16px; font-weight:600 }
+.upcomingGroup p,.upcomingGroup small { font-size:12px; color:var(--muted); line-height:1.8; margin:0 }
+.upcomingGroup > strong { font-size:18px; font-weight:500 }
+@media(max-width:1000px) { .dashboardMetrics { grid-template-columns:repeat(2,minmax(0,1fr)) } }
+@media(max-width:550px) { .dashboardMetrics { grid-template-columns:1fr } .analyticsCard { padding:20px } }
 .stats { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px }
 .stats button { display:grid; gap:10px; text-align:left; border:1px solid var(--line); border-radius:14px; padding:20px; background:var(--surface); color:var(--ink); cursor:pointer }
 .stats button[aria-pressed="true"] { border-color:#de2321; box-shadow:0 0 0 1px #de2321 }
