@@ -1,4 +1,4 @@
-export type RentalProduct = { id: string; stockQuantity: number; name: string; slug: string; category: string; images: string[]; pricePerHour: string | null; pricePerDay: string | null; currency: string; attributes: { rentalGroup?: string; sizes?: string[]; variant?: number }; helmetSpec?: { sizes: string[] }; suitSpec?: { sizes: string[] } };
+export type RentalProduct = { id: string; stockQuantity: number; name: string; slug: string; category: string; images: string[]; pricePerDay: string | null; currency: string; attributes: { rentalGroup?: string; sizes?: string[]; variant?: number }; helmetSpec?: { sizes: string[] }; suitSpec?: { sizes: string[] } };
 export type RentalCoach = { id: string; firstName: string; lastName: string; specialty: string; bio: string; hourlyRate: string; profileImage: string; imagePresentation?: { height: number; top: number } };
 export type Slot = { start: string; end: string; available?: boolean; remaining?: number };
 export type BookingDraft = { productId: string; quantity?: number; bookingDate: string; slots: Slot[]; accessories: { productId: string; size: string; quantity: number }[]; coachId?: string; notes?: string };

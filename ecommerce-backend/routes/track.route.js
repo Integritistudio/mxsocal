@@ -1,5 +1,14 @@
 const router = require("express").Router();
 const controller = require("../controllers/track.controller");
+const admin = require("../controllers/track-admin.controller");
+const auth = require("../middleware/auth.middleware");
+const access = [auth, admin.manage];
+router.get("/admin", ...access, admin.list);
+router.post("/admin", ...access, admin.save);
+router.post("/admin/photo", ...access, require("../middleware/review-upload.middleware").parseReview, require("../controllers/product-photo.controller").upload);
+router.get("/admin/:id", ...access, admin.detail);
+router.put("/admin/:id", ...access, admin.save);
+router.delete("/admin/:id", ...access, admin.remove);
 router.get("/", controller.list);
 router.get("/:slug", controller.detail);
 router.put("/:slug/availability", require("../middleware/auth.middleware"), require("../middleware/account-access.middleware").staff, controller.saveAvailability);

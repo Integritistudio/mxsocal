@@ -15,9 +15,9 @@ function validateSlots(slots) {
   return normalized;
 }
 const overlap = (a, b) => a.some(x => b.some(y => minutes(x.start) < minutes(y.end) && minutes(y.start) < minutes(x.end)));
-function priceCents(product, hours) {
-  const amount = product.pricePerHour != null ? Number(product.pricePerHour) * hours : Number(product.pricePerDay);
-  if ((product.pricePerHour == null && product.pricePerDay == null) || !Number.isFinite(amount) || amount <= 0) fail(`${product.name} does not have a rental price.`);
+function priceCents(product) {
+  const amount = Number(product.pricePerDay);
+  if (product.pricePerDay == null || !Number.isFinite(amount) || amount <= 0) fail(`${product.name} does not have a rental price.`);
   return Math.round(amount * 100);
 }
 function validateDate(date) {

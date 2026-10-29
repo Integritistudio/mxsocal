@@ -29,7 +29,7 @@ const legacyFileUpload = fileUpload({
     useTempFiles: true,
     tempFileDir: "/tmp/",
   });
-app.use((req, res, next) => (/^\/products\/[^/]+\/reviews\/?$/.test(req.path) || (req.path === "/auth/me/avatar" || (req.path === "/coach/photo" || req.path === "/products/photo" || req.path === "/stories/media"))) ? next() : legacyFileUpload(req, res, next));
+app.use((req, res, next) => (/^\/products\/[^/]+\/reviews\/?$/.test(req.path) || (req.path === "/auth/me/avatar" || (req.path === "/coach/photo" || req.path === "/products/photo" || req.path === "/tracks/admin/photo" || req.path === "/stories/media"))) ? next() : legacyFileUpload(req, res, next));
 app.use("/", router);
 
 app.get("/", (req, res) => {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FiArrowLeft, FiArrowRight, FiImage, FiTrash2, FiUpload } from "react-icons/fi";
 import s from "./admin-products.module.css";
-export default function ImagePicker({ images, onChange, label = "Product photos", max = 20, onBusyChange }: { onBusyChange?: (busy: boolean) => void; images: string[]; onChange: (images: string[]) => void; label?: string; max?: number }) {
+export default function ImagePicker({ images, onChange, label = "Product photos", max = 20, onBusyChange, uploadUrl = "/api/product-photo" }: { uploadUrl?: string; onBusyChange?: (busy: boolean) => void; images: string[]; onChange: (images: string[]) => void; label?: string; max?: number }) {
   const [busy, setBusy] = useState(false); const [error, setError] = useState("");
   async function upload(files: FileList | null) {
     if (!files?.length) return;
@@ -13,7 +13,7 @@ export default function ImagePicker({ images, onChange, label = "Product photos"
     try {
       for (const file of Array.from(files)) {
         const form = new FormData(); form.append("images", file);
-        const response = await fetch("/api/product-photo", { method: "POST", body: form });
+        const response = await fetch(uploadUrl, { method: "POST", body: form });
         const result = await response.json(); if (!response.ok) throw new Error(result.message || "Upload failed.");
         added.push(...result.images);
       }

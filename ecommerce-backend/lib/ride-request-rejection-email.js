@@ -1,3 +1,4 @@
+const { emailLayout } = require("./email-layout");
 const escape = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 exports.rejectionEmail = (request, riderIndex) => {
   const rider = request.draft.riders[riderIndex];
@@ -11,6 +12,6 @@ exports.rejectionEmail = (request, riderIndex) => {
   return {
     subject: `MXSoCal | ${request.expiredAt ? "Ride request expired" : "Ride request not approved"}`,
     text: `Hi ${rider.name},\n\n${title}.\n${details}\n\nReason: ${reason}\n\nNo payment is required for this request. You can contact MXSoCal to discuss another ride.\n\n${action}: ${url}\nReference: ${request.id}\nQuestions: contact@mxsocal.com`,
-    html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:28px;color:#171717"><h1>${escape(title)}</h1><p>Hi ${escape(rider.name)},</p><p>${escape(details)}</p><p style="padding:16px;background:#faf0ef;line-height:1.8;white-space:pre-wrap"><strong>Reason</strong><br>${escape(reason)}</p><p>No payment is required for this request. You can contact MXSoCal to discuss another ride.</p><p style="margin:28px 0"><a href="${escape(url)}" style="display:inline-block;background:#de2321;color:#fff;padding:14px 24px;text-decoration:none">${action}</a></p><p>Reference: ${escape(request.id)}</p><p>Questions? <a href="mailto:contact@mxsocal.com">contact@mxsocal.com</a></p></div>`,
+    html: emailLayout({ title: title, section: "Ride adventures", content: `<h1>${escape(title)}</h1><p>Hi ${escape(rider.name)},</p><p style="padding:18px 20px;background:#1b1b1b;border:1px solid #3c3c3c;border-radius:6px;font-size:14px"><strong>YOUR RIDE</strong><br>${escape(details)}</p><p style="padding:16px;background:#271714;line-height:1.8;white-space:pre-wrap"><strong>Reason</strong><br>${escape(reason)}</p><p>No payment is required for this request. You can contact MXSoCal to discuss another ride.</p><p style="margin:28px 0"><a href="${escape(url)}" style="display:inline-block;background:#de2321;color:#eeeeee;padding:16px 26px;border-radius:28px;font-weight:bold;text-decoration:none">${action}</a></p><p>Reference: ${escape(request.id)}</p><p>Questions? <a href="mailto:contact@mxsocal.com">contact@mxsocal.com</a></p>` }),
   };
 };

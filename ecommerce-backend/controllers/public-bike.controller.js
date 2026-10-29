@@ -9,7 +9,7 @@ function present(row) {
   return {
     id: bike.id, name: bike.name, slug: bike.slug, brand: bike.brand, description: bike.description,
     images: Array.isArray(bike.images) ? bike.images.filter(image => typeof image === "string") : [],
-    pricePerDay: bike.pricePerDay, currency: bike.currency, location: bike.location,
+    pricePerDay: bike.pricePerDay, currency: bike.currency,
     tagline: typeof bike.attributes?.tagline === "string" ? bike.attributes.tagline : bike.description,
     features: Array.isArray(bike.attributes?.features) ? bike.attributes.features.filter(item => typeof item === "string").slice(0, 3) : [],
     bikeSpec: bike.bikeSpec,

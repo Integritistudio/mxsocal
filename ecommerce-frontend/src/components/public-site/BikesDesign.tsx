@@ -15,7 +15,7 @@ import s from "./bikes-design.module.css";
 
 type Bike = {
   id: string; slug: string; name: string; brand: string | null; description: string | null; images: string[];
-  pricePerDay: string | null; currency: string; tagline: string | null; features: string[]; location: string | null;
+  pricePerDay: string | null; currency: string; tagline: string | null; features: string[];
   bikeSpec: { model: string | null; modelYear: number | null; engineCapacity: string | null; transmission: string | null; fuelType: string | null; seatHeight: number | null; weight: number | null; numberOfGears: number | null } | null;
 };
 type Filters = { brand: string; size: string; budget: string };

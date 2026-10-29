@@ -2,17 +2,14 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import AdminBrand from "./AdminBrand";
+import { FiBarChart2, FiBox, FiCalendar, FiClock, FiFileText, FiFlag, FiGrid, FiMail, FiMessageSquare, FiShield, FiUser, FiUsers } from "react-icons/fi";
+import themeStyle from "./admin-theme.module.css";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { useUser } from "@/context/UserContext";
 import {
-  BoxCubeIcon,
-  CalenderIcon,
   ChevronDownIcon,
-  GridIcon,
   HorizontaLDots,
-  PageIcon,
-  UserCircleIcon,
 } from "../icons/index";
 
 type NavItem = {
@@ -24,46 +21,47 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { name: "Contact messages", icon: <PageIcon />, path: "/dashboard/contact-messages", permissionKey: "customer:manage" },
-  { name: "Email captures", icon: <PageIcon />, path: "/dashboard/footer-contacts", permissionKey: "customer:manage" },
-  { name: "Availability", icon: <CalenderIcon />, path: "/dashboard/availability", permissionKey: "availability:manage" },
-  { name: "Track Availability", icon: <CalenderIcon />, path: "/dashboard/track-availability", permissionKey: "availability:manage" },
-  { name: "Stories / Blog", icon: <PageIcon />, path: "/dashboard/stories", permissionKey: "blog:manage" },
-  { name: "Users", icon: <UserCircleIcon />, path: "/dashboard/users", permissionKey: "customer:manage" },
+  { name: "Analytics", icon: <FiBarChart2 />, path: "/dashboard/analytics", permissionKey: "dashboard:view" },
+  { name: "Contact messages", icon: <FiMessageSquare />, path: "/dashboard/contact-messages", permissionKey: "customer:manage" },
+  { name: "Email captures", icon: <FiMail />, path: "/dashboard/footer-contacts", permissionKey: "customer:manage" },
+  { name: "Availability", icon: <FiClock />, path: "/dashboard/availability", permissionKey: "availability:manage" },
+  { name: "Tracks", icon: <FiFlag />, path: "/dashboard/tracks", permissionKey: "availability:manage" },
+  { name: "Stories / Blog", icon: <FiFileText />, path: "/dashboard/stories", permissionKey: "blog:manage" },
+  { name: "Users", icon: <FiUsers />, path: "/dashboard/users", permissionKey: "customer:manage" },
   {
-    icon: <GridIcon />,
+    icon: <FiGrid />,
     name: "Dashboard",
     path: "/dashboard",
     permissionKey: "dashboard:view"
   },
   {
     name: "Bookings",
-    icon: <CalenderIcon />,
+    icon: <FiCalendar />,
     path: "/bookings",
     permissionKey: "booking:view"
   },
   {
     name: "Products",
-    icon: <CalenderIcon />,
+    icon: <FiBox />,
     path: "/products",
     permissionKey: "product:view"
   },
   {
     name: "Coaches",
-    icon: <UserCircleIcon />,
+    icon: <FiUser />,
     path: "/dashboard/coaches",
     permissionKey: "coach:view"
   },
   {
     name: "Managers",
-    icon: <PageIcon />,
+    icon: <FiShield />,
     path: "/managers",
     permissionKey: "managers:view"
   },
 ];
 
 
-const menuOrder = ["Dashboard", "Bookings", "Products", "Coaches", "Availability", "Track Availability", "Stories / Blog", "Users", "Email captures", "Contact messages", "Managers"];
+const menuOrder = ["Dashboard", "Analytics", "Bookings", "Products", "Coaches", "Availability", "Tracks", "Stories / Blog", "Users", "Email captures", "Contact messages", "Managers"];
 navItems.sort((a, b) => menuOrder.indexOf(a.name) - menuOrder.indexOf(b.name));
 
 const othersItems: NavItem[] = [];
@@ -80,7 +78,7 @@ const AppSidebar: React.FC = () => {
   ) => (
     <ul className="flex flex-col gap-4">
       {navItems.map((nav, index) => {
-        if (user?.role === "manager" && ["/managers", "/dashboard/users", "/dashboard/stories", "/dashboard/footer-contacts", "/dashboard/contact-messages"].includes(nav.path || "")) return;
+        if (user?.role === "manager" && ["/dashboard/analytics", "/managers", "/dashboard/users", "/dashboard/stories", "/dashboard/footer-contacts", "/dashboard/contact-messages"].includes(nav.path || "")) return;
         if (user?.role === "manager") {
           if (!hasPermission(nav?.permissionKey)) {
             return;
@@ -105,7 +103,7 @@ const AppSidebar: React.FC = () => {
                     : "menu-item-icon-inactive"
                     }`}
                 >
-                  {nav.icon}
+                  <span className={themeStyle.navIcon}>{nav.icon}</span>
                 </span>
                 {(isExpanded || isHovered || isMobileOpen) && (
                   <span className={`menu-item-text`}>{nav.name}</span>
@@ -133,7 +131,7 @@ const AppSidebar: React.FC = () => {
                       : "menu-item-icon-inactive"
                       }`}
                   >
-                    {nav.icon}
+                    <span className={themeStyle.navIcon}>{nav.icon}</span>
                   </span>
                   {(isExpanded || isHovered || isMobileOpen) && (
                     <span className={`menu-item-text`}>{nav.name}</span>

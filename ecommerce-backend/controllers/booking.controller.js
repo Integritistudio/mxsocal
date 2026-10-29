@@ -61,22 +61,7 @@ exports.createBooking = async (req, res) => {
     }
 
     // compute base price
-    let base = 0;
-    if (durationHours && product.pricePerHour) {
-      base = parseFloat(product.pricePerHour) * Number(durationHours);
-    } else if (product.pricePerHour) {
-      // estimate hours from slots
-      let totalMinutes = 0;
-      for (const s of slots) {
-        totalMinutes += Math.max(
-          0,
-          parseTimeToMinutes(s.end) - parseTimeToMinutes(s.start)
-        );
-      }
-      base = parseFloat(product.pricePerHour) * (totalMinutes / 60) || 0;
-    } else {
-      base = parseFloat(product.pricePerDay) || 0;
-    }
+    const base = parseFloat(product.pricePerDay) || 0;
 
     let accessoriesTotal = 0;
     for (const a of accessories) {

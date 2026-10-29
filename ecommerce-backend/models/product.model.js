@@ -1,5 +1,10 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/database");
+const cleanAttributes = attributes => {
+  if (!attributes?.details || typeof attributes.details !== "object") return attributes;
+  const { address, mapEmbedUrl, ...details } = attributes.details;
+  return { ...attributes, details };
+};
 
 const Product = sequelize.define(
   "Product",
@@ -19,12 +24,8 @@ const Product = sequelize.define(
     brand: { type: DataTypes.STRING, allowNull: true },
     description: { type: DataTypes.TEXT, allowNull: true },
     images: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
-    pricePerHour: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
     pricePerDay: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
-    pricePerWeek: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
     currency: { type: DataTypes.STRING, defaultValue: "USD" },
-    deposit: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
-    location: { type: DataTypes.STRING, allowNull: true },
     available: { type: DataTypes.BOOLEAN, defaultValue: true },
     status: {
       type: DataTypes.ENUM("available", "maintenance", "booked", "inactive"),
@@ -35,9 +36,18 @@ const Product = sequelize.define(
   {
     timestamps: true,
     indexes: [{ name: "products_public_slug_unique", unique: true, fields: ["slug"] }],
-    hooks: { beforeValidate: product => { if (!product.slug && product.name) product.slug = require("../helpers/product-slug")(product.name); } },
+    hooks: { beforeValidate: product => {
+      if (!product.slug && product.name) product.slug = require("../helpers/product-slug")(product.name);
+      product.attributes = cleanAttributes(product.attributes);
+    } },
   }
 );
+
+Product.prototype.toJSON = function () {
+  const product = this.get({ plain: true });
+  product.attributes = cleanAttributes(product.attributes);
+  return product;
+};
 
 const BikeSpec = sequelize.define(
   "BikeSpec",

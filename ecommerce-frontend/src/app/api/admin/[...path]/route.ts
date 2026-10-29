@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const allowedRoots = new Set(["contact", "footer-contacts", "auth", "user", "products", "coach", "operations", "bookings", "notifications", "upload"]);
+const allowedRoots = new Set(["tracks", "analytics", "contact", "footer-contacts", "auth", "user", "products", "coach", "operations", "bookings", "notifications", "upload"]);
 
 async function handle(request: Request, { params }: { params: Promise<{ path: string[] }> }) {
   const { path } = await params;

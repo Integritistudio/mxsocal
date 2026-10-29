@@ -9,25 +9,24 @@ const ratingKeys = ["performance", "handling", "comfort", "condition", "rental",
 const uuid = value => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
 const text = (value, max = 255) => typeof value === "string" && value.trim().length <= max;
 const mediaUrl = value => typeof value === "string" && value.length <= 2000 && (/^\/(?!\/)[^\\\s]*$/.test(value) || /^https:\/\/[^\s]+$/i.test(value));
-const mapUrl = value => { try { const url = new URL(value); return url.protocol === "https:" && ["www.google.com", "maps.google.com", "google.com"].includes(url.hostname) && (url.pathname === "/maps" || url.pathname.startsWith("/maps/")); } catch { return false; } };
 const pairsValid = rows => Array.isArray(rows) && rows.length <= 40 && rows.every(row => row && text(row.label, 100) && row.label.trim() && text(row.value, 1000));
 function detailValid(details) {
   return details && typeof details === "object" && !Array.isArray(details) &&
-    ["subtitle", "address", "condition", "videoUrl", "mapEmbedUrl", "brochureUrl", "reportUrl"].every(key => details[key] == null || text(details[key], 2000)) &&
-    ["videoUrl", "brochureUrl", "reportUrl"].every(key => !details[key] || mediaUrl(details[key])) && (!details.mapEmbedUrl || mapUrl(details.mapEmbedUrl)) &&
+    ["subtitle", "condition", "videoUrl", "brochureUrl", "reportUrl"].every(key => details[key] == null || text(details[key], 2000)) &&
+    ["videoUrl", "brochureUrl", "reportUrl"].every(key => !details[key] || mediaUrl(details[key])) &&
     (!details.gallery || (Array.isArray(details.gallery) && details.gallery.length <= 20 && details.gallery.every(mediaUrl))) && (!details.overview || pairsValid(details.overview)) && (!details.badges || (Array.isArray(details.badges) && details.badges.length <= 8 && details.badges.every(item => text(item, 100)))) &&
     (!details.specifications || (Array.isArray(details.specifications) && details.specifications.length <= 12 && details.specifications.every(group => group && text(group.title, 100) && pairsValid(group.rows))));
 }
-const productFields = ["name", "slug", "category", "brand", "description", "images", "pricePerHour", "pricePerDay", "pricePerWeek", "currency", "deposit", "location", "available", "status", "attributes", "stockQuantity"];
+const productFields = ["name", "slug", "category", "brand", "description", "images", "pricePerDay", "currency", "available", "status", "attributes", "stockQuantity"];
 function validateProduct(body) {
   if (body?.stockQuantity !== undefined && (!Number.isInteger(body.stockQuantity) || body.stockQuantity < 0 || body.stockQuantity > 10000)) return "Stock quantity must be a whole number between 0 and 10,000.";
   if (!body || !text(body.name, 200) || !body.name.trim() || !categories.includes(body.category)) return "Enter a product name and a valid category.";
   if (!slugify(body.slug || body.name)) return "Enter a URL name using letters and numbers.";
   if (!["available", "maintenance", "booked", "inactive"].includes(body.status) || typeof body.available !== "boolean") return "Choose a valid availability status.";
-  if (!["brand", "slug", "location"].every(key => body[key] == null || text(body[key])) || !text(body.description || "", 15000) || !/^[A-Z]{3}$/.test(body.currency || "USD")) return "Check the description, currency, and product information.";
+  if (!["brand", "slug"].every(key => body[key] == null || text(body[key])) || !text(body.description || "", 15000) || !/^[A-Z]{3}$/.test(body.currency || "USD")) return "Check the description, currency, and product information.";
   if (!Array.isArray(body.images) || body.images.length > 20 || !body.images.every(mediaUrl)) return "Use up to 20 valid image URLs.";
-  if (["pricePerHour", "pricePerDay", "pricePerWeek", "deposit"].some(key => body[key] != null && body[key] !== "" && (!Number.isFinite(Number(body[key])) || Number(body[key]) < 0 || Number(body[key]) > 99999999))) return "Prices must be valid positive amounts.";
-  if (!body.attributes || typeof body.attributes !== "object" || Array.isArray(body.attributes) || (body.attributes.details && !detailValid(body.attributes.details))) return "Check the overview, specifications, and media links. Maps must use a Google Maps URL.";
+  if (["pricePerDay"].some(key => body[key] != null && body[key] !== "" && (!Number.isFinite(Number(body[key])) || Number(body[key]) < 0 || Number(body[key]) > 99999999))) return "Prices must be valid positive amounts.";
+  if (!body.attributes || typeof body.attributes !== "object" || Array.isArray(body.attributes) || (body.attributes.details && !detailValid(body.attributes.details))) return "Check the overview, specifications, and media links.";
   if (body.attributes.tagline != null && !text(body.attributes.tagline, 500)) return "Keep the tagline under 500 characters.";
   if (body.attributes.features != null && (!Array.isArray(body.attributes.features) || body.attributes.features.length > 3 || !body.attributes.features.every(item => text(item, 100)))) return "Use up to three short product features.";
   if (body.attributes.sizes != null && (!Array.isArray(body.attributes.sizes) || body.attributes.sizes.length > 20 || !body.attributes.sizes.every(size => text(size, 20) && size.trim()))) return "Use up to 20 short gear sizes.";
@@ -36,9 +35,8 @@ function validateProduct(body) {
 }
 function cleanDetails(raw = {}) {
   const data = {};
-  for (const key of ["subtitle", "address", "condition"]) if (typeof raw[key] === "string") data[key] = raw[key];
+  for (const key of ["subtitle", "condition"]) if (typeof raw[key] === "string") data[key] = raw[key];
   for (const key of ["videoUrl", "brochureUrl", "reportUrl"]) if (mediaUrl(raw[key])) data[key] = raw[key];
-  if (mapUrl(raw.mapEmbedUrl)) data.mapEmbedUrl = raw.mapEmbedUrl;
   if (Array.isArray(raw.gallery)) data.gallery = raw.gallery.filter(mediaUrl).slice(0, 20);
   if (pairsValid(raw.overview)) data.overview = raw.overview.map(({ label, value }) => ({ label, value }));
   if (Array.isArray(raw.badges)) data.badges = raw.badges.filter(item => typeof item === "string").slice(0, 8);
@@ -47,7 +45,7 @@ function cleanDetails(raw = {}) {
 }
 function present(product) {
   const p = product.toJSON();
-  return { id: p.id, slug: p.slug, name: p.name, category: p.category, brand: p.brand, description: p.description, images: (p.images || []).filter(mediaUrl), pricePerHour: p.pricePerHour, pricePerDay: p.pricePerDay, pricePerWeek: p.pricePerWeek, currency: p.currency, deposit: p.deposit, location: p.location, tagline: p.attributes?.tagline || "", features: Array.isArray(p.attributes?.features) ? p.attributes.features.filter(item => typeof item === "string").slice(0, 3) : [], details: cleanDetails(p.attributes?.details) };
+  return { id: p.id, slug: p.slug, name: p.name, category: p.category, brand: p.brand, description: p.description, images: (p.images || []).filter(mediaUrl), pricePerDay: p.pricePerDay, currency: p.currency, tagline: p.attributes?.tagline || "", features: Array.isArray(p.attributes?.features) ? p.attributes.features.filter(item => typeof item === "string").slice(0, 3) : [], details: cleanDetails(p.attributes?.details) };
 }
 const publicReview = row => { const r = row.toJSON(); return { id: r.id, authorName: r.authorName, title: r.title, comment: r.comment, rating: r.rating, ratings: r.ratings, images: r.images.filter(mediaUrl), createdAt: r.createdAt }; };
 exports.detail = async (req, res) => {
@@ -75,7 +73,7 @@ exports.save = async (req, res) => {
       let product = req.params.id ? await Product.findByPk(req.params.id, { transaction, lock: transaction.LOCK.UPDATE }) : null;
       if (req.params.id && !product) return null;
       const data = Object.fromEntries(productFields.filter(key => req.body[key] !== undefined).map(key => [key, req.body[key]]));
-      for (const key of ["pricePerHour", "pricePerDay", "pricePerWeek", "deposit"]) if (data[key] === "") data[key] = null;
+      for (const key of ["pricePerDay"]) if (data[key] === "") data[key] = null;
       data.name = data.name.trim();
       data.slug = slugify(data.slug || data.name);
       if (!data.slug) throw new Error("Invalid slug");

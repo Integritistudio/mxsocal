@@ -52,12 +52,12 @@ const app = express(); app.use(express.json()); app.use("/products", require("..
       assert.equal(visible.reviewCount, 1); assert.equal(visible.rating, 5);
       await request(app).put(`/products/reviews/admin/${row.id}`).set("Authorization", `Bearer ${token}`).send({ ...review, productId, status: "rejected" }).expect(200);
       assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`)).body.reviewCount, 0);
-      await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, description: "Updated through admin.", attributes: { details: { mapEmbedUrl: "https://evil.example/maps" } } }).expect(400);
+      await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, description: "Updated through admin.", attributes: { details: { videoUrl: "javascript:alert(1)" } } }).expect(400);
       await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, description: "Updated through admin." }).expect(200);
       assert.equal((await request(app).get(`/products/${saved.body.slug}/detail`)).body.product.description, "Updated through admin.");
       await request(app).put(`/products/admin/${productId}`).set("Authorization", `Bearer ${token}`).send({ ...payload, available: false }).expect(200);
       await request(app).get(`/products/${saved.body.slug}/detail`).expect(404);
     }
-    console.log("Passed: named URLs and ID lookup; all five product categories; admin editing; approved-only reviews and averages; private emails; public submission moderation; auth; map validation; unavailable product exclusion.");
+    console.log("Passed: named URLs and ID lookup; all five product categories; admin editing; approved-only reviews and averages; private emails; public submission moderation; auth; media validation; unavailable product exclusion.");
   } finally { await Review.destroy({ where: { productId: created } }); await Product.destroy({ where: { id: created } }); await customer.destroy(); }
 })().catch(error => { console.error(error.message); process.exitCode = 1; }).finally(() => sequelize.close());

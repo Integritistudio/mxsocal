@@ -1,5 +1,5 @@
 import { cache } from "react";
-export type Track = { id: string; slug: string; name: string; city: string; address: string; tagline: string; description: string; website: string; images: string[]; layouts: string[]; features: string[]; imageSource: string };
+export type Track = { id: string; slug: string; name: string; city: string; address: string; tagline: string; description: string; website: string; images: string[]; layouts: string[]; features: string[]; imageSource: string; displayOrder?: number };
 export type TrackAvailability = { month: string; timeZone: string; today: string; days: Partial<Record<string, { status: "available" | "unavailable"; note: string }>>; updatedAt: string | null };
 const base = () => (process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000").replace(/\/$/, "");
 export async function getTracks(): Promise<Track[] | null> {

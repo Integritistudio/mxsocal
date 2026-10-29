@@ -1,0 +1,29 @@
+const escape = value => String(value ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+function siteOrigin() {
+  try {
+    const url = new URL(process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_SITE_URL || "https://mxsocal.com");
+    if (["https:", "http:"].includes(url.protocol)) return url.origin;
+  } catch { /* Use the public site when configuration is invalid. */ }
+  return "https://mxsocal.com";
+}
+
+// Content and rows are trusted template markup; escape user values at the call site.
+exports.emailLayout = ({ title, preheader = title, section = "Rentals & experiences", content, rows, hero = true }) => {
+  const origin = escape(siteOrigin());
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark"><meta name="supported-color-schemes" content="dark"><title>${escape(title)} | MXSoCal</title>
+<style>:root{color-scheme:dark supported-color-schemes:dark}body{margin:0;padding:0}table{border-spacing:0}img{border:0;outline:none}h1{font-size:36px;line-height:1.15;letter-spacing:-1.4px;margin:0 0 22px;color:#ffffff}h2{font-size:20px;line-height:28px;color:#ffffff}p{line-height:1.8}a{color:#ff9891} @media only screen and (max-width:620px){.email-outer{padding:12px 6px!important}.email-header,.email-content,.email-footer,.email-intro{padding:26px 22px!important}.email-hero-title{font-size:36px!important;line-height:40px!important}h1{font-size:30px!important}.email-card{width:100%!important}.email-nav a{font-size:11px!important}.email-header-logo{width:150px!important;height:auto!important}}</style></head>
+<body style="margin:0;padding:0;background:#080808;color:#e9e9e9;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.8">
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all">${escape(preheader)}</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#080808"><tr><td class="email-outer" align="center" style="padding:32px 12px">
+<table class="email-card" role="presentation" width="600" cellpadding="0" cellspacing="0" bgcolor="#101010" style="width:100%;max-width:600px;border:1px solid #303030;border-radius:20px;overflow:hidden">
+<tr><td class="email-header" bgcolor="#101010" style="padding:30px 36px 24px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td><a href="${origin}" style="text-decoration:none"><img class="email-header-logo" src="cid:mxsocal-logo@mxsocal" alt="MXSoCal Rentals and Experiences" width="182" height="75" style="display:block;width:182px;height:75px;color:#ffffff;font-size:20px;font-style:italic;font-weight:bold"></a><p style="margin:14px 0 0;color:#c8c8c8;font-size:10px;line-height:18px;letter-spacing:2px">SOUTHERN CALIFORNIA</p></td></tr></table></td></tr>
+<tr><td class="email-nav" bgcolor="#101010" style="padding:0 36px 24px;border-bottom:1px solid #333333"><a href="${origin}/bikes" style="font-size:12px;color:#dddddd;text-decoration:none">The bikes</a><span style="color:#555555;padding:0 12px">/</span><a href="${origin}/tracks" style="font-size:12px;color:#dddddd;text-decoration:none">The tracks</a><span style="color:#555555;padding:0 12px">/</span><a href="${origin}/contact-us" style="font-size:12px;color:#dddddd;text-decoration:none">The experience</a></td></tr>
+${hero ? `<tr><td bgcolor="#191919"><img src="cid:mxsocal-ride@mxsocal" alt="Motocross in Southern California" width="600" height="210" style="display:block;width:100%;max-width:600px;height:auto;color:#bbbbbb;font-size:14px"></td></tr><tr><td class="email-intro" bgcolor="#101010" style="padding:30px 36px 32px;border-bottom:1px solid #333333"><p style="margin:0 0 12px;font-size:10px;line-height:16px;letter-spacing:2.5px;font-weight:bold;color:#ff9891">THIS IS MXSoCal.</p><p class="email-hero-title" style="margin:0;font-size:43px;line-height:47px;letter-spacing:-1.8px;font-weight:bold;color:#ffffff">Less planning.<br><span style="color:#f36c63">More riding.</span></p></td></tr>` : ""}
+<tr><td bgcolor="#101010" style="padding:25px 36px 0"><span style="display:inline-block;padding:6px 12px;border:1px solid #5d2926;border-radius:20px;color:#ff9891;font-size:10px;line-height:16px;letter-spacing:1.5px;text-transform:uppercase">${escape(section)}</span></td></tr>
+${rows || `<tr><td class="email-content" bgcolor="#101010" style="padding:30px 36px 38px">${content}</td></tr>`}
+<tr><td class="email-footer" bgcolor="#080808" style="padding:34px 36px;border-top:1px solid #333333"><p style="margin:0 0 12px;font-size:10px;line-height:16px;color:#ff9891;font-weight:bold;letter-spacing:2px">BUILT AROUND THE RIDE.</p><p style="margin:0;color:#ffffff;font-size:27px;line-height:33px;letter-spacing:-.6px;font-weight:bold">Stop wrenching.<br>Start experiencing.</p><p style="margin:17px 0 23px;color:#b9b9b9;font-size:13px;line-height:22px">Great bikes. Great tracks. Your kind of adventure.</p><table role="presentation" cellpadding="0" cellspacing="0"><tr><td bgcolor="#ffffff" style="border-radius:30px"><a href="${origin}/contact-us" style="display:inline-block;padding:12px 23px;font-size:12px;line-height:20px;font-weight:bold;color:#111111;text-decoration:none;border-radius:30px">Talk to the MXSoCal team &nbsp; &#8599;</a></td></tr></table><p style="margin:25px 0 0;color:#999999;font-size:11px;line-height:20px">MXSoCal &nbsp;/&nbsp; Southern California<br><a href="mailto:contact@mxsocal.com" style="color:#cccccc;text-decoration:none">contact@mxsocal.com</a></p></td></tr>
+</table><p style="max-width:540px;margin:18px auto 0;color:#999999;font-size:11px;line-height:19px;text-align:center">Rentals &amp; Experiences &nbsp;&middot;&nbsp; MXSoCal<br>Your ride. Your pace. Our backyard.</p>
+</td></tr></table></body></html>`;
+};

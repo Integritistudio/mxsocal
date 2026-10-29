@@ -20,7 +20,7 @@ const listings = [
     for (const [index, item] of listings.entries()) {
       const slug = `mxsocal-${item.brand.toLowerCase()}-${item.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "")}`;
       const [bike, created] = await Product.findOrCreate({ where: { name: item.name, category: "bike" }, defaults: {
-        name: item.name, brand: item.brand, description: `${item.tagline}. Rent the ${item.name} for your next Southern California riding adventure. Contact our team for availability and help choosing your setup.`, images: [`/images/bikes/${item.image}`], pricePerDay: item.price, currency: "USD", available: true, status: "available", location: "Southern California", attributes: { tagline: item.tagline, features: item.features }, createdAt: new Date(start + index),
+        name: item.name, brand: item.brand, description: `${item.tagline}. Rent the ${item.name} for your next Southern California riding adventure. Contact our team for availability and help choosing your setup.`, images: [`/images/bikes/${item.image}`], pricePerDay: item.price, currency: "USD", available: true, status: "available", attributes: { tagline: item.tagline, features: item.features }, createdAt: new Date(start + index),
       }, transaction });
       if (created) {
         await BikeSpec.create({ productId: bike.id, model: item.name.split(" — ")[0], modelYear: item.modelYear, engineCapacity: item.size, transmission: "Manual", fuelType: "Gasoline" }, { transaction });

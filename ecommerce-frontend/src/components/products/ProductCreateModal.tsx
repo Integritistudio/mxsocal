@@ -16,11 +16,7 @@ type FormData = {
     brand: string;
     description: string;
     pricePerDay: string;
-    pricePerWeek: string;
-    pricePerHour: string;
     currency: string;
-    deposit: string;
-    location: string;
     available: boolean;
     status: string;
     attributes?: any;
@@ -38,11 +34,7 @@ export default function ProductCreateModal({ isOpen, onClose }: { isOpen: boolea
         brand: "",
         description: "",
         pricePerDay: "",
-        pricePerWeek: "",
-        pricePerHour: "",
         currency: "USD",
-        deposit: "",
-        location: "",
         available: true,
         status: "available",
         attributes: {},
@@ -153,7 +145,7 @@ export default function ProductCreateModal({ isOpen, onClose }: { isOpen: boolea
             const newErrors: { [k: string]: string } = {};
             if (!formData.name || formData.name.trim() === "") newErrors.name = "Name is required";
             if (!formData.category) newErrors.category = "Category is required";
-            const numericFields = ["pricePerDay", "pricePerWeek", "pricePerHour", "deposit"] as const;
+            const numericFields = ["pricePerDay"] as const;
             numericFields.forEach((f) => {
                 const val = (formData as any)[f];
                 if (val && isNaN(Number(val))) newErrors[f] = "Must be a number";
@@ -184,11 +176,7 @@ export default function ProductCreateModal({ isOpen, onClose }: { isOpen: boolea
                 fd.append("brand", formData.brand || "");
                 fd.append("description", formData.description || "");
                 fd.append("pricePerDay", formData.pricePerDay || "");
-                fd.append("pricePerWeek", formData.pricePerWeek || "");
-                fd.append("pricePerHour", formData.pricePerHour || "");
                 fd.append("currency", formData.currency || "USD");
-                fd.append("deposit", formData.deposit || "");
-                fd.append("location", formData.location || "");
                 fd.append("available", String(formData.available));
                 fd.append("status", formData.status || "available");
                 fd.append("attributes", JSON.stringify(formData.attributes || {}));
@@ -224,11 +212,7 @@ export default function ProductCreateModal({ isOpen, onClose }: { isOpen: boolea
                     brand: formData.brand,
                     description: formData.description,
                     pricePerDay: formData.pricePerDay || null,
-                    pricePerWeek: formData.pricePerWeek || null,
-                    pricePerHour: formData.pricePerHour || null,
                     currency: formData.currency,
-                    deposit: formData.deposit || null,
-                    location: formData.location,
                     available: formData.available,
                     status: formData.status,
                     attributes: formData.attributes || {},
@@ -306,33 +290,16 @@ export default function ProductCreateModal({ isOpen, onClose }: { isOpen: boolea
                                     <Input name="brand" placeholder="Brand" defaultValue={formData.brand} onChange={handleChange} />
                                 </div>
 
-                                <div className="lg:col-span-1 col-span-2">
-                                    <Label>Location</Label>
-                                    <Input name="location" placeholder="Location" defaultValue={formData.location} onChange={handleChange} />
-                                </div>
-
-                                <div className="lg:col-span-1 col-span-2">
+                                {formData.category === "bike" && <div className="lg:col-span-1 col-span-2">
                                     <Label>Price Per Day</Label>
                                     <Input name="pricePerDay" placeholder="0.00" defaultValue={formData.pricePerDay} onChange={handleChange} />
                                     {errors.pricePerDay && <p className="text-sm text-red-600 mt-1">{errors.pricePerDay}</p>}
-                                </div>
+                                </div>}
 
-                                <div className="lg:col-span-1 col-span-2">
-                                    <Label>Price Per Hour</Label>
-                                    <Input name="pricePerHour" placeholder="0.00" defaultValue={formData.pricePerHour} onChange={handleChange} />
-                                    {errors.pricePerHour && <p className="text-sm text-red-600 mt-1">{errors.pricePerHour}</p>}
-                                </div>
-
-                                <div className="lg:col-span-1 col-span-2">
-                                    <Label>Deposit</Label>
-                                    <Input name="deposit" placeholder="0.00" defaultValue={formData.deposit} onChange={handleChange} />
-                                    {errors.deposit && <p className="text-sm text-red-600 mt-1">{errors.deposit}</p>}
-                                </div>
-
-                                <div className="lg:col-span-1 col-span-2">
+                                {formData.category === "bike" && <div className="lg:col-span-1 col-span-2">
                                     <Label>Currency</Label>
                                     <Input name="currency" placeholder="USD" defaultValue={formData.currency} onChange={handleChange} />
-                                </div>
+                                </div>}
 
                                 <div className="col-span-2">
                                     <Label>Description</Label>

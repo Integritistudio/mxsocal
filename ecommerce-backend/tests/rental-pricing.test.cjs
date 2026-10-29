@@ -9,11 +9,12 @@ test("adjacent reservations are allowed, intersecting reservations are blocked",
   assert.equal(overlap(booked, [{ start: "15:00", end: "18:00" }]), false);
   assert.equal(overlap(booked, [{ start: "14:59", end: "18:00" }]), true);
 });
-test("charges database hourly rates by duration and daily rates once", () => {
-  assert.equal(priceCents({ name: "Bike", pricePerHour: "12.50", pricePerDay: "100" }, 3), 3750);
+test("charges daily product rates once and ignores obsolete hourly prices", () => {
+  assert.equal(priceCents({ name: "Bike", pricePerHour: "12.50", pricePerDay: "100" }, 3), 10000);
   assert.equal(priceCents({ name: "Bike", pricePerHour: null, pricePerDay: "120" }, 6), 12000);
   assert.throws(() => priceCents({ name: "Bike", pricePerDay: null }, 3));
   assert.throws(() => priceCents({ name: "Bike", pricePerDay: "-1" }, 3));
+  assert.throws(() => priceCents({ name: "Bike", pricePerHour: "12.50" }, 3));
 });
 test("rejects impossible and past dates", () => {
   assert.throws(() => validateDate("2027-02-30"));

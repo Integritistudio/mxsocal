@@ -26,10 +26,15 @@ test('SMTP and SES transports both include PDF and inline attachments',async()=>
   vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../lib/account-mail.js'),'utf8'),{exports,process:{env:{MAIL_FROM:'sender@example.com',...(smtp?{SMTP_HOST:'smtp.example.com'}:{})}},require:name=>{
    if(name==='nodemailer')return {createTransport:()=>({sendMail:async data=>sent.push(data)})};
    if(name==='@aws-sdk/client-ses')return {SESClient,SendEmailCommand:Command,SendRawEmailCommand:Command};
+   if(name==='./email-assets')return require('../lib/email-assets');
    return require(name);
   }});
   await exports.sendAccountMail({email:'recipient@example.com',subject:'Receipt',text:'Request receipt',html:'<img src="cid:photo">',attachments:[{filename:'receipt.pdf',content:Buffer.from('%PDF-test'),contentType:'application/pdf'},{filename:'photo.png',cid:'photo',content:Buffer.from('image'),contentType:'image/png'}]});
   if(smtp){assert.equal(sent[0].attachments.length,2);assert.equal(sent[0].disableFileAccess,true);}
   else {const mime=sent[0].RawMessage.Data.toString();assert.ok(mime.includes('application/pdf'));assert.ok(mime.includes('Content-ID: <photo>'));assert.ok(mime.includes('multipart/'))}
+  sent.length=0;
+  await exports.sendAccountMail({email:'recipient@example.com',subject:'Branded email',text:'Preview',html:'<img src="cid:mxsocal-logo@mxsocal"><img src="cid:mxsocal-ride@mxsocal">'});
+  if(smtp){assert.equal(sent[0].attachments.length,2);assert.ok(sent[0].attachments.every(image=>image.contentDisposition==='inline'));}
+  else {const mime=sent[0].RawMessage.Data.toString();assert.ok(mime.includes('Content-ID: <mxsocal-logo@mxsocal>'));assert.ok(mime.includes('Content-ID: <mxsocal-ride@mxsocal>'));}
  }
 });

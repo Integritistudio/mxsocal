@@ -11,7 +11,7 @@ const stripe = () => {
   return require("stripe")(process.env.STRIPE_SECRET_KEY, { timeout: 10000, maxNetworkRetries: 1 });
 };
 const sendError = (res, error) => res.status(error.status || 503).json({ message: error.status ? error.message : "Unable to complete checkout. Please try again." });
-const publicFields = ["id", "name", "slug", "category", "images", "pricePerHour", "pricePerDay", "currency", "deposit", "attributes", "stockQuantity"];
+const publicFields = ["id", "name", "slug", "category", "images", "pricePerDay", "currency", "attributes", "stockQuantity"];
 const specs = [{ model: HelmetSpec, as: "helmetSpec" }, { model: GloveSpec, as: "gloveSpec" }, { model: SuitSpec, as: "suitSpec" }];
 
 // A pending Checkout Session owns its slot until Stripe confirms it has expired.
@@ -85,7 +85,7 @@ async function quote(body, transaction) {
     const bookings = await activeRows(await Booking.findAll({ where: { bookingDate: date, status: { [Op.notIn]: ["cancelled", "completed"] }, meta: { [Op.contains]: { coachId: selected.id } } }, transaction }), transaction);
     if (bookings.some(booking => overlap(booking.slots, slots))) { const error = new Error("This coach is already reserved at that time."); error.status = 409; throw error; }
     coach = { id: selected.id, name: `${selected.firstName} ${selected.lastName}`, specialty: selected.specialty, image: selected.profileImage, hourlyRate: selected.hourlyRate };
-    items.push({ coachId: selected.id, name: `${coach.name} — coaching (${hours} ${hours === 1 ? "hour" : "hours"})`, quantity: 1, unitAmount: priceCents({ name: coach.name, pricePerHour: selected.hourlyRate }, hours) });
+    items.push({ coachId: selected.id, name: `${coach.name} — coaching (${hours} ${hours === 1 ? "hour" : "hours"})`, quantity: 1, unitAmount: priceCents({ name: coach.name, pricePerDay: Number(selected.hourlyRate) * hours }) });
   }
   const totalAmount = items.reduce((sum, item) => sum + item.unitAmount * item.quantity, 0);
   if (!Number.isSafeInteger(totalAmount) || totalAmount < 50 || totalAmount > 99999999) fail("This booking total cannot be processed.");

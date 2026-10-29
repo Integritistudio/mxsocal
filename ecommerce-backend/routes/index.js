@@ -24,6 +24,7 @@ router.use("/products", productRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/rental-checkout", require("./rental-checkout.route"));
 router.use("/operations", require("./operations.route"));
+router.use("/analytics", require("./analytics.route"));
 router.use("/notifications", notificationRoutes);
 router.use("/upload", require("../middleware/auth.middleware"), require("../middleware/account-access.middleware").staff, upload.array("files"), uploadFiles);
 

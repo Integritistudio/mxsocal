@@ -3,19 +3,19 @@
 .header { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:25px; flex-wrap:wrap }
 .header h1 { font-size:25px; font-weight:600 }
 .header h2 { font-size:22px; font-weight:600 }
-.header a,.button { display:inline-flex; justify-content:center; align-items:center; padding:10px 18px; border-radius:8px; background:#de2321; color:#fff; border:0; cursor:pointer; font-size:14px }
+.header a,.button { display:inline-flex; justify-content:center; align-items:center; padding:10px 18px; border-radius:8px; background:#de2321; color:#fff; border:0; cursor:pointer; font-size:15.4px }
 .button:disabled { opacity:.5; cursor:wait }
 .secondary { background:#f8fafc; color:#344054; border:1px solid #d0d5dd }
 :global(.dark) .secondary { background:#ffffff0a; color:#eee; border-color:#ffffff30 }
 .danger { background:#fff0ee; color:#b42318 }
 .table { overflow:auto }
 .table table { width:100%; border-collapse:collapse; text-align:left; min-width:650px }
-.table th,.table td { border-bottom:1px solid #98a2b333; padding:15px 12px; font-size:14px; vertical-align:middle }
+.table th,.table td { border-bottom:1px solid #98a2b333; padding:15px 12px; font-size:15.4px; vertical-align:middle }
 .table th { color:var(--admin-muted,#667085); font-weight:500 }
 .table a { color:#de2321 }
 .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px }
-.field { display:flex; flex-direction:column; gap:7px; font-size:14px; min-width:0 }
-.field input,.field textarea,.field select,.row input { width:100%; padding:11px 13px; border:1px solid #98a2b366; border-radius:8px; background:transparent; color:inherit; font:inherit; font-size:14px }
+.field { display:flex; flex-direction:column; gap:7px; font-size:15.4px; min-width:0 }
+.field input,.field textarea,.field select,.row input { width:100%; padding:11px 13px; border:1px solid #98a2b366; border-radius:8px; background:transparent; color:inherit; font:inherit; font-size:15.4px }
 .field select option { color:#101828; background:white }
 .field textarea { min-height:110px; resize:vertical }
 .field input:focus,.field textarea:focus,.field select:focus,.row input:focus { outline:2px solid #de232155; outline-offset:1px; border-color:#de2321 }
@@ -27,10 +27,13 @@
 .row button { padding:8px; background:#fef3f2; color:#b42318; border-radius:6px; border:0; cursor:pointer }
 .group { border:1px solid #98a2b344; padding:18px; border-radius:10px; margin-block:15px }
 .actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:25px }
-.error { padding:12px 15px; background:#fef3f2; color:#b42318; border-radius:8px; margin-block:16px; font-size:14px }
-.success { padding:12px 15px; background:#ecfdf3; color:#027a48; border-radius:8px; margin-block:16px; font-size:14px }
-.hint { color:var(--admin-muted,#667085); font-size:13px; line-height:22px; margin-bottom:15px }
-.status { border-radius:20px; padding:4px 10px; font-size:12px; background:#f2f4f7; color:#383838 }
+.productSaveBar { display:flex; align-items:center; flex-wrap:wrap; gap:12px; margin-top:32px; padding:24px 0 12px; border-top:1px solid #98a2b344 }
+.productSaveBar .button { min-height:46px; padding:12px 24px; line-height:20px; text-decoration:none; text-align:center }
+@media(max-width:650px) { .productSaveBar { gap:10px; padding:20px 0 8px } .productSaveBar .button { flex:1 1 180px; padding:12px 20px } }
+.error { padding:12px 15px; background:#fef3f2; color:#b42318; border-radius:8px; margin-block:16px; font-size:15.4px }
+.success { padding:12px 15px; background:#ecfdf3; color:#027a48; border-radius:8px; margin-block:16px; font-size:15.4px }
+.hint { color:var(--admin-muted,#667085); font-size:14.3px; line-height:22px; margin-bottom:15px }
+.status { border-radius:20px; padding:4px 10px; font-size:13.2px; background:#f2f4f7; color:#383838 }
 .status[data-status=approved] { background:#ecfdf3; color:#027a48 }
 .status[data-status=pending] { background:#fffaeb; color:#b54708 }
 .status[data-status=rejected] { background:#fef3f2; color:#b42318 }
@@ -39,7 +42,7 @@
 @media(max-width:650px) { .panel { padding:18px } .grid { grid-template-columns:1fr } .row { grid-template-columns:1fr auto } .row input:first-child { grid-column:1/-1 } .group { padding:12px } }
 .toolbar { display:flex; align-items:end; gap:14px; flex-wrap:wrap; margin:18px 0 }
 .button { gap:8px }
-.smallButton { padding:8px 12px; border:1px solid #98a2b366; border-radius:8px; background:transparent; color:inherit; font:inherit; font-size:13px; cursor:pointer }
+.smallButton { padding:8px 12px; border:1px solid #98a2b366; border-radius:8px; background:transparent; color:inherit; font:inherit; font-size:14.3px; cursor:pointer }
 .smallButton:disabled,.iconActions button:disabled { opacity:.35; cursor:default }
 .iconActions { display:flex; gap:8px; align-items:center }
 .iconActions a,.iconActions button { display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; padding:0; border:1px solid #98a2b344; border-radius:8px; background:transparent; color:#de2321; cursor:pointer }
@@ -51,18 +54,18 @@
 .imageGrid { display:flex; gap:16px; flex-wrap:wrap; align-items:start }
 .imageTile { width:170px; border:1px solid #98a2b344; padding:10px; border-radius:12px }
 .imageTile img { width:148px; height:135px; object-fit:contain; background:#f2f4f7; border-radius:8px }
-.imageTile > span { display:block; font-size:12px; color:var(--admin-muted,#667085); margin:9px 0 }
+.imageTile > span { display:block; font-size:13.2px; color:var(--admin-muted,#667085); margin:9px 0 }
 .imageTile .iconActions { justify-content:space-between }
-.uploadTile { width:170px; height:225px; border:2px dashed #98a2b366; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; color:#de2321; font-size:14px }
+.uploadTile { width:170px; height:225px; border:2px dashed #98a2b366; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; cursor:pointer; color:#de2321; font-size:15.4px }
 .uploadTile:focus-within { outline:2px solid #de2321 }
 .hiddenInput { width:1px; height:1px; position:absolute; opacity:0 }
 .emptyIcon { margin:60px; color:#98a2b3 }
-.checkLabel { display:flex; align-items:center; gap:10px; font-size:14px; margin:14px 0 }
+.checkLabel { display:flex; align-items:center; gap:10px; font-size:15.4px; margin:14px 0 }
 .monthGrid { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:8px }
 .monthGrid button { min-height:90px; border:1px solid #98a2b344; border-radius:10px; padding:10px; text-align:left; background:transparent; color:inherit; cursor:pointer }
 .monthGrid button strong { font-size:18px; margin-right:8px }
-.monthGrid button small { color:#aaa }
-.monthGrid button span { display:block; font-size:11px; margin-top:8px; overflow-wrap:anywhere }
+.monthGrid button small { color:var(--admin-muted,#475467) }
+.monthGrid button span { display:block; font-size:12.1px; margin-top:8px; overflow-wrap:anywhere }
 .monthGrid .selectedDay { background:#de232115; border-color:#de2321; box-shadow:0 0 0 1px #de2321 }
 .adminSkeleton { min-height:300px; border-radius:16px; background:linear-gradient(100deg,#98a2b310 25%,#98a2b325 50%,#98a2b310 75%); background-size:200% 100%; animation:adminLoading 1.5s infinite }
 .dashboard h1 { font-size:28px; font-weight:600; color:inherit }
@@ -72,29 +75,29 @@
 .metric { display:grid; gap:14px; padding:24px; background:#fff; border:1px solid #98a2b344; border-radius:16px }
 :global(.dark) .metric { background:#151515 }
 .metric > svg { width:30px; height:30px; color:#de2321 }
-.metric > span { color:var(--admin-muted,#667085); font-size:14px }
+.metric > span { color:var(--admin-muted,#667085); font-size:15.4px }
 .metric > strong { font-size:30px; font-weight:600 }
 .dashboardColumns { display:grid; grid-template-columns:1.2fr 1fr; gap:24px; margin-top:24px }
 .dashboardColumns h2 { font-size:18px; font-weight:600; margin-bottom:16px }
 .upcomingRow { display:flex; align-items:center; gap:15px; padding:16px 0; border-bottom:1px solid #98a2b333 }
 .upcomingRow img { width:70px; height:60px; object-fit:cover; border-radius:8px }
-.upcomingRow > div { display:grid; gap:5px; font-size:14px }
-.upcomingRow small { color:var(--admin-muted,#667085); font-size:12px }
+.upcomingRow > div { display:grid; gap:5px; font-size:15.4px }
+.upcomingRow small { color:var(--admin-muted,#667085); font-size:13.2px }
 .bookingAdminList { display:grid; gap:16px; margin-top:24px }
 .bookingAdminCard { border:1px solid #98a2b344; border-radius:12px; overflow:hidden }
 .bookingAdminSummary { display:flex; width:100%; align-items:center; gap:20px; padding:20px; text-align:left; background:transparent; color:inherit; border:0; cursor:pointer }
 .bookingAdminSummary > img { width:90px; height:75px; border-radius:8px; object-fit:cover }
-.bookingAdminSummary > div { display:grid; gap:8px; font-size:14px }
+.bookingAdminSummary > div { display:grid; gap:8px; font-size:15.4px }
 .bookingAdminSummary > div:nth-last-child(2) { margin-left:auto; text-align:right; justify-items:end }
-.bookingAdminSummary small { font-size:12px; color:#aaa }
+.bookingAdminSummary small { font-size:13.2px; color:var(--admin-muted,#475467) }
 .bookingExpanded { padding:24px; border-top:1px solid #98a2b333 }
 .bookingExpanded h3 { font-weight:600; margin-bottom:12px }
-.bookingExpanded p { font-size:14px; line-height:24px; overflow-wrap:anywhere }
+.bookingExpanded p { font-size:15.4px; line-height:24px; overflow-wrap:anywhere }
 .bookingExpanded a { color:#de2321 }
 .equipmentStrip { display:flex; gap:16px; flex-wrap:wrap; margin:20px 0 }
 .equipmentStrip img { width:90px; height:90px; object-fit:contain; border-radius:8px; background:#f2f4f7 }
-.lineItems > div { display:flex; gap:24px; justify-content:space-between; padding:10px 0; font-size:14px; border-bottom:1px solid #98a2b333 }
-.pagination { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:14px; font-size:13px; margin-top:22px }
+.lineItems > div { display:flex; gap:24px; justify-content:space-between; padding:10px 0; font-size:15.4px; border-bottom:1px solid #98a2b333 }
+.pagination { display:flex; align-items:center; justify-content:flex-end; flex-wrap:wrap; gap:14px; font-size:14.3px; margin-top:22px }
 .preserveText { white-space:pre-wrap }
 .status[data-status=available],.status[data-status=confirmed],.status[data-status=completed] { color:#027a48; background:#ecfdf3 }
 .status[data-status=cancelled],.status[data-status=maintenance] { color:#b42318; background:#fef3f2 }
@@ -103,12 +106,12 @@
 @media(max-width:650px) { .metricGrid { gap:12px } .metric { padding:18px } .metric > strong { font-size:24px } .monthGrid { grid-template-columns:repeat(3,minmax(0,1fr)) } .bookingAdminSummary { gap:12px; padding:14px; flex-wrap:wrap } .bookingAdminSummary > img { width:60px; height:60px } .bookingAdminSummary > div { flex:1 } .bookingAdminSummary > div:nth-last-child(2) { flex-basis:100%; text-align:left; justify-items:start; margin-left:72px } .bookingExpanded { padding:16px } }
 @media(prefers-reduced-motion:reduce) { .adminSkeleton { animation:none } }
 .resourcePicker { display:flex; gap:12px; overflow:auto; padding:8px 2px 18px }
-.resourcePicker button { flex:0 0 160px; display:grid; gap:8px; padding:12px; border:1px solid #98a2b344; border-radius:12px; background:transparent; text-align:left; color:inherit; font-size:13px; cursor:pointer }
+.resourcePicker button { flex:0 0 160px; display:grid; gap:8px; padding:12px; border:1px solid #98a2b344; border-radius:12px; background:transparent; text-align:left; color:inherit; font-size:14.3px; cursor:pointer }
 .resourcePicker img { width:136px; height:100px; object-fit:contain; background:#f2f4f7; border-radius:8px }
-.resourcePicker small { color:#aaa }
+.resourcePicker small { color:var(--admin-muted,#475467) }
 .resourcePicker button[aria-pressed=true] { border-color:#de2321; background:#de232110 }
 .resendButton { min-width:215px }
-.bookingActionFeedback { display:flex; align-items:flex-start; gap:10px; min-height:64px; padding:12px 14px; margin-top:12px; border:1px solid transparent; border-radius:8px; font-size:14px; line-height:22px; overflow-wrap:anywhere }
+.bookingActionFeedback { display:flex; align-items:flex-start; gap:10px; min-height:64px; padding:12px 14px; margin-top:12px; border:1px solid transparent; border-radius:8px; font-size:15.4px; line-height:22px; overflow-wrap:anywhere }
 .bookingActionFeedback > svg { flex-shrink:0; margin-top:3px }
 .bookingActionFeedback[data-kind=success] { color:#067647; background:#ecfdf3; border-color:#abefc6 }
 .bookingActionFeedback[data-kind=error] { color:#b42318; background:#fef3f2; border-color:#fecdca }
@@ -122,45 +125,45 @@
 .resourceSidebar .header h1 { font-size:22px; line-height:30px }
 .resourceSidebar .field { margin-top:18px }
 .resourceSidebar .resourcePicker { display:grid; max-height:65vh; gap:8px; overflow:auto; padding-right:4px }
-.resourceSidebar .resourcePicker button { display:grid; grid-template-columns:50px 1fr; gap:4px 12px; padding:10px; width:100%; align-items:center; font-size:12px }
+.resourceSidebar .resourcePicker button { display:grid; grid-template-columns:50px 1fr; gap:4px 12px; padding:10px; width:100%; align-items:center; font-size:13.2px }
 .resourceSidebar .resourcePicker img { grid-row:span 2; width:50px; height:48px }
-.resourceSidebar .resourcePicker small { grid-column:2; font-size:11px }
+.resourceSidebar .resourcePicker small { grid-column:2; font-size:12.1px }
 .resourceSidebar .resourcePicker button:disabled { opacity:.45; cursor:not-allowed }
 .resourceFilters { display:flex; gap:3px; background:#98a2b310; border-radius:8px; padding:4px; margin:18px 0 8px }
-.resourceFilters button { flex:1; font-size:12px; padding:7px 4px; border:0; background:transparent; color:inherit; border-radius:6px; cursor:pointer }
+.resourceFilters button { flex:1; font-size:13.2px; padding:7px 4px; border:0; background:transparent; color:inherit; border-radius:6px; cursor:pointer }
 .resourceFilters button[aria-pressed=true] { color:#de2321; background:#de232115; font-weight:600 }
 .calendarPanel { min-width:0; padding:24px }
 .calendarPanel h2 { font-size:23px; font-weight:600; margin:0 0 8px }
 .calendarPanel .hint { margin:6px 0 0 }
-.calendarEyebrow { color:#de2321; font-size:10px; letter-spacing:1.8px; font-weight:700; margin:0 0 10px }
-.timezoneChip { display:flex; gap:7px; align-items:center; background:#98a2b315; border:1px solid #98a2b333; border-radius:20px; padding:7px 11px; font-size:11px; white-space:nowrap }
+.calendarEyebrow { color:#de2321; font-size:11px; letter-spacing:1.8px; font-weight:700; margin:0 0 10px }
+.timezoneChip { display:flex; gap:7px; align-items:center; background:#98a2b315; border:1px solid #98a2b333; border-radius:20px; padding:7px 11px; font-size:12.1px; white-space:nowrap }
 .calendarFieldset { border:0; padding:0; min-width:0 }
 .calendarLayout { display:grid; grid-template-columns:minmax(0,1fr) 255px; border:1px solid #98a2b333; border-radius:14px; overflow:hidden }
 .calendarMain { padding:20px; min-width:0 }
 .calendarMonthBar { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:18px }
 .calendarMonthBar h3 { font-size:19px; font-weight:600 }
-.calendarMonthBar p { font-size:11px; color:var(--admin-muted,#667085); margin-top:5px }
+.calendarMonthBar p { font-size:12.1px; color:var(--admin-muted,#667085); margin-top:5px }
 .calendarMonthBar p span { margin:0 4px }
 .calendarMonthActions { display:flex; gap:5px; align-items:center }
 .calendarMonthActions button { width:28px; height:32px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; display:grid; place-items:center; cursor:pointer }
-.calendarMonthActions input { min-width:0; max-width:145px; padding:6px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; font-size:12px }
+.calendarMonthActions input { min-width:0; max-width:145px; padding:6px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; font-size:13.2px }
 .calendarPresets { display:flex; gap:5px; align-items:center; flex-wrap:wrap; margin:20px 0 }
-.calendarPresets span { color:var(--admin-muted,#667085); font-size:11px; margin-right:3px }
-.calendarPresets button { font-size:11px; border:1px solid #98a2b333; background:transparent; color:inherit; border-radius:20px; padding:5px 10px; cursor:pointer }
+.calendarPresets span { color:var(--admin-muted,#667085); font-size:12.1px; margin-right:3px }
+.calendarPresets button { font-size:12.1px; border:1px solid #98a2b333; background:transparent; color:inherit; border-radius:20px; padding:5px 10px; cursor:pointer }
 .calendarPresets button:hover { border-color:#de2321; color:#de2321 }
 .calendarWeekdays,.calendarDates { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px }
-.calendarWeekdays { padding-bottom:10px; text-align:center; color:var(--admin-muted,#667085); font-size:11px }
+.calendarWeekdays { padding-bottom:10px; text-align:center; color:var(--admin-muted,#667085); font-size:12.1px }
 .calendarDates > button { min-height:88px; border:1px solid #98a2b333; border-radius:8px; padding:8px; color:inherit; text-align:left; background:transparent; cursor:pointer; min-width:0 }
 .calendarDates > button > div { display:flex; justify-content:space-between; align-items:center; margin-bottom:9px }
-.calendarDates strong { font-size:14px; font-weight:600 }
+.calendarDates strong { font-size:15.4px; font-weight:600 }
 .calendarDates svg { width:13px; height:13px }
-.dayStatus { font-size:9px; line-height:15px; display:block; color:#067647 }
-.calendarDates small { font-size:9px; line-height:13px; color:var(--admin-muted,#667085); display:block; margin-top:3px; overflow-wrap:anywhere }
+.dayStatus { font-size:9.9px; line-height:15px; display:block; color:#067647 }
+.calendarDates small { font-size:9.9px; line-height:13px; color:var(--admin-muted,#667085); display:block; margin-top:3px; overflow-wrap:anywhere }
 .calendarDates button[data-state=closed] { background:#f0443807 }
 .calendarDates button[data-state=closed] .dayStatus { color:#b42318 }
 .calendarDates button[data-state=custom] .dayStatus { color:#de2321 }
 .calendarDates button[aria-pressed=true] { background:#de232112; border-color:#de2321; box-shadow:0 0 0 1px #de2321 }
-.calendarLegend { display:flex; gap:16px; flex-wrap:wrap; font-size:10px; color:var(--admin-muted,#667085); margin-top:18px }
+.calendarLegend { display:flex; gap:16px; flex-wrap:wrap; font-size:11px; color:var(--admin-muted,#667085); margin-top:18px }
 .calendarLegend span { display:flex; gap:6px; align-items:center }
 .calendarLegend span:before { content:""; width:6px; height:6px; border-radius:50%; background:#12b76a }
 .calendarLegend span[data-state=custom]:before { background:#de2321 }
@@ -168,50 +171,50 @@
 .calendarEditor { background:#98a2b308; border-left:1px solid #98a2b333; padding:22px 18px }
 .calendarEditor > svg { color:#de2321; margin-bottom:16px }
 .calendarEditor h3 { font-size:16px; font-weight:600; line-height:24px }
-.calendarEditor .hint { font-size:11px; line-height:19px }
+.calendarEditor .hint { font-size:12.1px; line-height:19px }
 .hoursModes { display:grid; gap:7px; margin:20px 0 }
-.hoursModes button { display:flex; align-items:center; gap:10px; padding:11px; border:1px solid #98a2b344; border-radius:8px; color:inherit; background:transparent; font-size:12px; cursor:pointer; text-align:left }
+.hoursModes button { display:flex; align-items:center; gap:10px; padding:11px; border:1px solid #98a2b344; border-radius:8px; color:inherit; background:transparent; font-size:13.2px; cursor:pointer; text-align:left }
 .hoursModes button > span { width:13px; height:13px; border:1px solid #98a2b3; border-radius:50%; flex-shrink:0 }
 .hoursModes button[aria-pressed=true] { border-color:#de2321; background:#de232108 }
 .hoursModes button[aria-pressed=true] > span { border:4px solid #de2321 }
-.calendarEditor > .button { width:100%; margin-top:16px; padding:11px 8px; font-size:12px }
+.calendarEditor > .button { width:100%; margin-top:16px; padding:11px 8px; font-size:13.2px }
 .hoursRow { display:grid; grid-template-columns:1fr 1fr 20px; gap:6px; align-items:end; margin-bottom:12px }
-.hoursRow label { min-width:0; font-size:10px; color:#aaa }
-.hoursRow input,.hoursRow select { display:block; width:100%; min-width:0; margin-top:5px; padding:7px 4px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; font-size:11px }
+.hoursRow label { min-width:0; font-size:11px; color:var(--admin-muted,#475467) }
+.hoursRow input,.hoursRow select { display:block; width:100%; min-width:0; margin-top:5px; padding:7px 4px; border:1px solid #98a2b344; border-radius:6px; background:transparent; color:inherit; font-size:12.1px }
 .hoursRow select option { background:white; color:#182230 }
 .hoursRow button { background:transparent; color:#b42318; border:0; padding:8px 0; cursor:pointer }
-.addHours { display:flex; align-items:center; gap:7px; color:#de2321; font-size:11px; background:transparent; border:0; cursor:pointer; margin:10px 0 }
+.addHours { display:flex; align-items:center; gap:7px; color:#de2321; font-size:12.1px; background:transparent; border:0; cursor:pointer; margin:10px 0 }
 .recurrencePanel { display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; border:1px solid #98a2b333; border-radius:12px; padding:20px; margin-top:20px }
-.recurrencePanel h3 { font-size:14px; font-weight:600 }
-.recurrencePanel .hint { font-size:11px; max-width:400px; line-height:19px }
+.recurrencePanel h3 { font-size:15.4px; font-weight:600 }
+.recurrencePanel .hint { font-size:12.1px; max-width:400px; line-height:19px }
 .recurrenceChoices { display:flex; gap:4px; padding:4px; border:1px solid #98a2b344; border-radius:8px }
-.recurrenceChoices button { font-size:11px; background:transparent; border:0; color:inherit; padding:8px 10px; border-radius:5px; cursor:pointer }
+.recurrenceChoices button { font-size:12.1px; background:transparent; border:0; color:inherit; padding:8px 10px; border-radius:5px; cursor:pointer }
 .recurrenceChoices button[aria-pressed=true] { background:#de2321; color:white }
 .calendarSaveBar { display:flex; justify-content:space-between; align-items:center; gap:18px; border-top:1px solid #98a2b333; padding-top:20px; margin-top:12px; flex-wrap:wrap }
 .calendarWorkspaceContent { min-width:0 }
 .activeResourceBanner { display:flex; gap:20px; align-items:center; padding:22px; background:#fff; border:1px solid #98a2b333; border-radius:14px; margin-bottom:18px; color:#182230 }
 .activeResourceBanner img { width:100px; height:75px; object-fit:contain; border-radius:10px; background:#f2f4f7 }
-.activeResourceBanner span { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:#de2321 }
+.activeResourceBanner span { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:#de2321 }
 .activeResourceBanner h2 { font-size:22px; font-weight:600; margin:5px 0 }
-.activeResourceBanner p { font-size:12px; color:var(--admin-muted,#667085); line-height:20px }
+.activeResourceBanner p { font-size:13.2px; color:var(--admin-muted,#667085); line-height:20px }
 :global(.dark) .activeResourceBanner { background:#151515; color:#eee }
-.availabilityGuide { display:flex; gap:24px; flex-wrap:wrap; padding:16px 0 24px; border-top:1px solid #98a2b333; font-size:12px; color:#aaa }
+.availabilityGuide { display:flex; gap:24px; flex-wrap:wrap; padding:16px 0 24px; border-top:1px solid #98a2b333; font-size:13.2px; color:var(--admin-muted,#475467) }
 .availabilityGuide span { display:flex; gap:8px; align-items:center }
 .availabilityGuide b { display:grid; place-items:center; width:23px; height:23px; border-radius:50%; background:#de232112; color:#de2321; font-weight:600 }
 .selectionTools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:13px; border:1px solid #de232125; background:#de232106; border-radius:10px; margin-bottom:20px }
-.selectionTools strong { font-size:12px; font-weight:600 }
-.selectionTools small { display:block; color:var(--admin-muted,#667085); font-size:10px; margin-top:4px }
+.selectionTools strong { font-size:13.2px; font-weight:600 }
+.selectionTools small { display:block; color:var(--admin-muted,#667085); font-size:11px; margin-top:4px }
 .selectionTools > div:last-child { display:flex; gap:6px; flex-wrap:wrap }
-.selectionTools button { border:1px solid #98a2b344; border-radius:7px; padding:7px 10px; background:transparent; color:inherit; font-size:11px; cursor:pointer }
+.selectionTools button { border:1px solid #98a2b344; border-radius:7px; padding:7px 10px; background:transparent; color:inherit; font-size:12.1px; cursor:pointer }
 .selectionTools button:last-child { color:#b42318; border-color:#f0443833 }
 .selectionTools button:hover { background:#de232110 }
 .calendarPanel .calendarSaveBar { position:sticky; bottom:12px; background:#fff; border:1px solid #98a2b344; border-radius:12px; padding:16px; z-index:5; box-shadow:0 6px 24px #1018280d }
 :global(.dark) .calendarPanel .calendarSaveBar { background:#151515 }
-@media(max-width:650px) { .activeResourceBanner { padding:16px; gap:14px } .activeResourceBanner img { width:75px; height:65px } .activeResourceBanner h2 { font-size:18px } .availabilityGuide { gap:10px; font-size:10px } .availabilityGuide b { width:20px; height:20px } }
-.calendarSaveBar > span { font-size:12px; font-weight:500 }
-.calendarSaveBar small { display:block; color:var(--admin-muted,#667085); font-size:10px; margin-top:5px; font-weight:400 }
+@media(max-width:650px) { .activeResourceBanner { padding:16px; gap:14px } .activeResourceBanner img { width:75px; height:65px } .activeResourceBanner h2 { font-size:18px } .availabilityGuide { gap:10px; font-size:11px } .availabilityGuide b { width:20px; height:20px } }
+.calendarSaveBar > span { font-size:13.2px; font-weight:500 }
+.calendarSaveBar small { display:block; color:var(--admin-muted,#667085); font-size:11px; margin-top:5px; font-weight:400 }
 .calendarSaveBar > div { display:flex; gap:10px }
-.calendarSaveBar .button,.calendarSaveBar .smallButton { font-size:12px }
+.calendarSaveBar .button,.calendarSaveBar .smallButton { font-size:13.2px }
 .calendarFeedback { min-height:28px }
 .calendarFeedback .success { display:flex; align-items:center; gap:10px }
 .calendarFieldset button:disabled { opacity:.4; cursor:not-allowed }
@@ -219,7 +222,7 @@
 :global(.dark) .calendarMonthActions input,:global(.dark) .hoursRow input { color-scheme:dark }
 @media(max-width:1400px) { .availabilityWorkspace { grid-template-columns:230px minmax(0,1fr); gap:16px } .calendarLayout { grid-template-columns:1fr } .calendarEditor { border-left:0; border-top:1px solid #98a2b333 } .hoursModes { grid-template-columns:repeat(3,minmax(0,1fr)) } .calendarEditor > .button { width:auto; min-width:200px } .customHours { max-width:400px } }
 @media(max-width:900px) { .availabilityWorkspace { grid-template-columns:1fr } .resourceSidebar { position:static } .resourceSidebar .resourcePicker { display:flex; max-height:none } .resourceSidebar .resourcePicker button { flex:0 0 210px } .calendarPanel { padding:18px } }
-@media(max-width:650px) { .calendarMain { padding:12px } .calendarDates > button { padding:6px; min-height:70px } .calendarDates small { display:none } .calendarDates strong { font-size:13px } .dayStatus { font-size:8px } .calendarDates svg { width:10px } .calendarWeekdays,.calendarDates { gap:4px } .calendarEditor { padding:18px 14px } .hoursModes { grid-template-columns:1fr } .calendarSaveBar > div { width:100% } .calendarSaveBar > div > button { flex:1 } .recurrencePanel { padding:15px; gap:15px } .recurrenceChoices { width:100% } .recurrenceChoices button { flex:1 } }
+@media(max-width:650px) { .calendarMain { padding:12px } .calendarDates > button { padding:6px; min-height:70px } .calendarDates small { display:none } .calendarDates strong { font-size:14.3px } .dayStatus { font-size:8.8px } .calendarDates svg { width:10px } .calendarWeekdays,.calendarDates { gap:4px } .calendarEditor { padding:18px 14px } .hoursModes { grid-template-columns:1fr } .calendarSaveBar > div { width:100% } .calendarSaveBar > div > button { flex:1 } .recurrencePanel { padding:15px; gap:15px } .recurrenceChoices { width:100% } .recurrenceChoices button { flex:1 } }
 
 .calendarPanel { container-type:inline-size; container-name:rental-calendar }
 .calendarPanel .calendarLayout { grid-template-columns:1fr }
